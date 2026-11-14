@@ -34,3 +34,20 @@ test('quota stop preserves unsearched airport for continuation and keeps prior d
 test('editing nights updates visible hint and selected date window immediately',()=>{
  const ids=fixture(async()=>{throw Error('editing must not query provider');});ids.tripWeek.value='13';ids.tripWeek.listeners.change[0]();ids.nights.value='3';ids.nights.listeners.input[0]();assert.match(ids.weekHint.textContent,/2027-03-27–2027-04-04 · 3 nätter/);assert.equal(ids.liveReturn.value,'2027-03-30');
 });
+
+test('live timetable filters update immediately while typing without provider calls',async()=>{
+ let calls=0;
+ const flights=[
+ {quotedPriceSEK:3440,segments:[{origin:'ARN',destination:'CDG',arrivalLocal:'2027-03-14 09:10',departureLocal:'2027-03-14 06:10'},{origin:'CDG',destination:'MXP',departureLocal:'2027-03-14 21:25',arrivalLocal:'2027-03-14 23:00'}]},
+ {quotedPriceSEK:3632,segments:[{origin:'ARN',destination:'CDG',arrivalLocal:'2027-03-14 09:10',departureLocal:'2027-03-14 06:10'},{origin:'CDG',destination:'MXP',departureLocal:'2027-03-14 10:15',arrivalLocal:'2027-03-14 11:45'}]}
+ ];
+ const ids=fixture(async(url,opts)=>{calls++;return {ok:true,json:async()=>({stage:'outbound',context:JSON.parse(opts.body),flights,fetchedAt:'2026-11-14T12:00:00Z'})};});
+ ids.searchMode.value='exact';ids.liveAirport.value='MXP';ids.liveOutbound.value='2027-03-14';ids.liveReturn.value='2027-03-18';
+ ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);
+ const count=()=>ids.liveResults.children.filter(n=>n.tag==='article').length;
+ assert.equal(count(),1);assert.equal(calls,1);
+ ids.maxLayover.value='1';ids.maxLayover.listeners.input[0]();assert.equal(count(),0);
+ ids.maxLayover.value='4';ids.maxLayover.listeners.input[0]();assert.equal(count(),1);
+ ids.maxLayover.value='24';ids.maxLayover.listeners.input[0]();assert.equal(count(),1,'late landing stays hidden even when layover cap is raised');
+ assert.equal(calls,1,'filter edits must not query provider');
+});

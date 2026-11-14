@@ -1,5 +1,5 @@
-# Flyg current checkpoint —2026-11-14 Work
+# Flyg current checkpoint —2026-11-14
 
-Frontend0.1.28 unchanged; prior iPhone screenshot confirms installed version. Backend0.1.29 DEPLOYED/RUNTIME PASS. INVALID_AIRLINES double-validation fixed.24 tests PASS; live grouped TRN,MXP,BGY excludingFR returned10offers; identical replay uses30min cache,207Free remaining observed. Same Worker/secrets/DO/Free plan retained. Deploy43588143545 SUCCESS.
+Frontend0.1.31 DEPLOYED/BROWSER PASS. Backend0.1.29 unchanged. User screenshot's12h15CDG/23:00 flight now hidden. Live filters enforce selected airport deadline, same-day arrival, hotel-deadline impossibility, direct-only and editable4h maximum layover per connection. Browser real grouped search:4of10 retained; firstAF1130 arrival11:45. Changing layover1h->1offer/4h->4offers works immediately without new search.18published hashes PASS; Pages43589293287 SUCCESS. All regression suites PASS.
 
-Next: repeat search in existing installed iPhone app; no reinstall. Device search acceptance pending; CURRENT/PREVIOUS unchanged. Baggage-inclusive prices/transfer feasibility UNKNOWN. Obsolete0.1.24 automatic candidate writer retired; canonical integrity guard retained. Read structured state and latest handoff.
+Next: installed iPhone update/search acceptance0.1.31. CURRENT/PREVIOUS unchanged. Transfer/hotel arrival, baggage total and full ski days remain UNVERIFIED. Same Worker/Free plan/secrets/30min cache. Read structured state/latest handoff.

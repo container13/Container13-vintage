@@ -9,24 +9,35 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.28",
-    "integrity": "FRONTEND0.1.28_UNCHANGED; BACKEND0.1.29_DEPLOYED_RUNTIME_PASS; IPHONE_SEARCH_PENDING"
+    "candidate": "0.1.31",
+    "integrity": "ALL18_PUBLISHED_SHELL_AND_MANIFEST_HASHES_PASS; BROWSER0.1.31_FILTER_PASS; IPHONE0.1.31_PENDING"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "frontend0.1.30/backend0.1.29",
-    "goal": "Hide outbound itineraries violating selected airport arrival and hotel deadline; wire existing journey owner to live results",
-    "evidence": "User IMG_4277 shows AF arrival23:00 and12h15 CDG wait despite hotel22:00. live-search render uses only budget/carrier filter; journey engine unused for schedule constraints.",
-    "plan": [
-      "Add pure schedule rejection to existing journey engine; no guessed transfer time",
-      "Apply live arrival/direct rules locally with immediate rerender; explain unknown transfer",
-      "Run targeted regression, publish changed Flyg files and verify actual deployed assets"
+    "status": "UNVERIFIED",
+    "targetRelease": "frontend0.1.31/backend0.1.29",
+    "goal": "Live timetable filter deployed and browser verified; installed iPhone upgrade/acceptance remains pending",
+    "completed": [
+      "Existing journey-engine.checkSchedule owns live timetable rejection; no second journey engine",
+      "Outbound airport deadline20:00 by default, strict hotel22:00 impossibility rejection, same-day arrival; direct-only enforced",
+      "Max layover4h default, editable0.5–24h, applies both directions and updates on input without provider request",
+      "Browser real TRN,MXP,BGY14–18March2027 excludesFR:4of10 visible; screenshot AF1230 arrival23:00 hidden;AF1130 arrival11:45 first",
+      "Browser0.1.31 max layover1h ->1offer;4h ->4offers immediately; same fetched result",
+      "All backend/journey/schedule/week/selection/update/SW suites PASS;18 deployed asset/manifest hashes PASS",
+      "Pages43589293287 SUCCESS; sourcef26702aa/public51daa57a; no backend or unrelated project changes"
     ],
-    "resumeInstruction": "Active repair; frontend candidate0.1.30. Preserve backend0.1.29 and30min cache. No CURRENT/PREVIOUS promotion until required client evidence."
+    "plan": [
+      "User opens existing installed PWA online; expect0.1.31 and repeat search",
+      "Remaining: authoritative resort transfer/hotel arrival, baggage totals and whole ski-day verification; never claim timetable pass verifies all requirements"
+    ],
+    "sourceCommit": "f26702aadf4973ee85477da3988bb778b14126da",
+    "deploymentCommit": "51daa57ac981448690a0ee4713712d2b7afd4d8d",
+    "deploymentRun": 43589293287,
+    "rollbackCommit": "0a883485f8e61969a7c2855aa3e334a7872cbd79",
+    "resumeInstruction": "Resume from0.1.31 arrival/layover filtering. Do not show23:00/12h15 CDG example. Backend0.1.29/30min cache untouched. Browser4of10 and1h->1/4h->4 PASS. User iPhone0.1.31 not yet tested. CURRENT/PREVIOUS unchanged."
   },
   "currentWork": {
-    "completed": "24 backend tests PASS locally and CI\nExisting Worker0.1.29 deployed by43588143545 from59888cb2c2d17deec067dae9ef747a28243f3af4; enabled/configured true\nLive ARN to TRN,MXP,BGY14–18March2027 excludes FR:10 offers;207 Free searches remaining at last check\nIdentical replay cached:true; same fetchedAt/results/quota; TTL1800seconds\nRetired obsolete automatic0.1.24 candidate writer; syntax/backend check workflow now read-only",
-    "next": "Installed iPhone0.1.28 search acceptance; backlog baggage/transfer still UNKNOWN.",
+    "completed": "Existing journey-engine.checkSchedule owns live timetable rejection; no second journey engine\nOutbound airport deadline20:00 by default, strict hotel22:00 impossibility rejection, same-day arrival; direct-only enforced\nMax layover4h default, editable0.5–24h, applies both directions and updates on input without provider request\nBrowser real TRN,MXP,BGY14–18March2027 excludesFR:4of10 visible; screenshot AF1230 arrival23:00 hidden;AF1130 arrival11:45 first\nBrowser0.1.31 max layover1h ->1offer;4h ->4offers immediately; same fetched result\nAll backend/journey/schedule/week/selection/update/SW suites PASS;18 deployed asset/manifest hashes PASS\nPages43589293287 SUCCESS; sourcef26702aa/public51daa57a; no backend or unrelated project changes",
+    "next": "User opens existing installed PWA online; expect0.1.31 and repeat search\nRemaining: authoritative resort transfer/hotel arrival, baggage totals and whole ski-day verification; never claim timetable pass verifies all requirements",
     "blocked": false
   },
   "pausedWork": {},
@@ -35,10 +46,9 @@
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
-      "scope": "Only flyg/ subtree; other project bytes unchanged",
-      "sourceCommit": "987631639d6362ec311f33f4bcc759211b17824d",
-      "deploymentCommit": "a06c833e5145edef4ce5b19d1e172f77d4915a49",
-      "notes": "Historical0.1.20 commits below are superseded for current frontend;0.1.28 critical branch parity verified by43588143619. No frontend files changed in this session."
+      "scope": "Only6 flyg runtime files; other projects unchanged",
+      "sourceCommit": "f26702aadf4973ee85477da3988bb778b14126da",
+      "deploymentCommit": "51daa57ac981448690a0ee4713712d2b7afd4d8d"
     },
     "secrets": "NONE_COMMITTED",
     "secretCollection": {
@@ -117,7 +127,9 @@
     },
     "maxPriceForTwoSEK": 5000,
     "maxPriceStepSEK": 100,
-    "maxPriceScope": "Displayed provider quote total for two; unverified baggage fees may be additional; no all-in assertion."
+    "maxPriceScope": "Displayed provider quote total for two; unverified baggage fees may be additional; no all-in assertion.",
+    "maxLayoverHours": 4,
+    "airportArrivalCutoffLocal": "20:00"
   },
   "verification": {
     "sourceCommitted": true,
@@ -125,7 +137,7 @@
     "syntax": "PASS",
     "ui": "BROWSER_OUTBOUND_TO_RETURNS_HEADING_VISIBLE_AND_FOCUSED_PASS",
     "deployment": "PAGES_SUCCESS_43569684218",
-    "device": "User screenshot from prior session confirms installed PWA0.1.28; post-backend-repair search not device tested.",
+    "device": "User IMG_4277 confirms installed0.1.28 can now search after backend repair. Frontend0.1.31 installed-iPhone acceptance pending.",
     "flightAPI": {
       "status": "LIVE_PROOF_PASS",
       "runId": 43559215595,
@@ -275,6 +287,15 @@
       "frontend": "0.1.28_UNCHANGED",
       "device": "IPHONE_SEARCH_PENDING",
       "deployRun": 43588143545
+    },
+    "liveTimetable": {
+      "version": "0.1.31",
+      "date": "2026-11-14",
+      "browser": "PASS_REAL_GROUPED_QUERY_4_OF_10; AF1230_REJECTED_AF1130_RETAINED; INPUT1H_1OFFER_4H_4OFFERS",
+      "deployedHashes": "18_OF18_PASS",
+      "pagesRun": 43589293287,
+      "device": "IPHONE0.1.31_PENDING",
+      "hotelTransfer": "UNKNOWN_NOT_INFERRED"
     }
   },
   "airportCatalog": {
