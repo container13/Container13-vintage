@@ -1,5 +1,5 @@
 {
-  "release": "0.1.37",
+  "release": "0.1.38",
   "updated": "2026-11-14",
   "entrypoints": [
     "index.html"
@@ -22,5 +22,5 @@
     "live-search.js",
     "selection-feedback.js"
   ],
-  "status": "PENDING_EMPTY_RESULT_DEVICE"
+  "status": "PENDING_ST_ANTON_DEVICE"
 }
