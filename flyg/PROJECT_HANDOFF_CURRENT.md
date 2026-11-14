@@ -21,3 +21,10 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Shared template foundation initialized on isolated branch; no runtime, API credentials, CI or deployment configured.
 - Next: inspect shared solution catalog, choose a legally accessible live-data provider, define search contract and implement MVP.
 - No existing project or production environment changed.
+
+## Global flight search defaults — user confirmed 2026-11-14
+- **All flight searches depart from Stockholm Arlanda (ARN)** unless the user explicitly changes this.
+- **Always search for 2 travelers** unless explicitly changed.
+- **Checked baggage is required for both travelers** for normal trips; bag weight is configurable and not globally fixed (Alps initial profile: at least 23 kg per person).
+- **Exception: football trips within Europe**, for example Cologne or London: checked baggage is **not required** by default. Offer cabin baggage/hand baggage and optionally checked baggage, with the true total price.
+- Treat these as shared defaults for future destinations, not only Alps. Football travel should be a separate editable search profile.
