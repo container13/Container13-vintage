@@ -23,7 +23,7 @@
       "Source fee intervals translated and shown; eligibility and exact bag-inclusive total still UNKNOWN"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "2026-11-14: user screenshot confirms earlier green Actions runs. New commits after that: 4d76b25 live-search Norwegian DY+D8 expansion, cf11189 backend allow DY, 9843fd8 UI text, 26e8b23 test DY+D8. These commits require NEW CI PASS; no runtime deploy. Before 0.1.24 publish, update version.js/release.json/index footer/sw.js together, regenerate ALL 16 SHA256 SW integrity hashes against final bytes, verify SW install, CI, deployment and iPhone. Never promote on old green screenshot. No live provider calls.",
+    "resumeInstruction": "2026-11-14: Added offline release integrity generator flyg/tools/prepare-release.mjs (c2aaea0) and wired GitHub Actions .github/workflows/flyg-resort-static-check.yml (658e1fa) to syntax-check script and execute 'node flyg/tools/prepare-release.mjs 0.1.24' + git diff --check, in CI workspace only. Generator updates version.js, index footer, release.json and sw.js CACHE+SHA256 map for all SHELL assets including './' alias. NO GENERATED FILES COMMITTED, NO DEPLOYMENT, NO NEW CI PASS YET. Norwegian DY+D8 changes pending re-test. Need inspect next green run and decide how to commit generated assets (manual Actions commit or local clone), then deploy and real-device verify.",
     "rollbackCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
   },
   "currentWork": {
