@@ -24,6 +24,6 @@ jobs:
           node --check flyg/server/worker.test.mjs
           node --check flyg/tools/prepare-release.mjs
       - name: Worker regression tests (mocked provider, zero real API calls)
-        run: node --test flyg/server/worker.test.mjs
+        run: node --test flyg/server/worker.test.mjs flyg/tests/live-schedule.test.cjs flyg/tests/journey-engine.test.cjs
       - name: Verify whitespace (release hashes owned by candidate integrity guard)
         run: git diff --check

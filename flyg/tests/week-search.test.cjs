@@ -9,9 +9,10 @@ class Node{
  get options(){return this.children;}querySelectorAll(tag){return this.children.flatMap(n=>[...(n.tag===tag?[n]:[]),...n.querySelectorAll(tag)]);}
 }
 function fixture(fetcher){
- const ids={};for(const id of ['liveForm','liveResults','liveStatus','liveAirport','liveOutbound','liveReturn','maxPrice','searchChoices','searchForm','destination','tripWeek','nights','year','searchMode','weekHint','liveSearch','baggage','cabinBoots','personalBag','connections'])ids[id]=new Node();
- for(const [id,value]of Object.entries({maxPrice:'5000',tripWeek:'11',nights:'4',year:'2027',searchMode:'week',baggage:'19.9',connections:'allow'}))ids[id].value=value;
+ const ids={};for(const id of ['liveForm','liveResults','liveStatus','liveAirport','liveOutbound','liveReturn','maxPrice','searchChoices','searchForm','destination','tripWeek','nights','year','searchMode','weekHint','liveSearch','baggage','cabinBoots','personalBag','connections','skiResortField','skiResort','tripRegion','arrival','hotelArrival','maxLayover',...['FR','W6','U2','D8','SK','LH','KL','LX','OS'].map(c=>'exclude'+c)])ids[id]=new Node();
+ for(const [id,value]of Object.entries({maxPrice:'5000',tripWeek:'11',nights:'4',year:'2027',searchMode:'week',baggage:'19.9',connections:'allow',skiResort:'all',tripRegion:'alps',arrival:'20',hotelArrival:'22:00',maxLayover:'4'}))ids[id].value=value;
  for(const code of ['all','ZRH','GVA','INN','SZG','MXP','LIN','BGY','TRN','MUC','LYS','BSL','VRN','VCE','BLQ','STR','VIE','NCE','GNB','TSF','TRS','FDH','GRZ','KLU']){const o=new Node('option',code);o.value=code;ids.destination.append(o);}ids.destination.value='all';
+ for(const code of ['FR','W6','U2','D8','SK','LH','KL','LX','OS'])ids['exclude'+code].checked=false;
  const context={document:{getElementById:id=>ids[id],querySelectorAll:()=>[],createElement:tag=>new Node(tag)},window:{FlygJourney:require('../journey-engine.js'),FlygSelectionUI:{begin(){},error(){},finish(){},reveal(){}}},navigator:{onLine:true},fetch:fetcher,AbortSignal,Date,Intl,Number,Error};
  vm.runInNewContext(fs.readFileSync(require.resolve('../live-search.js'),'utf8'),context);return ids;
 }
