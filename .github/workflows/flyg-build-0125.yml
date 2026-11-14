@@ -1,95 +1,48 @@
-name: Flyg 0.1.28 verify and guarded promotion
+name: Flyg candidate integrity and branch drift guard
 on:
   push:
     branches: [flyg-alperna-init]
-    paths: ['.github/workflows/flyg-build-0125.yml']
+    paths:
+      - 'flyg/**'
+      - '.github/workflows/flyg-build-0125.yml'
+  workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
+concurrency:
+  group: flyg-candidate-integrity
+  cancel-in-progress: true
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Build 0.1.28 legacy recovery candidate and integrity manifest
+      - name: Verify version, SHA256 assets, and static JavaScript
         run: |
           python3 - <<'PY'
-          import pathlib,json,re,hashlib
+          import hashlib,json,pathlib,re
           root=pathlib.Path('flyg')
-          v=root/'version.js'
-          assert "RELEASE='0.1.27'" in v.read_text()
-          v.write_text(v.read_text().replace("RELEASE='0.1.27'","RELEASE='0.1.28'"))
-          r=root/'release.json'
-          data=json.loads(r.read_text());assert data['release']=='0.1.27'
-          data['release']='0.1.28';data['status']='PENDING_LEGACY_RECOVERY'
-          r.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
-          sw=root/'sw.js';source=sw.read_text()
-          assert "flyg-shell-0.1.27" in source
-          assert "existing.includes('flyg-shell-0.1.24')" in source
-          source=source.replace("flyg-shell-0.1.27","flyg-shell-0.1.28")
-          match=re.search(r'const INTEGRITY=(\{[^;]+\});',source);assert match
-          hashes=json.loads(match.group(1))
-          for key in hashes:
-            p=root/('index.html' if key=='./' else key)
-            hashes[key]=hashlib.sha256(p.read_bytes()).hexdigest()
-          source=source[:match.start(1)]+json.dumps(hashes,separators=(',',':'))+source[match.end(1):]
-          sw.write_text(source)
-          PY
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add flyg/version.js flyg/release.json flyg/sw.js
-          git diff --cached --quiet || { git commit -m "Flyg: build legacy recovery 0.1.28"; git push origin HEAD:flyg-alperna-init; }
-      - name: Check source release and run tests without rewriting history
-        run: |
-          node --check flyg/auto-update.js
-          node --check flyg/live-search.js
-          node --check flyg/sw.js
-          node --test flyg/server/worker.test.mjs
-      - name: Verify release integrity after build
-        run: |
-          python3 - <<'PY'
-          import json,re,hashlib,pathlib
-          root=pathlib.Path('flyg')
-          assert "RELEASE='0.1.28'" in (root/'version.js').read_text()
-          assert json.loads((root/'release.json').read_text())['release']=='0.1.28'
+          v=re.search(r"RELEASE='([^']+)'",(root/'version.js').read_text()).group(1)
+          release=json.loads((root/'release.json').read_text())['release']
           sw=(root/'sw.js').read_text()
-          assert "fetch(req,{cache:'no-store'})" in sw
+          cache=re.search(r"const CACHE='flyg-shell-([^']+)'",sw).group(1)
+          assert v==release==cache,(v,release,cache)
+          assert 'window.ProjectVersion?.release' in (root/'index.html').read_text()
           hashes=json.loads(re.search(r'const INTEGRITY=(\{[^;]+\});',sw).group(1))
+          assert len(hashes)==16,len(hashes)
           for key,digest in hashes.items():
-            p=root/('index.html' if key=='./' else key)
-            assert hashlib.sha256(p.read_bytes()).hexdigest()==digest,key
-          print('PASS release and asset integrity')
+            path=root/('index.html' if key=='./' else key)
+            assert hashlib.sha256(path.read_bytes()).hexdigest()==digest,key
+          print('PASS version, runtime footer, 16 asset digests')
           PY
-      - name: Promote verified Flyg assets only
+          node --check flyg/sw.js
+          node --check flyg/app.js
+          node --check flyg/auto-update.js
+          node --check flyg/pwa.js
+          node --test flyg/server/worker.test.mjs
+      - name: Verify production drift (read-only)
         run: |
-          set -euo pipefail
-          git fetch origin ccc-demo-public-test
-          git worktree add /tmp/flyg-public origin/ccc-demo-public-test
-          cd /tmp/flyg-public
-          git switch -c flyg-promote-0128-combined
-          assets=(index.html style.css app.js live-search.js selection-feedback.js journey-engine.js version.js auto-update.js pwa.js sw.js manifest.webmanifest release.json assets/flyg-icon-180.png assets/flyg-icon-192.png assets/flyg-icon-512.png assets/flyg-icon-1024.png)
-          for asset in "${assets[@]}"; do
-            mkdir -p "flyg/$(dirname "$asset")"
-            cp "$GITHUB_WORKSPACE/flyg/$asset" "flyg/$asset"
+          git fetch --no-tags origin ccc-demo-public-test
+          for path in flyg/index.html flyg/version.js flyg/release.json flyg/sw.js; do
+            test "$(git hash-object "$path")" = "$(git rev-parse "FETCH_HEAD:$path")" || { echo "FAIL branch drift: $path"; exit 1; }
           done
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- flyg/
-          if ! git diff --cached --quiet; then
-            git commit -m "Flyg: promote guarded PWA network-first release 0.1.28"
-            git push origin HEAD:ccc-demo-public-test
-          fi
-      - name: Verify public release without provider API calls
-        run: |
-          python3 - <<'PY'
-          import urllib.request,time
-          url='https://container13.se/flyg/version.js?_flyg_verify=0128'
-          for i in range(12):
-            try:
-              with urllib.request.urlopen(urllib.request.Request(url,headers={'Cache-Control':'no-cache'}),timeout=12) as r:
-                body=r.read().decode()
-              if "RELEASE='0.1.28'" in body:
-                print('PASS public 0.1.28');break
-            except Exception as exc: print('Public verification pending',type(exc).__name__)
-            if i==11: raise SystemExit('FAIL public release unverified')
-            time.sleep(10)
-          PY
+          echo 'PASS critical release assets identical in development and production'
