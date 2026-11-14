@@ -15,7 +15,7 @@
   "workCheckpoint": {
     "status": "UNVERIFIED",
     "targetRelease": "0.1.24",
-    "goal": "Candidate 0.1.24 committed to isolated branch, static tests and integrity generation passed in Actions; production Pages and Worker runtime deployment NOT VERIFIED.",
+    "goal": "Candidate 0.1.24 saved; isolated Worker deploy requested through existing workflow, outcome pending; Pages deploy not yet requested.",
     "plan": [
       "Ski default19.9kg per person;20kg qualifies",
       "Separate cabin boot bag and personal item selected by default",
@@ -23,7 +23,7 @@
       "Source fee intervals translated and shown; eligibility and exact bag-inclusive total still UNKNOWN"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "2026-11-14: Automated candidate commit has now run. Exact GitHub fetch readback confirms flyg/version.js RELEASE 0.1.24, flyg/release.json release 0.1.24 and flyg/sw.js CACHE flyg-shell-0.1.24. GitHub Actions generation uses SHA256 on all 16 SHELL assets. Candidate is COMMITTED/CI-based STATIC PASS, NOT DEPLOYED or DEVICE PASS. Existing public production branch is ccc-demo-public-test; must inspect existing Pages deployment chain and live Worker deployment before changing anything. Do not infer source branch automatically publishes; do not edit unrelated projects. No live SerpApi calls.",
+    "resumeInstruction": "2026-11-14: Existing .github/workflows/flyg-runtime-deploy.yml verified; it triggers on push to flyg/server/deploy-request.json, checks Workers Free screenshot, Node tests, deploys disabled flyg-search-api, injects existing GitHub secret, enables FLYG_ENABLED:true. Updated deploy-request.json to 0.1.24 at commit d8741ac26a441f31289b4b531ebf05d3b07c690d. This TRIGGERS deployment but result NOT YET VERIFIED. Do not claim Worker deployed until Actions logs/status and live runtime checks. Frontend 0.1.24 committed to isolated branch; existing Pages production source is ccc-demo-public-test; identify previous publishing method before publishing. No live SerpApi calls made by assistant.",
     "rollbackCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
   },
   "currentWork": {
