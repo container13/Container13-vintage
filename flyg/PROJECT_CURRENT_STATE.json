@@ -4,7 +4,7 @@
   "repository": "container13/Container13-vintage",
   "branch": "flyg-alperna-init",
   "projectRoot": "flyg/",
-  "riskClass": "LOW",
+  "riskClass": "MEDIUM",
   "projectMode": "ACTIVE_DEVELOPMENT",
   "release": {
     "previousVerified": null,
@@ -13,21 +13,21 @@
     "integrity": "PENDING"
   },
   "workCheckpoint": {
-    "status": "IDLE",
+    "status": "UNVERIFIED",
     "targetRelease": "0.1.0",
-    "goal": "Create isolated template-based foundation for a personal Alpine flight search",
+    "goal": "Validate mobile flight-search prototype and connect authorized data provider",
     "plan": [
-      "Verify flight-data provider access and terms",
-      "Build flexible itinerary/date rules and UI",
-      "Integrate authorized live flight data",
-      "Test on iPhone and verify deployment"
+      "Static/UI checks and device smoke test (PENDING)",
+      "Implement centralized release manifest, updater and footer before deployment (PENDING)",
+      "Verify live flight API terms/access and build provider adapter (PENDING)",
+      "Deploy isolated candidate and verify live bytes before promotion (PENDING)"
     ],
     "lastSafeRelease": null,
     "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified."
   },
   "currentWork": {
-    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented.",
-    "next": "Inventory existing solutions and confirm usable live flight API access before building runtime.",
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS.",
+    "next": "Add canonical release manifest/updater and run syntax/interaction/device tests; do not deploy or promote yet.",
     "blocked": false
   },
   "pausedWork": {},
@@ -67,5 +67,14 @@
         "note": "Baggage optional; do not assume a checked bag is required for football trips."
       }
     }
+  },
+  "verification": {
+    "sourceCommitted": true,
+    "githubReadback": true,
+    "syntax": "UNVERIFIED",
+    "ui": "UNVERIFIED",
+    "deployment": "NOT_DEPLOYED",
+    "device": "NOT_TESTED",
+    "flightAPI": "NOT_CONNECTED"
   }
 }
