@@ -39,3 +39,10 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - User flew via Zurich to St Anton last year; include Zurich as a strong St Anton gateway but do not assume live price or schedules.
 - Candidate airports are not confirmed nonstop routes for every date. Filter by actual ARN nonstop availability, arrival time, bag-inclusive total price, and ground transfer to chosen resort before recommendations.
 - Candidate v0.1.1 committed only, no deployment/device test. Flight provider not connected.
+
+## Connection policy — confirmed 2026-11-14
+- Direct flights preferred, but one-stop itineraries via e.g. Oslo, Copenhagen or Frankfurt are allowed when useful.
+- **Hard arrival target: at hotel no later than 22:00 local time**, not airport landing. Calculate actual hotel arrival from airport landing plus baggage reclaim, transfer wait, train/car travel and realistic buffer; do not suggest a connection that cannot satisfy this.
+- Evaluate whole journey, including total elapsed time and all-in fare for two with required baggage. Do not disqualify a stop purely because it is not direct.
+- Example: Zurich to St Anton by train takes roughly 3 hours; do not assume evening Zurich landings are compatible with hotel arrival by 22:00.
+- Implemented in requirements only; runtime form and actual ground-transfer engine still pending.
