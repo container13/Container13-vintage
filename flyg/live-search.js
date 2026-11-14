@@ -4,6 +4,14 @@ const API='https://flyg-search-api.mangaj73.workers.dev';
 const form=document.getElementById('liveForm'),results=document.getElementById('liveResults'),status=document.getElementById('liveStatus');
 const airport=document.getElementById('liveAirport'),start=document.getElementById('liveOutbound'),end=document.getElementById('liveReturn');
 const maxPrice=document.getElementById('maxPrice');
+const airlineNames={FR:/ryanair/i,W6:/wizz air/i,U2:/easyjet/i,D8:/norwegian/i,SK:/^(sas|scandinavian airlines)/i,LH:/lufthansa/i,KL:/klm/i,LX:/^(swiss|swiss international)/i,OS:/austrian airlines/i};
+const airlineChecks=Object.keys(airlineNames).map(code=>({code,element:document.getElementById('exclude'+code)}));
+const airlineStore='flyg-excluded-airlines-v1';
+try{const stored=JSON.parse(localStorage.getItem(airlineStore));if(Array.isArray(stored))for(const a of airlineChecks)a.element.checked=stored.includes(a.code);}catch{}
+function excludedAirlines(){return airlineChecks.filter(a=>a.element.checked).map(a=>a.code);}
+function excludedFlight(f){return (f.segments||[]).some(seg=>excludedAirlines().some(code=>airlineNames[code].test(seg.airline||'')||new RegExp('^'+code+'\\\\d','i').test(seg.number||'')));}
+for(const a of airlineChecks)a.element.addEventListener('change',()=>{try{localStorage.setItem(airlineStore,JSON.stringify(excludedAirlines()));}catch{}if(history.length)render(history.at(-1));});
+
 let busy=false,history=[],generation=0;
 const choices=document.getElementById('searchChoices');
 for(const id of ['searchForm','liveForm'])document.getElementById(id).addEventListener('invalid',()=>{choices.open=true;},true);
@@ -83,6 +91,7 @@ function render(data){
  const needBag=Number(document.getElementById('baggage').value)>0;
  const note=el('p',needBag?'Bagageavgifter visas när de finns. Vikt, båda kabinväskorna och exakt totalpris är ännu inte bekräftade.':'Kontrollera att valda kabinväskor är tillåtna tillsammans, med rätt vikt och mått.');note.className='muted';results.append(note);
  results.append(el('h3',needBag?'Bagagepris ej verifierat – billigaste prisuppgift först':'Billigaste prisuppgift först'));
+ if(excludedAirlines().length)results.append(el('p','Bortvalda flygbolag: '+excludedAirlines().join(', ')+'. Kalenderpriser kan ännu inte filtreras efter flygbolag; detta sker när avgångarna visas. API-anrop sparas inte av detta filter.','muted'));
  if(data.stage==='calendar'){
   results.append(el('p',`${data.context.nights} nätter. Kalenderpriser för två, tur och retur; flygtider och bagage kontrolleras efter datumval.`,'muted'));
   const affordable=withinBudget(data.prices);if(!affordable.length)results.append(el('p','Inga kalenderpriser inom maxpriset för de sökta flygplatserna.'));
@@ -96,7 +105,7 @@ function render(data){
   }
  }else{
   if(!data.flights.length)results.append(el('p','Inga flyg hittades för dessa datum. Prova en annan flygplats eller andra datum.'));
-  const affordable=withinBudget(data.flights);if(data.flights.length)results.append(el('p',`Visar ${affordable.length} av ${data.flights.length} alternativ inom maxpriset.`));if(data.flights.length&&!affordable.length)results.append(el('p','Inga flyg inom maxpriset. Höj beloppet för att visa fler, utan ny sökning.'));
+  const affordable=withinBudget(data.flights).filter(f=>!excludedFlight(f));if(data.flights.length)results.append(el('p',`Visar ${affordable.length} av ${data.flights.length} alternativ efter pris- och flygbolagsfilter.`));if(data.flights.length&&!affordable.length)results.append(el('p','Inga flyg inom maxpriset. Höj beloppet för att visa fler, utan ny sökning.'));
   for(const f of affordable){const card=el('article',null,'flight-card');segments(card,f);card.append(el('p',`${money(f.quotedPriceSEK)} · prisuppgift för två, tur och retur`),el('p',data.stage==='outbound'?'Preliminärt tills hemresan är vald.':'Kontrollera biljettvillkoren i nästa steg.','muted'));
    card.append(el('p','Bagageavgifter: välj hemresa och visa biljettvillkor för att hämta tillgängliga priser.','muted'));
    if(f.selection)card.append(button(data.stage==='outbound'?'Välj utresa':'Visa biljettvillkor',event=>search({stage:data.stage==='outbound'?'returns':'details',selection:f.selection},event.currentTarget)));
