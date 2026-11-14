@@ -86,10 +86,15 @@ function baggageLabel(raw){
 }
 function baggageRequirements(){const parts=[];const kg=Number(document.getElementById('baggage').value);if(kg>0)parts.push(`minst ${String(kg).replace('.',',')} kg incheckat`);if(document.getElementById('cabinBoots').checked)parts.push('separat kabinväska för pjäxor');if(document.getElementById('personalBag').checked)parts.push('extra liten personlig väska');return 'Bagagekrav per person: '+(parts.join(' + ')||'inga extra väskor valda')+'.';}
 for(const id of ['baggage','cabinBoots','personalBag'])document.getElementById(id).addEventListener('change',()=>{if(history.length)render(history.at(-1));});
+function scheduleRequirements(data){
+ return {stage:data.stage,outbound:data.context.outbound,allowConnections:document.getElementById('connections').value!=='direct',airportCutoff:document.getElementById('arrival').value.padStart(2,'0')+':00',hotelCutoff:document.getElementById('hotelArrival').value,maxLayoverMinutes:Number(document.getElementById('maxLayover').value)*60};
+}
+for(const id of ['arrival','hotelArrival','connections','maxLayover'])document.getElementById(id).addEventListener('change',()=>{if(history.length)render(history.at(-1));});
 function segments(card,flight){for(const s of flight.segments){card.append(el('p',`${s.origin||'?'} → ${s.destination||'?'} · ${s.number||s.airline||'Flyg'}`),el('p',`${s.departureLocal||'?'} → ${s.arrivalLocal||'?'} (lokala tider)`,'muted'));}}
 function render(data){
  const ceiling=Number(maxPrice.value);
  if(!maxPrice.checkValidity())return;
+ if(!document.getElementById('maxLayover').checkValidity()){results.replaceChildren(el('p','Kontrollera max väntan per mellanlandning (0,5–24 timmar).'));choices.open=true;return;}
  const withinBudget=items=>items.filter(item=>Number.isFinite(item.quotedPriceSEK)&&item.quotedPriceSEK<=ceiling).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);
  results.replaceChildren();const titles={calendar:'Välj avresedatum',outbound:'Välj utresa',returns:'Välj hemresa',details:'Biljettpris och villkor'};
  results.append(el('h3',titles[data.stage]),el('p',`ARN ↔ ${data.context.selectedDestination||data.context.destination} · ${data.context.from||data.context.outbound}–${data.context.to||data.context.return} · 2 vuxna`));
@@ -115,8 +120,16 @@ function render(data){
   }
  }else{
   if(!data.flights.length)results.append(el('p','Inga flyg hittades för dessa datum. Prova en annan flygplats eller andra datum.'));
-  const affordable=withinBudget(data.flights).filter(f=>!excludedFlight(f));if(data.flights.length)results.append(el('p',`Visar ${affordable.length} av ${data.flights.length} alternativ efter pris- och flygbolagsfilter.`));if(data.flights.length&&!affordable.length)results.append(el('p','Inga flyg inom maxpriset. Höj beloppet för att visa fler, utan ny sökning.'));
+  const requirements=scheduleRequirements(data);
+  const assessed=withinBudget(data.flights).filter(f=>!excludedFlight(f)).map(f=>({flight:f,check:window.FlygJourney.checkSchedule(f,requirements)}));
+  const affordable=assessed.filter(x=>x.check.status==='NOT_REJECTED').map(x=>x.flight);
+  const hidden=assessed.filter(x=>x.check.status!=='NOT_REJECTED');
+  if(data.flights.length)results.append(el('p',`Visar ${affordable.length} av ${data.flights.length} alternativ efter pris-, flygbolags- och tidsfilter.`));
+  results.append(el('p',data.stage==='outbound'?`Flygplatsankomst senast ${requirements.airportCutoff}, samma dag. Hotellgräns ${requirements.hotelCutoff}. Högst ${requirements.maxLayoverMinutes/60} timmars väntan per mellanlandning.`:`Högst ${requirements.maxLayoverMinutes/60} timmars väntan per mellanlandning.`,'muted'));
+  if(hidden.length){const counts=new Map();for(const {check}of hidden)for(const reason of check.reasons)counts.set(reason,(counts.get(reason)||0)+1);results.append(el('p','Dolda alternativ: '+[...counts].map(([reason,count])=>`${reason} (${count})`).join('; ')+'.','muted'));}
+  if(data.flights.length&&!affordable.length)results.append(el('p','Inga flyg uppfyller dina pris-, flygbolags- och tidsval. Ändra sökvalen eller välj andra datum. Ändrade filter använder redan hämtade flyg.'));
   for(const f of affordable){const card=el('article',null,'flight-card');segments(card,f);card.append(el('p',`${money(f.quotedPriceSEK)} · prisuppgift för två, tur och retur`),el('p',data.stage==='outbound'?'Preliminärt tills hemresan är vald.':'Kontrollera biljettvillkoren i nästa steg.','muted'));
+   if(data.stage==='outbound')card.append(el('p','Transfer och ankomst till hotellet är inte verifierade. Flygtiderna klarar tidsfiltret, men resan är ännu inte godkänd mot alla krav.','muted'));
    card.append(el('p','Bagageavgifter: välj hemresa och visa biljettvillkor för att hämta tillgängliga priser.','muted'));
    if(f.selection)card.append(button(data.stage==='outbound'?'Välj utresa':'Visa biljettvillkor',event=>search({stage:data.stage==='outbound'?'returns':'details',selection:f.selection},event.currentTarget)));
    results.append(card);
@@ -134,3 +147,4 @@ form.addEventListener('submit',e=>{e.preventDefault();if(busy)return;if(mode.val
  choices.open=false;history=[];const query={stage:'outbound',destination:airport.value,outbound:start.value,return:end.value,direct:document.getElementById('connections').value==='direct'};if(airport.value==='all'||(regionSelect.value==='alps'&&resortCodes()))searchAll(query);else search(query);
 });
 })();
+
