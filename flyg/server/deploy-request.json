@@ -1,4 +1,4 @@
 {
   "release": "0.1.24",
-  "reason": "Deploy Worker 0.1.24 after aligning exported VERSION, test in guarded workflow; no other services"
+  "reason": "Guarded 0.1.24 Worker deploy plus new required live /health version/enabled/configured verification; no provider calls"
 }
