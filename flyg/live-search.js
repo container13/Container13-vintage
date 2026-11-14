@@ -34,7 +34,7 @@ document.getElementById('destination').addEventListener('change',e=>{if([...airp
 const week=document.getElementById('tripWeek'),nightsInput=document.getElementById('nights'),year=document.getElementById('year'),mode=document.getElementById('searchMode');
 function selectedWindow(){return window.FlygJourney.weekWindow(Number(year.value),Number(week.value),Number(nightsInput.value));}
 function datesFromWeek(){
- try{const w=selectedWindow();if(mode.value==='week'){start.value=w.from;end.value=w.firstReturn;}document.getElementById('weekHint').textContent=mode.value==='week'?`Avresa ${w.from}–${w.to} · ${w.nights} nätter. Lördagen före veckan ingår.`:`Exakta datum: ${start.value}–${end.value}.`;}
+ try{const w=selectedWindow();if(mode.value==='week'){start.value=w.from;end.value=w.firstReturn;}document.getElementById('weekHint').textContent=mode.value==='week'?`Avresa ${w.from}–${w.to} · ${nightVariants().join(' eller ')} nätter. Lördagen före veckan ingår.`:`Exakta datum: ${start.value}–${end.value}.`;}
  catch{document.getElementById('weekHint').textContent='Kontrollera vecka och antal nätter.';}
 }
 for(const control of [week,nightsInput,year])control.addEventListener(control===nightsInput?'input':'change',()=>{mode.value='week';datesFromWeek();});
@@ -62,49 +62,81 @@ async function search(query,trigger=null){
  }catch(e){const message=errors[e.message]||'Sökningen kunde inte slutföras. Dina tidigare resultat finns kvar. Försök igen senare.';status.textContent=message;window.FlygSelectionUI.error(action,message);if(!action)status.scrollIntoView({block:'center'});}
  finally{window.FlygSelectionUI.finish(action);setBusy(false);}
 }
-async function searchAll(query,previous=null){
+function baseNights(){return Number(nightsInput.value);}
+function maxTripNights(){return Math.min(30,baseNights()+(document.getElementById('allowExtraNight').checked?1:0));}
+function rowNights(row){return (Date.parse(row.return)-Date.parse(row.outbound))/86400000;}
+function extraRow(row){return rowNights(row)>baseNights();}
+function rowCeiling(row){return Number(maxPrice.value)+(extraRow(row)?Number(document.getElementById('extraBudget').value):0);}
+function nightVariants(){return baseNights()<maxTripNights()?[baseNights(),maxTripNights()]:[baseNights()];}
+function activeCalendarJobs(data){return data.coverage.jobs.filter(job=>job.nights<=maxTripNights());}
+function refreshCalendarCoverage(data){if(!data.coverage?.jobs)return;const active=activeCalendarJobs(data);data.coverage.completed=data.coverage.requested.filter(code=>active.some(j=>j.code===code)&&active.filter(j=>j.code===code).every(j=>j.status==='DONE'));data.coverage.failed=data.coverage.requested.filter(code=>active.some(j=>j.code===code&&j.status==='FAILED'));data.coverage.unsearched=data.coverage.requested.filter(code=>active.some(j=>j.code===code&&j.status==='PENDING'));}
+async function searchCalendar(query,previous=null){
  if(busy)return;if(!navigator.onLine){status.textContent='Du är offline. Aktuella flyg behöver internet.';return;}
- const calendar=query.stage==='calendar';
  const requested=previous?previous.coverage.requested:(regionSelect.value==='alps'&&resortCodes()?resortCodes():airport.value==='all'?[...airport.options].map(o=>o.value).filter(code=>code!=='all'):[airport.value]);
- const data=previous||{stage:query.stage,context:{...query,destination:airport.value==='all'?'alla relevanta flygplatser':airport.value},adults:2,currency:'SEK',flights:[],prices:[],resumeQuery:query,fetchedAt:new Date().toISOString(),coverage:{requested,completed:[],failed:[],unsearched:[...requested],failures:[]}};
- const pending=[...data.coverage.unsearched];data.coverage.failures ||= [];data.stopReason='';
- setBusy(true);let index=0,calls=0;const groupSize=calendar?1:3;
+ const variants=previous?previous.calendarNights:nightVariants();
+ const data=previous||{stage:'calendar',context:{...query,destination:airport.value==='all'?'alla relevanta flygplatser':airport.value},adults:2,currency:'SEK',flights:[],prices:[],resumeQuery:query,calendarNights:variants,fetchedAt:new Date().toISOString(),coverage:{requested,completed:[],failed:[],unsearched:[...requested],failures:[],jobs:requested.flatMap(code=>variants.map(nights=>({code,nights,status:'PENDING'})))}};
+ data.stopReason='';setBusy(true);let calls=0;
  try{
-  for(;index<pending.length&&(!calendar||calls<8);index+=groupSize){const group=pending.slice(index,index+groupSize);calls++;status.textContent=`Söker ${group.join(', ')} · ${data.coverage.completed.length}/${requested.length} flygplatser klara…`;
-   try{const part=await requestData({...query,excludeAirlines:excludedAirlines(),destination:group.join(',')});if(calendar)data.prices.push(...part.prices);else data.flights.push(...part.flights);data.coverage.completed.push(...group);}
-   catch(error){const code=String(error?.message||'UNKNOWN_ERROR').slice(0,80);data.coverage.failures.push({airports:[...group],code});if(['APP_QUOTA_REACHED','FREE_QUOTA_UNAVAILABLE','ACCOUNT_HTTP_401','ACCOUNT_HTTP_403','SEARCH_HTTP_403','SEARCH_HTTP_429','SEARCH_NOT_ENABLED','PROVIDER_UNAVAILABLE'].includes(code)){data.stopReason=(errors[code]||'Sökningen stoppades')+' (felkod '+code+'). Inga fler flygplatser söks automatiskt.';break;}data.coverage.failed.push(...group);}
+  for(const job of activeCalendarJobs(data).filter(j=>j.status==='PENDING')){
+   if(calls>=8)break;calls++;status.textContent=`Söker ${job.code} · ${job.nights} nätter · ${activeCalendarJobs(data).filter(j=>j.status==='DONE').length}/${activeCalendarJobs(data).length} datumintervall klara…`;
+   try{const part=await requestData({...query,nights:job.nights,destination:job.code,excludeAirlines:excludedAirlines()});data.prices.push(...part.prices.map(row=>({...row,nights:job.nights})));job.status='DONE';}
+   catch(error){const code=String(error?.message||'UNKNOWN_ERROR').slice(0,80);data.coverage.failures.push({airports:[job.code],nights:job.nights,code});if(['APP_QUOTA_REACHED','FREE_QUOTA_UNAVAILABLE','ACCOUNT_HTTP_401','ACCOUNT_HTTP_403','SEARCH_HTTP_403','SEARCH_HTTP_429','SEARCH_NOT_ENABLED','PROVIDER_UNAVAILABLE'].includes(code)){data.stopReason=(errors[code]||'Sökningen stoppades')+' (felkod '+code+').';break;}job.status='FAILED';}
   }
-  data.coverage.unsearched=pending.slice(index);
-  if(!previous)history.push(data);render(data);window.FlygSelectionUI.reveal(results);status.textContent=data.coverage.failed.length||data.coverage.unsearched.length?'Sökningen är inte färdig. Se felorsak och återstående flygplatser nedan.':'Alla valda flygplatser har sökts. Billigast först.';
-  if(calendar&&!previous&&resortCodes()&&data.coverage.completed.length)await calendarTimes(data,comparisonBatch(calendarRows(data)),true);
+  refreshCalendarCoverage(data);
+  if(!previous)history.push(data);render(data);window.FlygSelectionUI.reveal(results);
+  status.textContent=data.coverage.unsearched.length||data.coverage.failed.length?'Sökningen är inte färdig. Återstående datumintervall kan fortsättas utan att färdiga söks igen.':'Alla valda nattalternativ har sökts.';
+  if(!previous&&resortCodes()&&data.prices.length)await calendarTimes(data,comparisonBatch(calendarRows(data)),true);
+ }finally{setBusy(false);}
+}
+async function searchAll(query,previous=null){
+ if(query.stage==='calendar')return searchCalendar(query,previous);
+ if(busy)return;if(!navigator.onLine){status.textContent='Du är offline. Aktuella flyg behöver internet.';return;}
+ const requested=previous?previous.coverage.requested:(regionSelect.value==='alps'&&resortCodes()?resortCodes():airport.value==='all'?[...airport.options].map(o=>o.value).filter(code=>code!=='all'):[airport.value]);
+ const data=previous||{stage:'outbound',context:{...query,destination:airport.value==='all'?'alla relevanta flygplatser':airport.value},adults:2,currency:'SEK',flights:[],prices:[],resumeQuery:query,fetchedAt:new Date().toISOString(),coverage:{requested,completed:[],failed:[],unsearched:[...requested],failures:[]}};
+ const pending=[...data.coverage.unsearched];data.coverage.failures ||= [];data.stopReason='';setBusy(true);let index=0;
+ try{
+  for(;index<pending.length;index+=3){const group=pending.slice(index,index+3);status.textContent=`Söker ${group.join(', ')} · ${data.coverage.completed.length}/${requested.length} flygplatser klara…`;
+   try{const part=await requestData({...query,excludeAirlines:excludedAirlines(),destination:group.join(',')});data.flights.push(...part.flights);data.coverage.completed.push(...group);}
+   catch(error){const code=String(error?.message||'UNKNOWN_ERROR').slice(0,80);data.coverage.failures.push({airports:[...group],code});if(['APP_QUOTA_REACHED','FREE_QUOTA_UNAVAILABLE','ACCOUNT_HTTP_401','ACCOUNT_HTTP_403','SEARCH_HTTP_403','SEARCH_HTTP_429','SEARCH_NOT_ENABLED','PROVIDER_UNAVAILABLE'].includes(code)){data.stopReason=(errors[code]||'Sökningen stoppades')+' (felkod '+code+').';break;}data.coverage.failed.push(...group);}
+  }
+  data.coverage.unsearched=pending.slice(index);if(!previous)history.push(data);render(data);window.FlygSelectionUI.reveal(results);status.textContent=data.coverage.failed.length||data.coverage.unsearched.length?'Sökningen är inte färdig. Se återstående flygplatser nedan.':'Alla valda flygplatser har sökts.';
  }finally{setBusy(false);}
 }
 // Calendar feed has dates/prices only. Retrieve a bounded matched itinerary before showing times.
-function calendarRows(data){return data.prices.filter(row=>row.quotedPriceSEK<=Number(maxPrice.value)).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);}
-function comparisonBatch(rows){const dates=new Set();return rows.filter(row=>{const key=row.outbound+'/'+row.return;if(dates.has(key))return false;dates.add(key);return true;}).slice(0,3);}
+function calendarRows(data){return data.prices.filter(row=>rowNights(row)<=maxTripNights()&&row.quotedPriceSEK<=rowCeiling(row)).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);}
+function comparisonBatch(rows){const dates=new Set();const unique=rows.filter(row=>{const key=row.outbound+'/'+row.return;if(dates.has(key))return false;dates.add(key);return true;});const preferred=document.getElementById('allowExtraNight').checked?[unique.find(row=>!extraRow(row)),unique.find(extraRow)].filter(Boolean):[];return [...new Set([...preferred,...unique])].slice(0,3);}
 function calendarContext(data,row){return {stage:'outbound',destination:row.destination,outbound:row.outbound,return:row.return,direct:data.context.direct};}
 function outboundFits(flight,data){
- if(!Number.isFinite(flight.quotedPriceSEK)||flight.quotedPriceSEK>Number(maxPrice.value)||excludedFlight(flight))return false;
+ if(!Number.isFinite(flight.quotedPriceSEK)||flight.quotedPriceSEK>rowCeiling(data.context)||excludedFlight(flight))return false;
  if(window.FlygJourney.checkSchedule(flight,scheduleRequirements(data)).status!=='NOT_REJECTED')return false;
  const ground=resortRequirements(data);
  return !ground.resort||window.FlygJourney.resortArrival(flight,ground).status==='ON_TIME';
 }
-function skiRequirements(data){return {...resortRequirements(data),maxNights:Number(nightsInput.value),skiDays:Number(document.getElementById('skiDays').value),returnPlan:document.getElementById('returnPlan').value,skiStart:document.getElementById('skiStart').value,skiEnd:document.getElementById('skiEnd').value,earliestHotelDeparture:document.getElementById('earliestHotelDeparture').value,airportReturnMinutes:Number(document.getElementById('airportReturnMinutes').value),cityAirportMinutes:Number(document.getElementById('cityAirportMinutes').value)};}
+function skiRequirements(data){return {...resortRequirements(data),maxNights:maxTripNights(),skiDays:Number(document.getElementById('skiDays').value),returnPlan:document.getElementById('returnPlan').value,breakfastEnd:document.getElementById('breakfastEnd').value,earliestCityDeparture:document.getElementById('earliestCityDeparture').value,skiStart:document.getElementById('skiStart').value,skiEnd:document.getElementById('skiEnd').value,earliestHotelDeparture:document.getElementById('earliestHotelDeparture').value,airportReturnMinutes:Number(document.getElementById('airportReturnMinutes').value),cityAirportMinutes:Number(document.getElementById('cityAirportMinutes').value)};}
 function skiPlan(out,back,data){if(document.querySelector('input[name=profile]:checked')?.value==='football')return {status:'NOT_REQUIRED'};return window.FlygJourney.skiTrip(out,back,skiRequirements(data));}
-function returnChoices(data,row,out,flights,allowRejected=false){return flights.filter(f=>f.selection&&!excludedFlight(f)&&f.quotedPriceSEK<=Number(maxPrice.value)&&f.segments?.[0]?.origin===out.segments.at(-1).destination&&f.segments.at(-1)?.destination==='ARN'&&f.segments[0].departureLocal?.startsWith(row.return)&&window.FlygJourney.checkSchedule(f,{...scheduleRequirements(data),stage:'returns'}).status==='NOT_REJECTED'&&(allowRejected||skiPlan(out,f,data).status!=='REJECTED')).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);}
+function returnChoices(data,row,out,flights,allowRejected=false){return flights.filter(f=>f.selection&&!excludedFlight(f)&&f.quotedPriceSEK<=rowCeiling(row)&&f.segments?.[0]?.origin===out.segments.at(-1).destination&&f.segments.at(-1)?.destination==='ARN'&&f.segments[0].departureLocal?.startsWith(row.return)&&window.FlygJourney.checkSchedule(f,{...scheduleRequirements(data),stage:'returns'}).status==='NOT_REJECTED'&&(allowRejected||skiPlan(out,f,data).status!=='REJECTED')).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);}
 function skiLabel(card,plan){
  if(plan.status==='NOT_REQUIRED')return;
  if(plan.status==='PLANNED'){
-  card.append(el('p',`${plan.fullSkiDays} hela planerade skiddagar: ${plan.skiDates.join(', ')}.`));
+  card.append(el('p',plan.fullSkiDays>plan.requiredSkiDays?`${plan.requiredSkiDays} skiddagar räcker; ${plan.fullSkiDays} hela dagar får plats: ${plan.skiDates.join(', ')}. Extra skidåkning är valfri.`:`${plan.fullSkiDays} hela planerade skiddagar: ${plan.skiDates.join(', ')}.`));
+  if(plan.preference)card.append(el('p',plan.preference));
   if(plan.city)card.append(el('p',`Efter sista skiddagen: lämna skidorten ${plan.leaveResortLocal}, uppskattat framme i ${plan.city} ${plan.cityArrivalLocal}. Sista natten i staden.`));
   card.append(el('p',`Hemresedagen: avresa från hotellet ${plan.hotelDepartureLocal}${plan.city?' till flygplatsen':' för transfer till flygplatsen'}.`));
   card.append(el('p','Planen klarar valda tidsmarginaler. Liftöppettider, hotell, transporter och kostnader är inte bekräftade.','muted'));
  }else card.append(el('p',plan.reason||'Skiddagar och hemresa behöver kontrolleras.','muted'));
 }
-for(const id of ['skiDays','returnPlan','skiStart','skiEnd','earliestHotelDeparture','airportReturnMinutes','cityAirportMinutes'])document.getElementById(id).addEventListener(id==='returnPlan'?'change':'input',()=>{if(history.length)render(history.at(-1));});
+for(const id of ['skiDays','returnPlan','skiStart','skiEnd','earliestHotelDeparture','airportReturnMinutes','cityAirportMinutes','breakfastEnd','earliestCityDeparture'])document.getElementById(id).addEventListener(id==='returnPlan'?'change':'input',()=>{if(history.length)render(history.at(-1));});
+function extraCostRequirements(){const number=id=>{const field=document.getElementById(id);return field.value.trim()===''?null:Number(field.value);};return {extraBudget:Number(document.getElementById('extraBudget').value),hotelExtra:number('extraHotelCost'),groundDifference:number('extraGroundCost'),baggageDifference:number('extraBaggageCost'),otherExtra:number('extraOtherCost')};}
+function extraAssessment(data,row){
+ if(!extraRow(row))return {status:'BASELINE'};
+ const base=data.prices.filter(other=>rowNights(other)===baseNights()&&matchedTimesFit(data,other)).sort((a,b)=>a.comparison.returnFlight.quotedPriceSEK-b.comparison.returnFlight.quotedPriceSEK)[0];
+ const check=window.FlygJourney.extraNightCost(row.comparison?.status==='READY'?{nights:rowNights(row),flightPrice:row.comparison.returnFlight.quotedPriceSEK}:null,base?{nights:rowNights(base),flightPrice:base.comparison.returnFlight.quotedPriceSEK}:null,extraCostRequirements());return {...check,baselineFlightPrice:base?.comparison.returnFlight.quotedPriceSEK};
+}
+function extraCostLabel(card,data,row){const check=extraAssessment(data,row);if(check.status==='UNKNOWN')card.append(el('p','Extranatt: '+check.reason+' Riktmärke cirka '+money(Number(document.getElementById('extraBudget').value))+' extra totalt för två.'));else card.append(el('p',`Uppskattad merkostnad för extranatten: ${money(check.extraCost)} totalt för två jämfört med billigaste hittills matchade grundresa (${money(check.baselineFlightPrice)} i flygpris) – ${check.status==='WITHIN_ESTIMATE'?'inom':'över'} riktmärket ${money(check.extraBudget)}. Bygger på matchade flygpriser och dina kostnadsuppskattningar, inte ett verifierat totalpris.`));}
+for(const id of ['allowExtraNight','extraBudget','extraHotelCost','extraGroundCost','extraBaggageCost','extraOtherCost'])document.getElementById(id).addEventListener(id==='allowExtraNight'?'change':'input',()=>{datesFromWeek();if(history.length)render(history.at(-1));});
 function matchedTimesFit(data,row){
  const c=row.comparison;if(c?.status!=='READY')return false;
- return outboundFits(c.outbound,{stage:'outbound',context:calendarContext(data,row)})&&!excludedFlight(c.returnFlight)&&c.returnFlight.quotedPriceSEK<=Number(maxPrice.value)&&window.FlygJourney.checkSchedule(c.returnFlight,{...scheduleRequirements(data),stage:'returns'}).status==='NOT_REJECTED'&&skiPlan(c.outbound,c.returnFlight,data).status!=='REJECTED';
+ return outboundFits(c.outbound,{stage:'outbound',context:calendarContext(data,row)})&&!excludedFlight(c.returnFlight)&&c.returnFlight.quotedPriceSEK<=rowCeiling(row)&&window.FlygJourney.checkSchedule(c.returnFlight,{...scheduleRequirements(data),stage:'returns'}).status==='NOT_REJECTED'&&skiPlan(c.outbound,c.returnFlight,data).status!=='REJECTED';
 }
 async function calendarTimes(data,rows,alreadyBusy=false){
  if(busy&&!alreadyBusy)return;if(!navigator.onLine){status.textContent='Flygtider behöver internet.';return;}
@@ -153,16 +185,18 @@ function planLabel(card,plan){
 }
 function segments(card,flight){for(const s of flight.segments){card.append(el('p',`${s.origin||'?'} → ${s.destination||'?'} · ${s.number||s.airline||'Flyg'}`),el('p',`${s.departureLocal||'?'} → ${s.arrivalLocal||'?'} (lokala tider)`,'muted'));}}
 function render(data){
- const ceiling=Number(maxPrice.value);
+ if(data.stage==='calendar')refreshCalendarCoverage(data);
+ const ceiling=data.context?.outbound?rowCeiling(data.context):Number(maxPrice.value);
  if(!maxPrice.checkValidity())return;
- if(!['maxLayover','dinnerTarget','airportMinutes','roadBuffer','checkinMinutes','skiStart','skiEnd','earliestHotelDeparture','airportReturnMinutes','cityAirportMinutes','skiDays'].every(id=>document.getElementById(id).checkValidity())){results.replaceChildren(el('p','Kontrollera väntetid, middagstid och marginaler under Ändra sökval.'));choices.open=true;return;}
+ if(!['maxLayover','dinnerTarget','airportMinutes','roadBuffer','checkinMinutes','skiStart','skiEnd','earliestHotelDeparture','airportReturnMinutes','cityAirportMinutes','skiDays','breakfastEnd','earliestCityDeparture','extraBudget','extraHotelCost','extraGroundCost','extraBaggageCost','extraOtherCost'].every(id=>document.getElementById(id).checkValidity())){results.replaceChildren(el('p','Kontrollera tider, antal nätter och kostnadsuppskattningar under Ändra sökval.'));choices.open=true;return;}
  const withinBudget=items=>items.filter(item=>Number.isFinite(item.quotedPriceSEK)&&item.quotedPriceSEK<=ceiling).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);
  results.replaceChildren();const titles={calendar:'Välj avresedatum',outbound:'Välj utresa',returns:'Välj hemresa',details:'Biljettpris och villkor'};
  results.append(el('h3',titles[data.stage]),el('p',`ARN ↔ ${data.context.selectedDestination||data.context.destination} · ${data.context.from||data.context.outbound}–${data.context.to||data.context.return} · 2 vuxna`));
  if(history.length>1)results.append(button('Tillbaka till föregående val',()=>{if(!busy){history.pop();render(history.at(-1));window.FlygSelectionUI.reveal(results);}}));
- results.append(el('p',`Maxpris ${money(ceiling)} totalt för två. Eventuellt okänt bagage tillkommer.`,'muted'));
+ results.append(el('p',`Maxpris ${money(ceiling)} i visat flygpris för två. Eventuellt okänt bagage tillkommer.`,'muted'));
+ if(document.getElementById('allowExtraNight').checked)results.append(el('p',`Grundresa ${baseNights()} nätter; även ${maxTripNights()} nätter jämförs. Riktmärke cirka ${money(Number(document.getElementById('extraBudget').value))} mer totalt för två. Okända hotell-, bagage- och transferkostnader räknas inte som noll.`,'muted'));
  const h=history.find(x=>x.stage==='outbound');if(data.stage!=='outbound'&&h)results.append(el('p','Retur och villkor gäller den utresa du valt.','muted'));
- if(data.coverage){const c=data.coverage;results.append(el('p',`Sökta flygplatser: ${c.completed.join(', ')||'inga'}`,'muted'));if(c.failed.length)results.append(el('p',`Sökningen misslyckades för: ${c.failed.join(', ')}.`));if(c.failures?.length)for(const failure of c.failures)results.append(el('p',`Fel vid ${failure.airports.join(', ')}: ${errors[failure.code]||'Okänt serverfel'} (kod ${failure.code}).`));if(c.unsearched.length)results.append(el('p',`Inte sökta: ${c.unsearched.join(', ')}.`));if(data.stopReason)results.append(el('p',data.stopReason));if(c.unsearched.length&&data.resumeQuery)results.append(button('Fortsätt söka återstående flygplatser',()=>searchAll(data.resumeQuery,data)));}
+ if(data.coverage){const c=data.coverage;results.append(el('p',`Sökta flygplatser: ${c.completed.join(', ')||'inga'}`,'muted'));if(c.failed.length)results.append(el('p',`Sökningen misslyckades för: ${c.failed.join(', ')}.`));if(c.failures?.length)for(const failure of c.failures)results.append(el('p',`Fel vid ${failure.airports.join(', ')}${failure.nights?' ('+failure.nights+' nätter)':''}: ${errors[failure.code]||'Okänt serverfel'} (kod ${failure.code}).`));if(c.unsearched.length)results.append(el('p',`Inte sökta: ${c.unsearched.join(', ')}.`));if(data.stopReason)results.append(el('p',data.stopReason));if(c.unsearched.length&&data.resumeQuery)results.append(button('Fortsätt söka återstående flygplatser',()=>searchAll(data.resumeQuery,data)));}
  results.append(el('p',baggageRequirements()));
  const needBag=Number(document.getElementById('baggage').value)>0;
  const note=el('p',needBag?'Bagageavgifter visas när de finns. Vikt, båda kabinväskorna och exakt totalpris är ännu inte bekräftade.':'Kontrollera att valda kabinväskor är tillåtna tillsammans, med rätt vikt och mått.');note.className='muted';results.append(note);
@@ -171,17 +205,18 @@ function render(data){
  if(data.stage!=='outbound'&&chosenOutbound){const plan=window.FlygJourney.resortArrival(chosenOutbound,resortRequirements(data));const box=el('section');box.append(el('h4','Vald utresa – ankomstplan'));planLabel(box,plan);results.append(box);}
  if(excludedAirlines().length)results.append(el('p','Bortvalda flygbolag: '+excludedAirlines().join(', ')+'. Flygbolagen utesluts hos dataleverantören för nya sökningar. Ändra valen och sök igen för nya kalenderpriser.','muted'));
  if(data.stage==='calendar'){
-  results.append(el('p',`${data.context.nights} nätter. Kalenderpriser för två, tur och retur; flygtider och bagage kontrolleras efter datumval.`,'muted'));
-  const affordable=withinBudget(data.prices);
+  results.append(el('p',`${(data.calendarNights||[data.context.nights]).filter(n=>n<=maxTripNights()).join(' eller ')} nätter. Kalenderpriser för två, tur och retur; flygtider och bagage kontrolleras efter datumval.`,'muted'));
+  const affordable=calendarRows(data);
   for(const row of affordable){const c=row.comparison;if(c?.status==='READY'&&c.returnFlights){const candidate=returnChoices(data,row,c.outbound,c.returnFlights)[0];if(candidate)c.returnFlight=candidate;}}
-  const group=row=>matchedTimesFit(data,row)?0:row.comparison?.status==='READY'?2:1;
-  affordable.sort((a,b)=>group(a)-group(b)||(group(a)===0?a.comparison.returnFlight.quotedPriceSEK-b.comparison.returnFlight.quotedPriceSEK:a.quotedPriceSEK-b.quotedPriceSEK));
+  const group=row=>matchedTimesFit(data,row)?extraRow(row)?extraAssessment(data,row).status==='OVER_ESTIMATE'?3:extraAssessment(data,row).status==='UNKNOWN'?1:0:0:row.comparison?.status==='READY'?3:2;
+  const rankCost=row=>{const check=extraAssessment(data,row);return check.status==='WITHIN_ESTIMATE'?check.baselineFlightPrice+check.extraCost:row.comparison?.returnFlight?.quotedPriceSEK??row.quotedPriceSEK;};
+  affordable.sort((a,b)=>group(a)-group(b)||(group(a)===0?rankCost(a)-rankCost(b):a.quotedPriceSEK-b.quotedPriceSEK));
   if(!affordable.length)results.append(el('p','Inga kalenderpriser inom maxpriset för de sökta flygplatserna.'));
   if(affordable.some(row=>!row.comparison))results.append(button('Jämför tider för tre datum',()=>calendarTimes(data,comparisonBatch(affordable.filter(row=>!row.comparison)))));
   let previousGroup=-1;
   for(const row of affordable){
-   const currentGroup=group(row);if(currentGroup!==previousGroup){results.append(el('h4',currentGroup===0?'Matchade flyg – billigaste visade pris först':currentGroup===1?'Fler datum – endast kalenderpris tills tider har hämtats':'Hämtade resor som inte klarar dina nuvarande val'));previousGroup=currentGroup;}
-   const card=el('article',null,'flight-card');card.append(el('h3',`${row.outbound} → ${row.return}`),el('p',`${row.destination} · kalender från ${money(row.quotedPriceSEK)} för två`));
+   const currentGroup=group(row);if(currentGroup!==previousGroup){results.append(el('h4',currentGroup===0?'Matchade resor – flygpris och uppskattad merkostnad':currentGroup===1?'Extranatt – hela merkostnaden är ännu okänd':currentGroup===2?'Fler datum – endast kalenderpris tills tider har hämtats':'Hämtade resor utanför nuvarande val eller kostnadsriktmärke'));previousGroup=currentGroup;}
+   const card=el('article',null,'flight-card');card.append(el('h3',`${row.outbound} → ${row.return} · ${rowNights(row)} nätter${extraRow(row)?' (en extra natt)':''}`),el('p',`${row.destination} · kalender från ${money(row.quotedPriceSEK)} för två`));
    const c=row.comparison;
    if(c?.status==='READY'&&c.returnFlights){const candidate=returnChoices(data,row,c.outbound,c.returnFlights)[0];if(candidate)c.returnFlight=candidate;}
    if(c?.status==='LOADING')card.append(el('p','Hämtar matchade ut- och hemresetider…','muted'));
@@ -192,7 +227,8 @@ function render(data){
     if(c.fetchedAt)card.append(el('p','Tider hämtade '+new Date(c.fetchedAt).toLocaleString('sv-SE')+'.','muted'));
     const all=el('details');all.append(el('summary','Alla flyg och bytestider'));segments(all,c.outbound);segments(all,c.returnFlight);card.append(all);
     card.append(el('p','Kalenderns frånpris kan avse andra flyg. Bagage och transferpris är inte bekräftade.','muted'));
-    if(matchedTimesFit(data,row))card.append(button('Välj denna resa',event=>{chosenOutbound=c.outbound;chosenReturn=c.returnFlight;search({stage:'details',selection:c.returnFlight.selection},event.currentTarget);}));
+    if(extraRow(row))extraCostLabel(card,data,row);
+    if(matchedTimesFit(data,row)&&extraAssessment(data,row).status!=='OVER_ESTIMATE')card.append(button(extraRow(row)&&extraAssessment(data,row).status==='UNKNOWN'?'Kontrollera flyget – merkostnad okänd':'Välj denna resa',event=>{chosenOutbound=c.outbound;chosenReturn=c.returnFlight;search({stage:'details',selection:c.returnFlight.selection},event.currentTarget);}));
     else card.append(el('p','Dessa tider passar inte längre dina nuvarande filter. Visa avgångar för att välja ett annat flyg.'));
    }else{
     card.append(el('p',c?.message||'Flygtider saknas i kalenderpriset. De hämtas som en separat matchad resa.','muted'));
@@ -243,7 +279,7 @@ function render(data){
  results.append(el('p',`Hämtat ${new Date(data.fetchedAt).toLocaleString('sv-SE')}. Källan kan återanvända upp till en timme gamla uppgifter. Priset bekräftas hos säljaren.`,'muted'));
  results.append(el('p','Transfer, hotellankomst och hela skiddagar är ännu inte verifierade för dessa flyg.','muted'));
 }
-form.addEventListener('submit',e=>{e.preventDefault();if(busy)return;if(mode.value==='week'){let w;try{w=selectedWindow();}catch{status.textContent='Kontrollera vecka och antal nätter.';return;}choices.open=false;history=[];chosenOutbound=null;chosenReturn=null;searchAll({stage:'calendar',from:w.from,to:w.to,nights:w.nights,direct:document.getElementById('connections').value==='direct'});return;}const nights=(Date.parse(end.value)-Date.parse(start.value))/86400000;const max=Number(document.getElementById('nights').value);
+form.addEventListener('submit',e=>{e.preventDefault();if(busy)return;if(!document.getElementById('searchForm').checkValidity()){choices.open=true;document.getElementById('searchForm').reportValidity();return;}if(mode.value==='week'){let w;try{w=selectedWindow();}catch{status.textContent='Kontrollera vecka och antal nätter.';return;}choices.open=false;history=[];chosenOutbound=null;chosenReturn=null;searchAll({stage:'calendar',from:w.from,to:w.to,nights:w.nights,direct:document.getElementById('connections').value==='direct'});return;}const nights=(Date.parse(end.value)-Date.parse(start.value))/86400000;const max=maxTripNights();
  if(!Number.isInteger(nights)||nights<1||nights>max){status.textContent=`Välj en resa med 1–${max} nätter enligt ditt sökunderlag.`;return;}
  choices.open=false;history=[];chosenOutbound=null;chosenReturn=null;const query={stage:'outbound',destination:airport.value,outbound:start.value,return:end.value,direct:document.getElementById('connections').value==='direct'};if(airport.value==='all'||(regionSelect.value==='alps'&&resortCodes()))searchAll(query);else search(query);
 });

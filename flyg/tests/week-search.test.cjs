@@ -9,9 +9,10 @@ class Node{
  get options(){return this.children;}querySelectorAll(tag){return this.children.flatMap(n=>[...(n.tag===tag?[n]:[]),...n.querySelectorAll(tag)]);}
 }
 function fixture(fetcher){
- const ids={};for(const id of ['liveForm','liveResults','liveStatus','liveAirport','liveOutbound','liveReturn','maxPrice','searchChoices','searchForm','destination','tripWeek','nights','year','searchMode','weekHint','liveSearch','baggage','cabinBoots','personalBag','connections','skiResortField','skiResort','tripRegion','arrival','hotelArrival','maxLayover','dinnerTarget','groundMode','airportMinutes','roadBuffer','checkinMinutes','showCityFallback','skiDays','returnPlan','skiStart','skiEnd','earliestHotelDeparture','airportReturnMinutes','cityAirportMinutes',...['FR','W6','U2','D8','SK','LH','KL','LX','OS'].map(c=>'exclude'+c)])ids[id]=new Node();
- for(const [id,value]of Object.entries({maxPrice:'5000',tripWeek:'11',nights:'4',year:'2027',searchMode:'week',baggage:'19.9',connections:'allow',skiResort:'all',tripRegion:'alps',arrival:'20',hotelArrival:'22:00',maxLayover:'4',dinnerTarget:'20:00',groundMode:'road',airportMinutes:'60',roadBuffer:'30',checkinMinutes:'30',skiDays:'3',returnPlan:'city',skiStart:'09:00',skiEnd:'16:00',earliestHotelDeparture:'07:00',airportReturnMinutes:'120',cityAirportMinutes:'90'}))ids[id].value=value;
+ const ids={};for(const id of ['liveForm','liveResults','liveStatus','liveAirport','liveOutbound','liveReturn','maxPrice','searchChoices','searchForm','destination','tripWeek','nights','year','searchMode','weekHint','liveSearch','baggage','cabinBoots','personalBag','connections','skiResortField','skiResort','tripRegion','arrival','hotelArrival','maxLayover','dinnerTarget','groundMode','airportMinutes','roadBuffer','checkinMinutes','showCityFallback','skiDays','returnPlan','skiStart','skiEnd','earliestHotelDeparture','airportReturnMinutes','cityAirportMinutes','breakfastEnd','earliestCityDeparture','allowExtraNight','extraBudget','extraHotelCost','extraGroundCost','extraBaggageCost','extraOtherCost',...['FR','W6','U2','D8','SK','LH','KL','LX','OS'].map(c=>'exclude'+c)])ids[id]=new Node();
+ for(const [id,value]of Object.entries({maxPrice:'5000',tripWeek:'11',nights:'4',year:'2027',searchMode:'week',baggage:'19.9',connections:'allow',skiResort:'all',tripRegion:'alps',arrival:'20',hotelArrival:'22:00',maxLayover:'4',dinnerTarget:'20:00',groundMode:'road',airportMinutes:'60',roadBuffer:'30',checkinMinutes:'30',skiDays:'3',returnPlan:'city',skiStart:'09:00',skiEnd:'16:00',earliestHotelDeparture:'07:00',airportReturnMinutes:'120',cityAirportMinutes:'90',breakfastEnd:'09:00',earliestCityDeparture:'07:00',extraBudget:'1000'}))ids[id].value=value;
  for(const code of ['all','ZRH','GVA','INN','SZG','MXP','LIN','BGY','TRN','MUC','LYS','BSL','VRN','VCE','BLQ','STR','VIE','NCE','GNB','TSF','TRS','FDH','GRZ','KLU']){const o=new Node('option',code);o.value=code;ids.destination.append(o);}ids.destination.value='all';
+ ids.allowExtraNight.checked=false;
  for(const code of ['FR','W6','U2','D8','SK','LH','KL','LX','OS'])ids['exclude'+code].checked=false;
  const context={document:{getElementById:id=>ids[id],querySelector:()=>null,querySelectorAll:()=>[],createElement:tag=>new Node(tag)},window:{FlygJourney:require('../journey-engine.js'),FlygSelectionUI:{begin(){},error(){},finish(){},reveal(){}}},navigator:{onLine:true},fetch:fetcher,AbortSignal,Date,Intl,Number,Error};
  vm.runInNewContext(fs.readFileSync(require.resolve('../live-search.js'),'utf8'),context);return ids;
@@ -89,6 +90,33 @@ test('calendar chooses a later return for rested departure and reuses all fetche
  ids.skiResort.value='6';ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);
  const card=()=>ids.liveResults.children.find(n=>n.tag==='article');const text=()=>card().children.map(n=>n.textContent).join(' ');
  assert.match(text(),/Hemresa: 2027-03-18 12:00/);assert.match(text(),/3 hela planerade skiddagar/);const before=calls;
- ids.earliestHotelDeparture.value='02:00';ids.earliestHotelDeparture.listeners.input[0]();assert.match(text(),/Hemresa: 2027-03-18 06:30/);assert.equal(calls,before);
+ ids.earliestCityDeparture.value='02:00';ids.earliestCityDeparture.listeners.input[0]();assert.match(text(),/Hemresa: 2027-03-18 06:30/);assert.equal(calls,before);
  ids.skiDays.value='4';ids.skiDays.listeners.input[0]();assert.match(text(),/minst 4/);assert.ok(!card().children.some(n=>n.textContent==='Välj denna resa'));assert.equal(calls,before);
+});
+
+test('flexible week search covers both night variants with eight-call batches and no completed requery',async()=>{
+ const calls=[];const ids=fixture(async(url,opts)=>{const q=JSON.parse(opts.body);calls.push(q);return {ok:true,json:async()=>({stage:'calendar',context:q,prices:[]})};});
+ ids.allowExtraNight.checked=true;ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);assert.equal(calls.length,8);
+ for(let batch=0;batch<8;batch++){const more=ids.liveResults.querySelectorAll('button').find(n=>n.textContent==='Fortsätt söka återstående flygplatser');if(!more)break;more.listeners.click[0]();await settle(ids);}
+ assert.equal(calls.length,46);assert.equal(new Set(calls.map(q=>q.destination+':'+q.nights)).size,46);assert.equal(calls.filter(q=>q.nights===4).length,23);assert.equal(calls.filter(q=>q.nights===5).length,23);
+});
+test('partial airport duration coverage resumes only the uncompleted extra-night query',async()=>{
+ const calls=[];let blocked=true;const ids=fixture(async(url,opts)=>{const q=JSON.parse(opts.body);calls.push(q.nights);if(q.nights===5&&blocked)return {ok:false,json:async()=>({error:'FREE_QUOTA_UNAVAILABLE'})};return {ok:true,json:async()=>({stage:'calendar',context:q,prices:[]})};});
+ ids.allowExtraNight.checked=true;ids.liveAirport.value='TRN';ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);assert.deepEqual(calls,[4,5]);blocked=false;ids.liveResults.querySelectorAll('button').find(n=>n.textContent==='Fortsätt söka återstående flygplatser').listeners.click[0]();await settle(ids);assert.deepEqual(calls,[4,5,5]);
+});
+test('extra-night cost classification needs all cost differences and responds locally to 1000 tolerance',async()=>{
+ let calls=0,active;const ids=fixture(async(url,opts)=>{calls++;const q=JSON.parse(opts.body);
+ if(q.stage==='calendar')return {ok:true,json:async()=>({stage:'calendar',context:q,prices:q.destination==='MXP'?[{outbound:'2027-03-14',return:q.nights===4?'2027-03-18':'2027-03-19',destination:'MXP',quotedPriceSEK:q.nights===4?3000:2900}]:[]})};
+ if(q.stage==='outbound'){active=q;return {ok:true,json:async()=>({stage:'outbound',context:q,flights:[{quotedPriceSEK:q.return==='2027-03-18'?3000:2900,selection:'out-'+q.return,segments:[{origin:'ARN',destination:'MXP',departureLocal:q.outbound+' 07:00',arrivalLocal:q.outbound+' 10:00'}]}]})};}
+ return {ok:true,json:async()=>({stage:'returns',context:active,flights:[{quotedPriceSEK:active.return==='2027-03-18'?3000:2900,selection:'back-'+active.return,segments:[{origin:'MXP',destination:'ARN',departureLocal:active.return+' 14:00',arrivalLocal:active.return+' 17:00'}]}]})};});
+ ids.skiResort.value='6';ids.allowExtraNight.checked=true;ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);assert.equal(calls,10);
+ const cards=()=>ids.liveResults.children.filter(n=>n.tag==='article');const extra=()=>cards().find(n=>n.children.some(x=>String(x.textContent).includes('(en extra natt)')));const text=()=>extra().children.map(n=>n.textContent).join(' ');
+ assert.match(text(),/merkostnader behöver uppskattas/);assert.ok(!extra().children.some(n=>n.textContent==='Välj denna resa'));
+ const before=calls;for(const [id,value]of Object.entries({extraHotelCost:'1000',extraGroundCost:'0',extraBaggageCost:'0',extraOtherCost:'0'})){ids[id].value=value;ids[id].listeners.input[0]();}
+ assert.match(text(),/900/);assert.match(text(),/inom riktmärket/);assert.ok(extra().children.some(n=>n.textContent==='Välj denna resa'));assert.equal(calls,before);
+ ids.extraHotelCost.value='1200';ids.extraHotelCost.listeners.input[0]();assert.match(text(),/över riktmärket/);assert.ok(!extra().children.some(n=>n.textContent==='Välj denna resa'));assert.equal(calls,before);
+ ids.allowExtraNight.checked=false;ids.allowExtraNight.listeners.change[0]();assert.equal(cards().length,1);assert.equal(calls,before);
+});
+test('turning off extra night before continuation stops remaining five-night calls without repeating finished four-night work',async()=>{
+ const calls=[];const ids=fixture(async(url,opts)=>{const q=JSON.parse(opts.body);calls.push(q);return {ok:true,json:async()=>({stage:'calendar',context:q,prices:[]})};});ids.allowExtraNight.checked=true;ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);assert.equal(calls.length,8);ids.allowExtraNight.checked=false;ids.allowExtraNight.listeners.change[0]();ids.liveResults.querySelectorAll('button').find(n=>n.textContent==='Fortsätt söka återstående flygplatser').listeners.click[0]();await settle(ids);assert.ok(calls.slice(8).every(q=>q.nights===4));assert.equal(new Set(calls.map(q=>q.destination+':'+q.nights)).size,calls.length);
 });
