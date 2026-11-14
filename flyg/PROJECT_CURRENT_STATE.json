@@ -9,21 +9,20 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.27",
+    "candidate": "0.1.28",
     "integrity": "ALL16_HTTPS_ASSETS_SHA256_MATCH"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.27",
-    "goal": "Network-first PWA shell and immediate SW update on load, with backend flight cache unchanged at 30 minutes; build/promotion workflow updated to run integrity, Node tests, scoped copy and public readback. GitHub source commits are not proof that Actions ran or public device updated.",
+    "targetRelease": "0.1.28",
+    "goal": "Legacy 0.1.24 cache-first rescue: after verified SW install, auto skipWaiting only if flyg-shell-0.1.24 exists; otherwise preserve normal activation. 0.1.28 promoted to production branch, public Safari/device test pending.",
     "plan": [
-      "Check GitHub Actions combined workflow for PASS and public 0.1.27",
-      "Verify shared mobile-view-policy.js digest against production to avoid SW install failure",
-      "Test installed iPhone update from 0.1.26 to 0.1.27, offline fallback and dirty-form deferral",
-      "Only then promote CURRENT and PREVIOUS"
+      "Verify Safari public 0.1.28 and service worker delivery",
+      "Verify old installed iPhone 0.1.24 updates without reinstall and check offline behavior",
+      "Only after device PASS promote CURRENT/PREVIOUS"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "Do not re-run version-bump workflow if 0.1.27 already exists; inspect development and production version.js and workflow results first. Existing PREVIOUS/CURRENT are null because device verification absent; never fabricate them.",
+    "resumeInstruction": "Source and production release 0.1.28 have identical version.js, release.json and sw.js Git blobs. Do not retrigger one-shot 0.1.28 workflow, as it asserts source 0.1.27. User previously saw public Safari 0.1.27 while installed app remained 0.1.24. 0.1.28 legacy rescue not yet device verified.",
     "rollbackCommit": "8fdfcfdcfaba8b3e30a30eb50cf6c9b020ea83f9"
   },
   "currentWork": {
