@@ -94,6 +94,9 @@ if __name__=='__main__':
         if mode=='price-scope':
             from serpapi_scope import scope_probe
             result=scope_probe(key)
+        elif mode=='calendar-error':
+            from calendar_diagnostic import diagnostic
+            result=diagnostic(key)
         elif mode=='fare-details':
             result=details(key)
         else:
