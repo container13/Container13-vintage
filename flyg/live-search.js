@@ -9,7 +9,7 @@ const airlineChecks=Object.keys(airlineNames).map(code=>({code,element:document.
 const airlineStore='flyg-excluded-airlines-v1';
 try{const stored=JSON.parse(localStorage.getItem(airlineStore));if(Array.isArray(stored))for(const a of airlineChecks)a.element.checked=stored.includes(a.code);}catch{}
 function excludedAirlines(){return airlineChecks.filter(a=>a.element.checked).map(a=>a.code);}
-function excludedFlight(f){return (f.segments||[]).some(seg=>excludedAirlines().some(code=>airlineNames[code].test(seg.airline||'')||new RegExp('^'+code+'\\\\d','i').test(seg.number||'')));}
+function excludedFlight(f){return (f.segments||[]).some(seg=>excludedAirlines().some(code=>airlineNames[code].test(seg.airline||'')||String(seg.number||'').replace(/\s/g,'').toUpperCase().startsWith(code)));}
 for(const a of airlineChecks)a.element.addEventListener('change',()=>{try{localStorage.setItem(airlineStore,JSON.stringify(excludedAirlines()));}catch{}if(history.length)render(history.at(-1));});
 
 let busy=false,history=[],generation=0;
