@@ -1,5 +1,5 @@
 (function(){
   'use strict';
-  const RELEASE='0.1.11';
+  const RELEASE='0.1.14';
   if (typeof window !== 'undefined') window.ProjectVersion=Object.freeze({release:RELEASE});
 })();
