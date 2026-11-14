@@ -1,5 +1,5 @@
 # Flyg current checkpoint —2026-11-14
 
-Frontend0.1.32 DEPLOYED/BROWSER PASS; backend0.1.29 unchanged. Primary goal is same-evening resort arrival for dinner. Default ready20:00/hotel22:00; sourced ROAD ESTIMATES for CerviniaTRN/MXP/LIN/BGY plus editable60min airport+30margin+30checkin. No booked or verified transfer claim. Other resorts/public transit UNKNOWN separately. City-first night opt-in reserves; city-after-skiing preferred.
+Frontend0.1.33 DEPLOYED/BROWSER PASS; backend0.1.29 unchanged. Calendar cards now show matched outbound AND return times, stops, actual source quote for that itinerary and resort arrival estimate. Calendar from-price is separate. First3distinct date pairs auto-enriched for selected resort, max2staged searches each; others on demand.17cards preserved in realCerviniaweek11test; choose15–19Mar/details/back PASS. Source may omit seller prices; no all-in guarantee.
 
-Browser3of10primary;dinner16:00->1;20:00->3;reserves2;public0primary4unknown.60tests PASS;18published hashes PASS;Pages43590271969 SUCCESS. User-installed iPhone0.1.32 pending;CURRENT/PREVIOUS unchanged. Full transfer availability/cost, baggage, three ski days and city night still require verification. Read structured state/latest handoff and TRANSFER_PLANNING.md.
+61tests PASS;18published hashes PASS;Pages43591060305 SUCCESS. iPhone0.1.33 pending;CURRENT/PREVIOUS unchanged. Baggage/ground totals, actual transfers,3full ski days and city night remain unverified. Read structured state/latest handoff.

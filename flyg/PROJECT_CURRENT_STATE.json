@@ -9,23 +9,36 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.32",
-    "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_RESORT_DINNER_PASS; IPHONE_PENDING"
+    "candidate": "0.1.33",
+    "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_CALENDAR_MATCHED_TIMES_PASS; IPHONE_PENDING"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "0.1.33",
-    "goal": "Show matched outbound and return times with actual two-adult quote directly on calendar date cards",
-    "plan": [
-      "Enrich at most3best date rows automatically for selected resort, max2staged calls per row; other rows on demand",
-      "Only show timetable/price from one matched staged itinerary; respect current arrival/carrier/budget filters",
-      "Keep calendar from-price distinct; preserve date list and Free/cache guards; test source and live UI"
+    "status": "UNVERIFIED",
+    "targetRelease": "frontend0.1.33/backend0.1.29",
+    "goal": "Show matched outward/return times and itinerary-specific price in calendar date comparison; installed iPhone acceptance pending",
+    "completed": [
+      "61 backend/UI/journey/week/SW/updater tests PASS; CI static and integrity guards PASS",
+      "Calendar feed itself only has dates/from-prices; retrieve outbound then return using opaque selection to show one matched trip",
+      "Selected resort auto-enriches at most3distinct date pairs; maximum2provider-search requests per row; remaining dates on demand; Free guard and30min server cache unchanged",
+      "Calendar from-price and displayed matched roundtrip price explicitly separate; outbound/return local times, stops, resort arrival estimate, expanded segments and chosen-trip action shown inline",
+      "Browser0.1.33 real week11Cervinia:17datecards retained;16–20March3410calendar/3414matched,06:10–11:45out/06:30–11:55back;14–18March3440calendar/3636matched;15–19March3440calendar/3462matched,06:00–10:30out/20:45–23:25back",
+      "Third date chosen ->details context15–19March PASS; seller options absent in this actual source response, exact Google itinerary link present; no booking; Back restores17cards/matched times",
+      "Pages43591060305 SUCCESS;18published asset/manifest hashes PASS; only4Flyg runtime textfiles changed"
     ],
-    "resumeInstruction": "User wants times in calendar comparison when price differs30SEK. No invented times from calendar-only feed. Matched outbound/returns required. Backend0.1.29 and30min cache unchanged."
+    "plan": [
+      "Installed iPhone0.1.33 acceptance pending",
+      "Remaining: all-in baggage/transfer costs, real transfer availability, full ski-day and city-night validation",
+      "Source may omit seller details; keep source quote distinct from confirmed seller price; no guaranteed fare"
+    ],
+    "sourceCommit": "d25d46525a09ba20532d92cacd631a17744dd852",
+    "deploymentCommit": "355519f6543a3cc50be4a4eb07fab1e7aaf51cfe",
+    "deploymentRun": 43591060305,
+    "rollbackCommit": "f02fc969da44d2ead0530202dd74b56cc8cc18ed",
+    "resumeInstruction": "Continue from0.1.33 inline calendar times. User needs time comparison when price differs30SEK. Existing17date list stays; first3distinct date pairs enriched for selected resort, other rows manually. Matched outbound/return quote differs from calendar floor and is labelled. Real browser timings/Back PASS,61tests/18hashes PASS; device pending. Backend0.1.29 unchanged. CURRENT/PREVIOUS remain unrotated."
   },
   "currentWork": {
-    "completed": "60 backend/journey/week/arrival/selection/updater/SW tests PASS\nSame canonical journey-engine.resortArrival: Cervinia TRN102min,MXP136,LIN149 from official resort;BGY170 from operator; estimates not booked/verified\nPlanning allowances default60min airport/baggage+30road margin+30checkin, editable; dinner target20:00,hard hotel22:00\nMain list requires timetable constraints and estimated dinner readiness; later arrivals optional collapsed reserves; unsupported transfer/public transit separate UNKNOWN\nBrowser0.1.32 actual grouped query3of10 primary;AF1130 landing11:45 ->estimated resort15:31,ready16:01\nBrowser target16:00 ->1offer;20:00 ->3;optional reserves2;public transport0primary/4unknown;restore3primary\nPages43590271969 SUCCESS;18 published asset/manifest hashes PASS; no backend, secrets, paid routing or unrelated project changes",
-    "next": "Installed iPhone0.1.32 update and acceptance pending\nExpand source-backed estimates to other resorts; actual dated transfer availability and complete baggage/ground costs remain unverified\nFull three-ski-day and last-city-night itinerary remains a later end-to-end check; city-first fallback not a verified package",
+    "completed": "61 backend/UI/journey/week/SW/updater tests PASS; CI static and integrity guards PASS\nCalendar feed itself only has dates/from-prices; retrieve outbound then return using opaque selection to show one matched trip\nSelected resort auto-enriches at most3distinct date pairs; maximum2provider-search requests per row; remaining dates on demand; Free guard and30min server cache unchanged\nCalendar from-price and displayed matched roundtrip price explicitly separate; outbound/return local times, stops, resort arrival estimate, expanded segments and chosen-trip action shown inline\nBrowser0.1.33 real week11Cervinia:17datecards retained;16–20March3410calendar/3414matched,06:10–11:45out/06:30–11:55back;14–18March3440calendar/3636matched;15–19March3440calendar/3462matched,06:00–10:30out/20:45–23:25back\nThird date chosen ->details context15–19March PASS; seller options absent in this actual source response, exact Google itinerary link present; no booking; Back restores17cards/matched times\nPages43591060305 SUCCESS;18published asset/manifest hashes PASS; only4Flyg runtime textfiles changed",
+    "next": "Installed iPhone0.1.33 acceptance pending\nRemaining: all-in baggage/transfer costs, real transfer availability, full ski-day and city-night validation\nSource may omit seller details; keep source quote distinct from confirmed seller price; no guaranteed fare",
     "blocked": false
   },
   "pausedWork": {},
@@ -34,9 +47,9 @@
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
-      "scope": "Only7 Flyg runtime text files changed; backend0.1.29 unchanged",
-      "sourceCommit": "12066815a600699ca1af6e070b06a4f42ab7274c",
-      "deploymentCommit": "f02fc969da44d2ead0530202dd74b56cc8cc18ed"
+      "scope": "Only4Flyg runtime files changed; backend0.1.29 unchanged",
+      "sourceCommit": "d25d46525a09ba20532d92cacd631a17744dd852",
+      "deploymentCommit": "355519f6543a3cc50be4a4eb07fab1e7aaf51cfe"
     },
     "secrets": "NONE_COMMITTED",
     "secretCollection": {
@@ -140,8 +153,8 @@
     "sourceCommitted": true,
     "githubReadback": true,
     "syntax": "PASS",
-    "ui": "BROWSER0.1.32_CERVINIA_DINNER_FILTER_PASS",
-    "deployment": "PAGES_SUCCESS_43590271969",
+    "ui": "BROWSER0.1.33_CALENDAR_TIMES_AND_SELECTION_BACK_PASS",
+    "deployment": "PAGES_SUCCESS_43591060305",
     "device": "User IMG_4277 confirms installed0.1.28 can now search after backend repair. Frontend0.1.31 installed-iPhone acceptance pending.",
     "flightAPI": {
       "status": "LIVE_PROOF_PASS",
@@ -165,7 +178,7 @@
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "Browser existing0.1.11 shell auto-updated to0.1.14; installed iPhone0.1.14 not tested",
     "pwa": "PREVIOUS_IPHONE_INSTALL_OFFLINE_AND_0.1.10_UPGRADE_PASS; BROWSER_0.1.11_TO_0.1.14_UPGRADE_PASS; IPHONE_0.1.14_PENDING",
-    "deployedAssets": "0.1.32 all18 assets/manifest hashes match",
+    "deployedAssets": "0.1.33 all18 assets/manifest hashes match",
     "providerResearch": "2026-11-14 official eligibility, pricing and agreement checked; report flyg/FLIGHT_DATA_ACCESS.md",
     "probe": "probe-0.1.0: 5 mock guard tests PASS; missing key zero calls PASS",
     "fareDetails": {
@@ -311,6 +324,16 @@
       "device": "IPHONE_PENDING",
       "transfer": "PUBLISHED_ROAD_ESTIMATE_PLUS_EDITABLE_ASSUMPTIONS; NOT_VERIFIED_BOOKING",
       "sourceDocument": "flyg/TRANSFER_PLANNING.md"
+    },
+    "calendarTimes": {
+      "version": "0.1.33",
+      "tests": "61_PASS",
+      "browser": "17CARDS_PRESERVED;3PAIRS_MATCHED_OUT_RETURN_PRICE;DATE15_19_TO_DETAILS_AND_BACK_PASS",
+      "automaticBounds": "3DISTINCT_DATE_PAIRS_MAX2STAGED_CALLS_EACH_FOR_SELECTED_RESORT",
+      "deployedHashes": "18_OF18_PASS",
+      "pagesRun": 43591060305,
+      "device": "IPHONE_PENDING",
+      "sellerBoundary": "15_19MATCHED_QUOTE3462;DETAILS_OPTIONS_EMPTY;EXACT_GOOGLE_LINK_PRESENT;NO_PURCHASE"
     }
   },
   "airportCatalog": {
