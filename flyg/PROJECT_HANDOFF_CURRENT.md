@@ -61,3 +61,8 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Hotel-arrival cutoff now editable in 30-minute steps (00:00–23:30), default 22:00. Search summary prints HH:MM without adding :00.
 - Midnight/cross-date arrival requires an explicit local date and timezone in the later itinerary evaluator; current form only collects the time.
 - Source committed and readback verified; no runtime/device tests or deployment.
+
+## Candidate 0.1.5 — centralized updates
+- Added release.json and a single auto-update.js owner imported by index.html. Network-first no-store checks on load, resume, focus, online and every 5 min. Defers automatic reload when form changed; prompts before manual reload; session guard prevents automatic loops.
+- No service worker or offline caching is installed. Updater behavior is **source only, not runtime/device verified**. Asset-byte manifest/integrity and deployment gates remain open.
+- Candidate v0.1.5, no deployment or release promotion.
