@@ -1,5 +1,5 @@
 {
-  "release": "0.1.18",
+  "release": "0.1.19",
   "updated": "2026-11-14",
   "entrypoints": [
     "index.html"
@@ -19,7 +19,8 @@
     "assets/flyg-icon-512.png",
     "assets/flyg-icon-1024.png",
     "../project-template/mobile-view-policy.js",
-    "live-search.js"
+    "live-search.js",
+    "selection-feedback.js"
   ],
   "status": "CANDIDATE_LIVE_SEARCH_TESTING"
 }
