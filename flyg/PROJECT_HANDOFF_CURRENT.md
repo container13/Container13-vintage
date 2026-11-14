@@ -51,3 +51,8 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Search UI now has direct-only vs connections-allowed selection and a separate **hotel arrival cutoff (default 22:00)**. Generated search requirements include these settings, for both profiles.
 - Airport-arrival preference is not the hotel deadline; actual feasibility must account for baggage, transit and transfer schedules. No live route/transfer computation implemented yet.
 - All changed files verified via GitHub readback; no deployment or device verification.
+
+## Candidate 0.1.3 — journey evaluator
+- New pure `journey-engine.js` returns ELIGIBLE, REJECTED or UNKNOWN for supplied flight segments, checked baggage, two-person price and **verified** ground-transfer/hotel-arrival deadline. Connections via intermediate airports supported; origin must be ARN.
+- Added `tests/journey-engine.test.cjs` with 9 synthetic test cases. **Not yet executed**. GitHub exact readback PASS.
+- Evaluator is **not wired into UI** and does not retrieve schedules, prices or ground transport. No deployment/device test. Avoid claiming an end-to-end flight search.
