@@ -23,7 +23,7 @@
       "Source fee intervals translated and shown; eligibility and exact bag-inclusive total still UNKNOWN"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "2026-11-14 user screenshot IMG_4264.png shows green GitHub Actions 'Flyg resort static checks 3' (14s) and #2 (11s), branch flyg-alperna-init. Treat as user-supplied CI green evidence; detailed job logs not retrieved via connector (fetch_commit_workflow_runs returns []). Current source version.js/release.json/sw.js/footer still 0.1.23; SW has SHA256 integrity for 16 assets. MUST compute exact new hashes and update all 4 atomically before publishing 0.1.24. Need confirm Norwegian DY vs D8 exclusion and remove stale UI copy saying only post-filter; then run CI again, deploy, check live assets and iPhone. No live SerpApi calls in this sequence.",
+    "resumeInstruction": "2026-11-14: user screenshot confirms earlier green Actions runs. New commits after that: 4d76b25 live-search Norwegian DY+D8 expansion, cf11189 backend allow DY, 9843fd8 UI text, 26e8b23 test DY+D8. These commits require NEW CI PASS; no runtime deploy. Before 0.1.24 publish, update version.js/release.json/index footer/sw.js together, regenerate ALL 16 SHA256 SW integrity hashes against final bytes, verify SW install, CI, deployment and iPhone. Never promote on old green screenshot. No live provider calls.",
     "rollbackCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
   },
   "currentWork": {
