@@ -1,5 +1,5 @@
 /* Flyg runtime 0.1.11. Secrets and provider selection tokens stay server-side. */
-export const VERSION='0.1.11';
+export const VERSION='0.1.12';
 const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
@@ -43,15 +43,19 @@ export function normalizeBooking(data){
 }
 export async function provider(path,params,key,fetcher=fetch){
  const url=new URL('https://serpapi.com/'+path);url.search=new URLSearchParams({...params,api_key:key});
- let r;try{r=await fetcher(url,{redirect:'error',signal:AbortSignal.timeout(25000)});}catch{throw new SafeError('PROVIDER_UNAVAILABLE',502);}
- if(!r.ok)throw new SafeError('PROVIDER_UNAVAILABLE',502);
+ let r;try{r=await fetcher(url,{redirect:'error',signal:AbortSignal.timeout(25000),headers:{'Accept':'application/json','User-Agent':'Flyg/0.1.12 (+https://container13.se/flyg/)'}});}catch{throw new SafeError('PROVIDER_UNAVAILABLE',502);}
+ if(!r.ok)throw new SafeError((path==='account.json'?'ACCOUNT':'SEARCH')+'_HTTP_'+r.status,502);
  let data;try{data=await r.json();}catch{throw new SafeError('PROVIDER_UNAVAILABLE',502);}
  if(data.error)throw new SafeError('PROVIDER_UNAVAILABLE',502);
  return data;
 }
 export default {async fetch(req,env){
  const url=new URL(req.url);
- if(url.pathname==='/health'&&req.method==='GET')return response({version:VERSION,configured:Boolean(env.FLYG_SERPAPI_KEY),enabled:env.FLYG_ENABLED==='true'});
+ if(url.pathname==='/health'&&req.method==='GET'){
+  const stub=env.SEARCH_GATE.get(env.SEARCH_GATE.idFromName('flyg-global-v1'));
+  const diagnostics=await (await stub.fetch(new Request('https://internal/status'))).json();
+  return response({version:VERSION,configured:Boolean(env.FLYG_SERPAPI_KEY),enabled:env.FLYG_ENABLED==='true',...diagnostics});
+ }
  if(req.headers.get('Origin')!==ORIGIN)return response({error:'ORIGIN_NOT_ALLOWED'},403);
  if(req.method==='OPTIONS')return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Methods':'POST','Access-Control-Allow-Headers':'Content-Type','Vary':'Origin'}});
  if(url.pathname!=='/search'||req.method!=='POST')return response({error:'NOT_FOUND'},404);
@@ -70,6 +74,7 @@ export class SearchGate {
  constructor(state,env){this.storage=state.storage;this.env=env;this.tail=Promise.resolve();}
  fetch(req){const work=this.tail.then(()=>this.run(req));this.tail=work.catch(()=>{});return work;}
  async run(req){try{
+  if(req.method==='GET'&&new URL(req.url).pathname==='/status')return response({lastFailure:await this.storage.get('lastFailure')||null});
   const input=validate(await req.json());const now=Date.now();
   const saved=await this.storage.get('state')||{schema:1,month:'',monthUsed:0,hour:'',hourUsed:0,records:{},cache:{}};
   if(saved.schema!==1)throw new SafeError('STATE_UNAVAILABLE',503);
@@ -88,9 +93,9 @@ export class SearchGate {
   // Global caps include failures, count before I/O, persist across deploy/restarts.
   if(saved.monthUsed>=180||saved.hourUsed>=20)throw new SafeError('APP_QUOTA_REACHED',429);
   if(Object.keys(saved.records).length>500)throw new SafeError('APP_BUSY',429);
+  saved.monthUsed++;saved.hourUsed++;await this.storage.put('state',saved);
   const account=await provider('account.json',{},this.env.FLYG_SERPAPI_KEY);
   const remaining=freeAccount(account);
-  saved.monthUsed++;saved.hourUsed++;await this.storage.put('state',saved);
   const query={engine:'google_flights',departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,type:'1',adults:'2',currency:'SEK',hl:'en',gl:'se',stops:context.direct?'1':'0',no_cache:'false',...extra};
   const data=await provider('search.json',query,this.env.FLYG_SERPAPI_KEY);
   if(data.search_metadata?.status!=='Success')throw new SafeError('PROVIDER_UNAVAILABLE',502);
@@ -108,5 +113,5 @@ export class SearchGate {
   }
   saved.cache[cacheKey]={body,expires:now+TTL};await this.storage.put('state',saved);
   return response(body);
- }catch(e){return response({error:e instanceof SafeError?e.message:'SEARCH_FAILED'},e instanceof SafeError?e.status:503);}}
+ }catch(e){const code=e instanceof SafeError?e.message:'SEARCH_FAILED';await this.storage.put('lastFailure',{code,time:new Date().toISOString()});return response({error:code},e instanceof SafeError?e.status:503);}}
 }

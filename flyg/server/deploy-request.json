@@ -1,1 +1,1 @@
-{"version":"0.1.11","requested":"2026-11-14","hostingEvidence":"hosting-verification.json","maxSmokeProviderSearches":3}
+{"version":"0.1.12","requested":"2026-11-14","attempt":2,"purpose":"Distinguish source HTTP denial and persist local reservation before account check; browser runtime verification required"}
