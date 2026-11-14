@@ -90,7 +90,12 @@ def details(key,fetch=request_json,evidence=safe_html_evidence):
 if __name__=='__main__':
     try:
         key=os.environ.get('FLYG_SERPAPI_KEY','')
-        result=details(key)
+        mode=json.loads(open('flyg/probes/request.json').read()).get('mode')
+        if mode=='price-scope':
+            from serpapi_scope import scope_probe
+            result=scope_probe(key)
+        else:
+            result=details(key)
         safe=json.dumps(result,ensure_ascii=False,indent=2).replace(key,'[REDACTED]') if key else json.dumps(result)
         print(safe)
         if os.environ.get('GITHUB_STEP_SUMMARY'):
