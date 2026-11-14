@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Verify free-plan and secret protection guards
         run: python3 -B -m unittest discover -s flyg/probes -p 'test_*.py'
-      - name: One search only after Free account check
+      - name: Bounded fare details after Free account check
         env:
           FLYG_SERPAPI_KEY: ${{ secrets.FLYG_SERPAPI_KEY }}
-        run: python3 -B flyg/probes/serpapi_probe.py
+        run: python3 -B flyg/probes/serpapi_details.py
