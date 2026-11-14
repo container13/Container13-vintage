@@ -13,9 +13,9 @@
     "integrity": "HTTPS_ALL_15_RELEASE_ASSETS_BYTE_MATCH_PASS; SW_15_SHELL_DIGESTS_PASS"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IN_PROGRESS",
     "targetRelease": "0.1.17",
-    "goal": "Selected-flight outgoing URL repaired and browser verified; installed iPhone acceptance pending",
+    "goal": "Change ski requirement to19.9kg checked per traveler plus cabin boot bag and personal item; clearly present source baggage fees/ranges",
     "plan": [
       "Generic Google q link removed at all stages",
       "Details show source-generated, validated Google tfs itinerary link only",
