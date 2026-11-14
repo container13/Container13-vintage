@@ -1,7 +1,7 @@
 # Flyg — current checkpoint2026-11-14
 
-Public PWA https://container13.se/flyg/ runs0.1.10. Installed iPhone installation/offline0.1.8 and upgrade0.1.10 user-confirmed. No in-app livesearch yet.
+Public https://container13.se/flyg/ runs **0.1.14**, staged livesearch connected and browser end-to-end PASS. Canonical branch flyg-alperna-init; public delivery only Flyg files on ccc-demo-public-test.
 
-Canonical branch flyg-alperna-init. Read PROJECT_CURRENT_STATE.json and latest PROJECT_HANDOFF_CURRENT.md; historical pending-icon/update notes are superseded.
+Read PROJECT_CURRENT_STATE.json and latest PROJECT_HANDOFF_CURRENT.md. Worker Free current-plan screenshot accepted; SerpApi Free key already safely injected via Actions. Do not repeat account/key/plan onboarding.
 
-Backend candidate0.1.11 in server/:12 mock tests PASS and exact GitHub readback PASS, NOT deployed. Hosting free-plan preflight returns HTTP403; Cloudflare dashboard logged out. Must verify Workers Free before deployment. Existing SerpApi Actions secret works: do not ask for key/account again. User requires0kr setup and ongoing. API base prices proven; checked23kg unknown for tested KLM API offer. Manual Expedia Standard5680SEK for2 with23kg verified, not automated.
+Browser test: ARN-ZRH14–18Mar2027,two adults, chosen KLM3680SEK roundtrip; checked23kg UNKNOWN clearly displayed. Exactdates/oneairport MVP; no automatic weeks/openjaw or verified hotel transfer.13 backend tests and journey/updater/SW suites PASS.15 deployed assets byte-match PASS. Browser upgrade0.1.11->0.1.14 PASS; existing installed iPhone0.1.14 test pending. Candidate remains unpromoted until device gate.

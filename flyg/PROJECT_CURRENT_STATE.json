@@ -9,37 +9,37 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.11",
-    "integrity": "HTTPS_ALL_14_ASSETS_BYTE_MATCH_PASS; EMBEDDED_SHA256_PASS"
+    "candidate": "0.1.14",
+    "integrity": "HTTPS_ALL_15_RELEASE_ASSETS_BYTE_MATCH_PASS; SW_15_SHELL_DIGESTS_PASS"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "0.1.11",
-    "goal": "Verify deployed0.1.11 live search UI end to end; no longer blocked on plan",
+    "status": "UNVERIFIED",
+    "targetRelease": "0.1.14",
+    "goal": "Staged livesearch deployed and browser end-to-end PASS; installed iPhone0.1.14 acceptance pending",
     "plan": [
-      "Runtime candidate in flyg/server/worker.mjs v0.1.11, 12 Node tests PASS",
-      "Read-only hosting check HTTP403 for subscriptions; no deployment, no provider queries",
-      "Cloudflare dashboard not signed in; user must confirm Workers Free or provide authorized read access",
-      "After verified free hosting deploy isolated disabled Worker, inject existing Actions secret, then live-test and wire PWA"
+      "Public0.1.14 browser upgrade from0.1.11 PASS",
+      "Outbound -> selected return -> KLM booking details PASS; cached repeat PASS",
+      "User tests installed iPhone0.1.14; no reinstall",
+      "Baggage scope and transfers remain UNKNOWN; no full all-in ski recommendations"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "Do not repeat SerpApi onboarding. Backend v0.1.11 committed d465d6b83e3b483d8d3ec892500b0b9ddfc96e78; 12 mock tests PASS; NOT deployed. Hosting preflight run 43561640258 job 132346435924 returns subscriptions HTTP403. Dashboard logged out. Need Workers Free verification before any deploy; existing PWA remains0.1.10.",
+    "resumeInstruction": "Livesearch0.1.14 is deployed and browser-tested end to end. Do NOT re-request Cloudflare Free proof or SerpApi key. User screenshot Workers Free $0 Current plan accepted. Root cause was unsupported Workers redirect:error; fixed manual plus non-2xx rejection. Next installed iPhone test, then improve search coverage/baggage evidence. Read latest handoff.",
     "rollbackCommit": "ff4244680ce148a22517c84e779141c1e0919db2"
   },
   "currentWork": {
-    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected. Recurring zero-cost candidate SerpApi identified: official Free 250 monthly requests and flight-comparison use case documented. Google Flights scraping intermediary, not official Google API; no live probe yet. Limited trial-only services excluded. User screenshots confirm SerpApi Free account and successful Playground ARN-ZRH search for 2027-03-14/18 with two adults selected; exact total and checked bag weight not verified. Prepared probe-0.1.0 and five guard tests PASS; missing key sends zero requests. Live GitHub Actions run 43559215595 PASS: Free plan verified, 248 free searches before call, exactly one fresh ARN-ZRH search, 11 priced results. Key remained in Actions secret. Total-for-two/23kg/transfer still unverified. Details run 43559500002 PASS: cached base plus return and booking requests, quota 247->245. Pinned one-adult comparison run 43559664340 PASS, quota245->244, KLM1840 vs two-adult3680 on identical flights. Booking policies contain only 1 free carry-on. 23kg NOT VERIFIED. Backend candidate0.1.11 prepared with persistent global quota180/month20/hour, Free-plan check, 30-minute cache and opaque selection records, staged outbound/returns/details, conservative baggage UNKNOWN;12 Node tests PASS, exact GitHub readback PASS. No runtime endpoint or UI connection deployed.",
-    "next": "Pages candidate deploy pending; open existing Flyg app online then verify outbound/return/details from browser. Do not re-request Free evidence.",
+    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected. Recurring zero-cost candidate SerpApi identified: official Free 250 monthly requests and flight-comparison use case documented. Google Flights scraping intermediary, not official Google API; no live probe yet. Limited trial-only services excluded. User screenshots confirm SerpApi Free account and successful Playground ARN-ZRH search for 2027-03-14/18 with two adults selected; exact total and checked bag weight not verified. Prepared probe-0.1.0 and five guard tests PASS; missing key sends zero requests. Live GitHub Actions run 43559215595 PASS: Free plan verified, 248 free searches before call, exactly one fresh ARN-ZRH search, 11 priced results. Key remained in Actions secret. Total-for-two/23kg/transfer still unverified. Details run 43559500002 PASS: cached base plus return and booking requests, quota 247->245. Pinned one-adult comparison run 43559664340 PASS, quota245->244, KLM1840 vs two-adult3680 on identical flights. Booking policies contain only 1 free carry-on. 23kg NOT VERIFIED. Backend candidate0.1.11 prepared with persistent global quota180/month20/hour, Free-plan check, 30-minute cache and opaque selection records, staged outbound/returns/details, conservative baggage UNKNOWN;12 Node tests PASS, exact GitHub readback PASS. No runtime endpoint or UI connection deployed. Live runtime and staged UI0.1.14 DEPLOYED. User screenshot confirms Workers Free current plan. Browser outbound ARN-ZRH14–18Mar2027 yields11 options; selected KLM return14:20–19:05 and booking seller KLM3680SEK/two roundtrip,1free carry-on only. All3stages PASS; cached replay on frontend0.1.14 PASS. Browser upgraded0.1.11->0.1.14. All15 published release assets exact SHA256 match local.13 backend tests plus existing journey/updater/SW tests PASS. No purchase, plan upgrade or other project changes.",
+    "next": "User tests existing installed iPhone0.1.14 and live search. Later extend dates/airports/open-jaw automation and verified baggage/transfer; do not imply current exact-date MVP covers those.",
     "blocked": false
   },
   "pausedWork": {},
   "dependencies": {
-    "flightAPI": "LIVE_BASE_FARES_PROVEN; CONDITIONAL_BRANDED_BAGGAGE_SCHEMA_DOCUMENTED; KLM_API_23KG_PRICE_UNKNOWN; PWA_NOT_CONNECTED",
+    "flightAPI": "LIVE_STAGED_SEARCH_CONNECTED_AND_BROWSER_VERIFIED; CHECKED_BAG_PRICE_UNKNOWN",
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
       "scope": "Only flyg/ subtree; other project bytes unchanged",
-      "sourceCommit": "9020595ec54ee62dfe567ae060ae387324803a4f",
-      "deploymentCommit": "dea7f16c4d43e2185fdd0019ddafd26aa65bc278"
+      "sourceCommit": "b16c882093bbd95c3cdce8caff5c3adb1df804d1",
+      "deploymentCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
     },
     "secrets": "NONE_COMMITTED",
     "secretCollection": {
@@ -47,13 +47,17 @@
       "name": "FLYG_SERPAPI_KEY",
       "url": "https://github.com/container13/Container13-vintage/settings/secrets/actions/new",
       "status": "PRESENT_AND_USED_BY_GITHUB_ACTIONS; VALUE_NOT_READ_OR_LOGGED",
-      "runtimeScope": "Isolated branch proof workflow only; no PR or scheduled trigger"
+      "runtimeScope": "GitHub Actions injects FLYG_SERPAPI_KEY directly into isolated Cloudflare Worker secret; no key in browser/repo or assistant output"
     },
     "runtimeHosting": {
       "target": "flyg-search-api",
       "url": "https://flyg-search-api.mangaj73.workers.dev",
-      "status": "DEPLOYED_ENABLED; BROWSER_HEALTH_PASS",
-      "evidence": "User screenshot Free $0 Current plan accepted. Runtime deploy run43562291736 steps deploy/inject/enable PASS; smoke Python health HTTP403 but browser shows configured true enabled true version0.1.11; investigate network path, not subscription."
+      "version": "0.1.14",
+      "status": "DEPLOYED_ENABLED; BROWSER_END_TO_END_PASS",
+      "plan": "WORKERS_FREE_USER_SCREENSHOT_CONFIRMED",
+      "run": 43563231253,
+      "commit": "317309aa8925954222ad6bd58c8bbf7e64a68d71",
+      "notes": "Subscription API403 did not imply paid plan. Python test path health403; browser health and actual UI requests succeeded."
     }
   },
   "searchDefaults": {
@@ -105,8 +109,8 @@
     "sourceCommitted": true,
     "githubReadback": true,
     "syntax": "PASS",
-    "ui": "HTTPS_BROWSER_FORM_SUBMIT_PASS",
-    "deployment": "PAGES_SUCCESS_7b92b46285e1eabed8ea22bfc6386a064b8d7d30",
+    "ui": "BROWSER_0.1.14_STAGED_LIVE_SEARCH_AND_CACHED_REPLAY_PASS",
+    "deployment": "PAGES_SUCCESS_d2f8497540a04bc674a318084ab253b27df793d1",
     "device": "USER_CONFIRMED_IPHONE: 0.1.8 installed/offline form PASS; existing installation updated to 0.1.10 without reinstall PASS, 2026-11-14",
     "flightAPI": {
       "status": "LIVE_PROOF_PASS",
@@ -128,9 +132,9 @@
     },
     "engine": "9_SYNTHETIC_CASES_PASS",
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
-    "updateController": "IPHONE_UPDATE_TO_0.1.10_USER_CONFIRMED_PASS; VM regression PASS; dirty-form upgrade and 0.1.10 offline retest not device-tested",
-    "pwa": "INSTALLED_IPHONE_OFFLINE_FORM_PASS; UPDATE_PENDING",
-    "deployedAssets": "0.1.10 all 14 HTTPS assets byte-match PASS; all embedded shell SHA-256 digests PASS",
+    "updateController": "Browser existing0.1.11 shell auto-updated to0.1.14; installed iPhone0.1.14 not tested",
+    "pwa": "PREVIOUS_IPHONE_INSTALL_OFFLINE_AND_0.1.10_UPGRADE_PASS; BROWSER_0.1.11_TO_0.1.14_UPGRADE_PASS; IPHONE_0.1.14_PENDING",
+    "deployedAssets": "0.1.14 all15 HTTPS release assets SHA256 byte-match PASS",
     "providerResearch": "2026-11-14 official eligibility, pricing and agreement checked; report flyg/FLIGHT_DATA_ACCESS.md",
     "probe": "probe-0.1.0: 5 mock guard tests PASS; missing key zero calls PASS",
     "fareDetails": {
@@ -158,16 +162,27 @@
         "return": "2027-03-18",
         "status": "MANUAL_OBSERVATION_NOT_API"
       },
-      "api": "Booking-options schema can contain23kg fare brands; tested KLM quote did not. No universal checked-bag filter or specific Standard selector documented.",
+      "api": "Live deployed API booking details expose1free carry-on only for exact tested KLM offer; 23kg remains UNVERIFIED.",
       "implementation": "NOT_IMPLEMENTED"
     },
     "runtimeCandidate": {
-      "version": "0.1.11",
-      "commit": "d465d6b83e3b483d8d3ec892500b0b9ddfc96e78",
-      "tests": "12_NODE_MOCK_TESTS_PASS; JS_PYTHON_SYNTAX_PASS; DISABLED_CONFIG_GUARD_PASS",
-      "githubReadback": "EXACT_ALL_6_SERVER_FILES_PASS",
-      "deployment": "DEPLOYED_0.1.11_BROWSER_HEALTH_PASS; SEARCH_FLOW_PENDING",
-      "device": "UNTESTED"
+      "version": "0.1.14",
+      "commit": "317309aa8925954222ad6bd58c8bbf7e64a68d71",
+      "tests": "13_NODE_BACKEND_TESTS_PASS; 9_JOURNEY_CASES_PASS; 5_UPDATE_TESTS_PASS; SW_REGRESSION_PASS",
+      "deployment": "DEPLOYED_ENABLED",
+      "browser": "OUTBOUND_RETURNS_BOOKING_DETAILS_AND_CACHED_REPLAY_PASS",
+      "device": "0.1.14_IPHONE_PENDING"
+    },
+    "liveUI": {
+      "route": "ARN-ZRH",
+      "outbound": "2027-03-14",
+      "return": "2027-03-18",
+      "adults": 2,
+      "selectedSeller": "KLM",
+      "quotedSEK": 3680,
+      "bag": "1 free carry-on; checked23kg UNKNOWN",
+      "hotelArrival": "UNKNOWN",
+      "screenshot": "Browser proof saved in task workspace; not a device acceptance"
     }
   },
   "airportCatalog": {

@@ -49,3 +49,6 @@ Canonical settings UI: remember/webmaster-album-settings.js, consumed by album-a
 
 ## Remember webmaster visual polish — 0.1.142
 Owner: existing admin-* block in remember-design.css, edited in place; album-admin loads CSS 0.1.142. Grid min-content track sizing and native date-value alignment constrained without clipping. Settings module localizes Europe/Stockholm and omits duplicate same-zone note; date conversions untouched. Secondary tools share one scoped rule; owner/guest tools are outside #adminExtraTools. iPhone visual PASS pending. Database permission remains pending.
+
+## Flyg staged livesearch0.1.14
+Owner: flyg/live-search.js consumed by flyg/index.html; existing style.css panels/fields/buttons reused. New flight-card block scoped to live results. No shared mobile-policy/updater implementation fork. Bootstrap still auto-update.js/pwa.js/version.js with15-resource integrity-checked SW shell. Worker SearchGate solely owns provider tokens/cache/quotas. Backend0.1.14,public frontend0.1.14, browser staged search and upgrade PASS; real iPhone/tablet/Android0.1.14 unverified. Exact-date single-airport MVP exception documented; requirements summary unchanged.
