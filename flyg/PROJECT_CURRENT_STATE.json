@@ -9,12 +9,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.2",
+    "candidate": "0.1.3",
     "integrity": "PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.2",
+    "targetRelease": "0.1.3",
     "goal": "Validate mobile flight-search prototype and connect authorized data provider",
     "plan": [
       "Static/UI checks and device smoke test (PENDING)",
@@ -26,8 +26,8 @@
     "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified."
   },
   "currentWork": {
-    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending. UI now exposes connection preference and hotel cutoff; readback PASS.",
-    "next": "Implement actual arrival feasibility calculations using verified schedules and transfer data; add updater and static/device tests before release.",
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending. UI now exposes connection preference and hotel cutoff; readback PASS. Added pure journey-engine.js and 9 synthetic Node test cases; GitHub readback PASS, tests NOT EXECUTED.",
+    "next": "Run Node tests, integrate evaluator with verified provider data, implement canonical update controller and release checks, then test deployed runtime/device.",
     "blocked": false
   },
   "pausedWork": {},
@@ -88,7 +88,9 @@
     "ui": "SOURCE_READBACK_ONLY_NOT_RUNTIME_TESTED",
     "deployment": "NOT_DEPLOYED",
     "device": "NOT_TESTED",
-    "flightAPI": "NOT_CONNECTED"
+    "flightAPI": "NOT_CONNECTED",
+    "engine": "COMMITTED_READBACK_ONLY",
+    "tests": "NOT_EXECUTED"
   },
   "airportCatalog": {
     "version": "2026-11-14",
