@@ -1,5 +1,11 @@
 {
-  "sourceCommit": "37b4aaba9361494e39a7e0a2dd4b38ff5f8d187b",
+  "sourceCommit": "a0abe56e0a8d7af171b6ba3bf5949732bb71ec99",
   "jobStatus": "failure",
+  "steps": {
+    "deployDisabled": "success",
+    "injectSecret": "success",
+    "enableSearch": "success",
+    "health": "failure"
+  },
   "workerHealth": "HTTP_403"
 }
