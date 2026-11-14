@@ -1,3 +1,30 @@
+# Överlämning till vanliga chatten — 14 november 2026
+
+**Detta avsnitt är senaste fortsättningspunkt och ersätter äldre status längre ned.**
+
+- Repo: `container13/Container13-vintage`. Utveckling: `flyg-alperna-init`, projektrot `flyg/`. Publik frontend: `ccc-demo-public-test`, https://container13.se/flyg/. Ändra bara Flyg; skydda main, CCC, Remember och LinaSopti.
+- Frontend och befintlig Cloudflare Worker `flyg-search-api.mangaj73.workers.dev` är publicerade som **0.1.37**. Källcommit `662b8894c098428ea1ffabdc246903b28372b7ca`, publik frontendcommit `ecaccaec56138817974404e07e321e6cc3b0bdd4`. Kontrollera färsk branch-HEAD före nya skrivningar.
+- Senaste fix: FDH saknade kalenderpriser. Datakällans uttryckliga tomma Success-svar blev felaktigt SEARCH_SOURCE_ERROR. Nu korrekt tomt resultat, kontextvaliderat och cachat30min; verkliga fel döljs inte. Fyra och fem nätter+cacheåterspel verifierade live. Browser: INN/MUC/ZRH/FDH alla kontrollerade,43datumkort kvar,inga falska felpaneler.91Node-tester+3diagnostiktester PASS;18publicerade filer/manifesthashar PASS.
+- **Installerad iPhone0.1.37 är ännu inte verifierad. CURRENT/PREVIOUS har inte roterats.** Bevara denna skillnad; en källcommit eller grön CI är inte enhetstest.
+
+## Användarens bindande reseönskemål
+- ARN,2personer. Minst19,9kg incheckat/person + separat kabinväska för pjäxor + liten personlig väska. Exakta bagagevillkor och tillägg fortfarande okända.
+- Tre hela skiddagar räcker. Grundresa4nätter men jämför även1extranatt. **Cirka1000kr extra för HELA resan för BÅDA är acceptabelt**, inte1000/person eller endast billigare flyg. Extra skidåkning är valfri.
+- Första kvällen helst framme på skidorten för incheckning,middag och sömn. Stadsnatt är frivillig: användbar inför tidigt flyg men får även föregå ett senare flyg. Kan ni äta frukost lugnt på skidorten och hinna direkt till flyget behövs ingen stadsnatt. Ingen hård08–12regel.
+- Automatisk hemreseplan jämför direkt efter frukost och sista stadsnatt. Frukost09:00,skidort07:00/stad05:00 tidigast,120min flygplats/90min stadstransfer är ändringsbara MODELLANTAGANDEN,inte bokade tider.
+- Endast gratisdrift. Ingen betalplan,ny avgift eller nyckelinsamling. SerpApi-nyckeln finns redan skyddad. Befintlig Worker och Durable Object/kvot/cache bevaras. Flygresultat30mincache; appfiler nätverket först med befintlig central uppdaterare. Ingen ominstallation/rutinmässig cacherensning.
+
+## Vad som fungerar och vad som återstår
+Datumkort visar matchade ut-/hemresetider,byten och pris för just den kombinationen. Kalenderns frånpris hålls separat. Matchade jämförelser behålls vid Tillbaka. Tre datumpar hämtas avgränsat,grundresa och extranatt representeras; fler hämtas på begäran. Kalenderjobb har8anrop/batch och återupptar utan att söka om färdiga flygplats/nattkombinationer.
+
+Körtidsmodell finns för Cervinia frånTRN/MXP/LIN/BGY; andra skidorters transfer och fulla resplaner är fortfarande UNKNOWN. Deras flygtider får granskas med tydlig transfer-varning,men ska inte kallas godkända hela resor. Hotell/transfer/bagage/övriga kostnadsskillnader saknas ofta: tomt är ALDRIG0.1000-riktmärket bedöms bara mot matchad grundresa och uttryckligen inmatade uppskattningar. Inget verifierat totalpris utlovas. Tillfälliga testbelopp är borttagna.
+
+**Nästa stora steg:** verifiera användarens installerade0.1.37 när evidens finns; därefter prioritera saknade verkliga kostnads-/transferunderlag och bredare skidortstäckning. Gör sammanhängande,granskningsbara framsteg. Upprepa inte konton,nycklar,initial PWA-installation eller redan lösta fel. Uppdatera dessa GitHub-checkpoints och läs tillbaka efter ändringar.
+
+Läs även projektets regler och `TRANSFER_PLANNING.md`. Historiken nedan förklarar tidigare steg men får inte överstyra denna status eller `PROJECT_CURRENT_STATE.json`.
+
+---
+
 # Flyg – Alperna | PROJECT HANDOFF CURRENT
 
 ## Bootstrap

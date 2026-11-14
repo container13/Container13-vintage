@@ -422,5 +422,14 @@
     "paidPlanAllowed": false,
     "trialOnlyNotSufficient": true,
     "quotaPolicy": "Stay on Free; no upgrades or billable renewal; stop requests at quota limit"
+  },
+  "chatHandoff": {
+    "date": "2026-11-14",
+    "target": "Vanliga ChatGPT-chatten",
+    "status": "READY",
+    "canonicalStart": "https://github.com/container13/Container13-vintage/blob/flyg-alperna-init/flyg/START_HERE.md",
+    "canonicalState": "https://github.com/container13/Container13-vintage/blob/flyg-alperna-init/flyg/PROJECT_CURRENT_STATE.json",
+    "canonicalHandoff": "https://github.com/container13/Container13-vintage/blob/flyg-alperna-init/flyg/PROJECT_HANDOFF_CURRENT.md",
+    "instruction": "Fortsätt Flyg enligt senaste GitHub-överlämningen på flyg-alperna-init. Läs START_HERE.md, PROJECT_CURRENT_STATE.json och senaste avsnittet i PROJECT_HANDOFF_CURRENT.md före arbete. Arbeta i stora sammanhängande steg. Återuppta0.1.37; upprepa inte konton/nycklar/deploygrund eller redan verifierade tester. Separera publicerat/webbläsartestat från ännu ej verifierat på installerad iPhone."
   }
 }
