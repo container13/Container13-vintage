@@ -13,27 +13,16 @@
     "integrity": "ALL18_PUBLISHED_SHELL_AND_MANIFEST_HASHES_PASS; BROWSER0.1.31_FILTER_PASS; IPHONE0.1.31_PENDING"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "frontend0.1.31/backend0.1.29",
-    "goal": "Live timetable filter deployed and browser verified; installed iPhone upgrade/acceptance remains pending",
-    "completed": [
-      "Existing journey-engine.checkSchedule owns live timetable rejection; no second journey engine",
-      "Outbound airport deadline20:00 by default, strict hotel22:00 impossibility rejection, same-day arrival; direct-only enforced",
-      "Max layover4h default, editable0.5–24h, applies both directions and updates on input without provider request",
-      "Browser real TRN,MXP,BGY14–18March2027 excludesFR:4of10 visible; screenshot AF1230 arrival23:00 hidden;AF1130 arrival11:45 first",
-      "Browser0.1.31 max layover1h ->1offer;4h ->4offers immediately; same fetched result",
-      "All backend/journey/schedule/week/selection/update/SW suites PASS;18 deployed asset/manifest hashes PASS",
-      "Pages43589293287 SUCCESS; sourcef26702aa/public51daa57a; no backend or unrelated project changes"
-    ],
+    "status": "IN_PROGRESS",
+    "targetRelease": "0.1.32",
+    "goal": "Prioritize arrival at resort in time for dinner using sourced road transfer estimates, airport/baggage/check-in buffer; distinguish estimates from verified bookings",
     "plan": [
-      "User opens existing installed PWA online; expect0.1.31 and repeat search",
-      "Remaining: authoritative resort transfer/hotel arrival, baggage totals and whole ski-day verification; never claim timetable pass verifies all requirements"
+      "Cervinia road estimates from resort/operator; unknown routes remain unknown",
+      "Calculate ready-for-dinner time; default target20:00, current hard latest22:00 remains editable",
+      "Separate late resort arrivals/city-overnight fallback from main results",
+      "Verify canonical engine/UI, preserve existing provider/cache and publish only Flyg files"
     ],
-    "sourceCommit": "f26702aadf4973ee85477da3988bb778b14126da",
-    "deploymentCommit": "51daa57ac981448690a0ee4713712d2b7afd4d8d",
-    "deploymentRun": 43589293287,
-    "rollbackCommit": "0a883485f8e61969a7c2855aa3e334a7872cbd79",
-    "resumeInstruction": "Resume from0.1.31 arrival/layover filtering. Do not show23:00/12h15 CDG example. Backend0.1.29/30min cache untouched. Browser4of10 and1h->1/4h->4 PASS. User iPhone0.1.31 not yet tested. CURRENT/PREVIOUS unchanged."
+    "resumeInstruction": "User prioritizes same-evening arrival at ski resort with dinner before sleep. City first-night is fallback only; preferred city night after skiing. No timetable/transfer availability or baggage inclusive price claim."
   },
   "currentWork": {
     "completed": "Existing journey-engine.checkSchedule owns live timetable rejection; no second journey engine\nOutbound airport deadline20:00 by default, strict hotel22:00 impossibility rejection, same-day arrival; direct-only enforced\nMax layover4h default, editable0.5–24h, applies both directions and updates on input without provider request\nBrowser real TRN,MXP,BGY14–18March2027 excludesFR:4of10 visible; screenshot AF1230 arrival23:00 hidden;AF1130 arrival11:45 first\nBrowser0.1.31 max layover1h ->1offer;4h ->4offers immediately; same fetched result\nAll backend/journey/schedule/week/selection/update/SW suites PASS;18 deployed asset/manifest hashes PASS\nPages43589293287 SUCCESS; sourcef26702aa/public51daa57a; no backend or unrelated project changes",
