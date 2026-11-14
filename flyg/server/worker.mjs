@@ -3,6 +3,8 @@ export const VERSION='0.1.22';
 const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
+const AIRLINES=new Set('FR W6 U2 D8 SK LH KL LX OS'.split(' '));
+function validateExcluded(value){if(value===undefined)return '';if(!Array.isArray(value)||value.length>AIRLINES.size||new Set(value).size!==value.length||value.some(code=>!AIRLINES.has(code)))throw new SafeError('INVALID_AIRLINES');return [...value].sort().join(',');}
 export class SafeError extends Error {constructor(code,status=400){super(code);this.status=status;}}
 function response(data,status=200){return Response.json(data,{status,headers:{'Cache-Control':'no-store','Access-Control-Allow-Origin':ORIGIN,'Vary':'Origin','X-Content-Type-Options':'nosniff'}});}
 export function validate(input,now=Date.now()){
@@ -19,8 +21,9 @@ export function validate(input,now=Date.now()){
  if(!dates.every(s=>typeof s==='string'&&/^\d{4}-\d\d-\d\d$/.test(s)&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s))throw new SafeError('INVALID_DATES');
  const start=Date.parse(dates[0]),end=Date.parse(dates[1]);
  if(start<Math.floor(now/86400000)*86400000||end<start||(!calendar&&end===start)||end-start>(calendar?8:30)*86400000||end-now>365*86400000||(calendar&&(!Number.isInteger(input.nights)||input.nights<1||input.nights>30||end+input.nights*86400000-now>365*86400000)))throw new SafeError('INVALID_DATES');
- if(calendar)return {stage:'calendar',destination:input.destination,from:input.from,to:input.to,nights:input.nights,direct:input.direct===true};
- return {stage:'outbound',destination:input.destination,outbound:dates[0],return:dates[1],direct:input.direct===true};
+ const excludeAirlines=validateExcluded(input.excludeAirlines);
+ if(calendar)return {stage:'calendar',destination:input.destination,from:input.from,to:input.to,nights:input.nights,direct:input.direct===true,excludeAirlines};
+ return {stage:'outbound',destination:input.destination,outbound:dates[0],return:dates[1],direct:input.direct===true,excludeAirlines};
 }
 export function freeAccount(data){
  if(data?.plan_id!=='free'||data.plan_monthly_price!==0||!Number.isInteger(data.plan_searches_left)||data.plan_searches_left<=0)throw new SafeError('FREE_QUOTA_UNAVAILABLE',429);
@@ -113,7 +116,7 @@ export class SearchGate {
   saved.monthUsed++;saved.hourUsed++;await this.storage.put('state',saved);
   const account=await provider('account.json',{},this.env.FLYG_SERPAPI_KEY);
   const remaining=freeAccount(account);
-  const query={engine:'google_flights',departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,type:'1',adults:'2',currency:'SEK',hl:'en',gl:'se',stops:context.direct?'1':'0',no_cache:'false',sort_by:'2',...extra};
+  const query={...(context.excludeAirlines?{exclude_airlines:context.excludeAirlines}:{}),engine:'google_flights',departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,type:'1',adults:'2',currency:'SEK',hl:'en',gl:'se',stops:context.direct?'1':'0',no_cache:'false',sort_by:'2',...extra};
   if(input.stage==='calendar'){query.engine='google_flights_calendar';delete query.outbound_date;delete query.return_date;delete query.sort_by;Object.assign(query,{date_range_start:context.from,date_range_end:context.to,round_trip_days:String(context.nights)});}
   const data=await provider('search.json',query,this.env.FLYG_SERPAPI_KEY);
   if(data.search_metadata?.status!=='Success')throw new SafeError('PROVIDER_UNAVAILABLE',502);
