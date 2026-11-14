@@ -1,0 +1,20 @@
+{
+  "name": "Container13 Flyg",
+  "short_name": "Flyg",
+  "description": "Planera flygresor från Arlanda för två personer",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0e1726",
+  "theme_color": "#101b2e",
+  "lang": "sv",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./assets/flyg-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
