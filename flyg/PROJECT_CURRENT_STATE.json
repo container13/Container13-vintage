@@ -9,12 +9,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.1",
+    "candidate": "0.1.2",
     "integrity": "PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.0",
+    "targetRelease": "0.1.2",
     "goal": "Validate mobile flight-search prototype and connect authorized data provider",
     "plan": [
       "Static/UI checks and device smoke test (PENDING)",
@@ -26,8 +26,8 @@
     "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified."
   },
   "currentWork": {
-    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending.",
-    "next": "Validate route dates and transfer practicality via flight data provider; run syntax/device checks and implement release updater before deployment.",
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending. UI now exposes connection preference and hotel cutoff; readback PASS.",
+    "next": "Implement actual arrival feasibility calculations using verified schedules and transfer data; add updater and static/device tests before release.",
     "blocked": false
   },
   "pausedWork": {},
@@ -85,7 +85,7 @@
     "sourceCommitted": true,
     "githubReadback": true,
     "syntax": "UNVERIFIED",
-    "ui": "UNVERIFIED",
+    "ui": "SOURCE_READBACK_ONLY_NOT_RUNTIME_TESTED",
     "deployment": "NOT_DEPLOYED",
     "device": "NOT_TESTED",
     "flightAPI": "NOT_CONNECTED"
