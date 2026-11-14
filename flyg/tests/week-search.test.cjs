@@ -9,11 +9,11 @@ class Node{
  get options(){return this.children;}querySelectorAll(tag){return this.children.flatMap(n=>[...(n.tag===tag?[n]:[]),...n.querySelectorAll(tag)]);}
 }
 function fixture(fetcher){
- const ids={};for(const id of ['liveForm','liveResults','liveStatus','liveAirport','liveOutbound','liveReturn','maxPrice','searchChoices','searchForm','destination','tripWeek','nights','year','searchMode','weekHint','liveSearch','baggage','cabinBoots','personalBag','connections','skiResortField','skiResort','tripRegion','arrival','hotelArrival','maxLayover',...['FR','W6','U2','D8','SK','LH','KL','LX','OS'].map(c=>'exclude'+c)])ids[id]=new Node();
- for(const [id,value]of Object.entries({maxPrice:'5000',tripWeek:'11',nights:'4',year:'2027',searchMode:'week',baggage:'19.9',connections:'allow',skiResort:'all',tripRegion:'alps',arrival:'20',hotelArrival:'22:00',maxLayover:'4'}))ids[id].value=value;
+ const ids={};for(const id of ['liveForm','liveResults','liveStatus','liveAirport','liveOutbound','liveReturn','maxPrice','searchChoices','searchForm','destination','tripWeek','nights','year','searchMode','weekHint','liveSearch','baggage','cabinBoots','personalBag','connections','skiResortField','skiResort','tripRegion','arrival','hotelArrival','maxLayover','dinnerTarget','groundMode','airportMinutes','roadBuffer','checkinMinutes','showCityFallback',...['FR','W6','U2','D8','SK','LH','KL','LX','OS'].map(c=>'exclude'+c)])ids[id]=new Node();
+ for(const [id,value]of Object.entries({maxPrice:'5000',tripWeek:'11',nights:'4',year:'2027',searchMode:'week',baggage:'19.9',connections:'allow',skiResort:'all',tripRegion:'alps',arrival:'20',hotelArrival:'22:00',maxLayover:'4',dinnerTarget:'20:00',groundMode:'road',airportMinutes:'60',roadBuffer:'30',checkinMinutes:'30'}))ids[id].value=value;
  for(const code of ['all','ZRH','GVA','INN','SZG','MXP','LIN','BGY','TRN','MUC','LYS','BSL','VRN','VCE','BLQ','STR','VIE','NCE','GNB','TSF','TRS','FDH','GRZ','KLU']){const o=new Node('option',code);o.value=code;ids.destination.append(o);}ids.destination.value='all';
  for(const code of ['FR','W6','U2','D8','SK','LH','KL','LX','OS'])ids['exclude'+code].checked=false;
- const context={document:{getElementById:id=>ids[id],querySelectorAll:()=>[],createElement:tag=>new Node(tag)},window:{FlygJourney:require('../journey-engine.js'),FlygSelectionUI:{begin(){},error(){},finish(){},reveal(){}}},navigator:{onLine:true},fetch:fetcher,AbortSignal,Date,Intl,Number,Error};
+ const context={document:{getElementById:id=>ids[id],querySelector:()=>null,querySelectorAll:()=>[],createElement:tag=>new Node(tag)},window:{FlygJourney:require('../journey-engine.js'),FlygSelectionUI:{begin(){},error(){},finish(){},reveal(){}}},navigator:{onLine:true},fetch:fetcher,AbortSignal,Date,Intl,Number,Error};
  vm.runInNewContext(fs.readFileSync(require.resolve('../live-search.js'),'utf8'),context);return ids;
 }
 async function settle(ids){for(let i=0;i<40;i++){await new Promise(setImmediate);if(!ids.liveSearch.disabled)return;}throw Error('UI stayed busy');}
@@ -42,7 +42,7 @@ test('live timetable filters update immediately while typing without provider ca
  {quotedPriceSEK:3632,segments:[{origin:'ARN',destination:'CDG',arrivalLocal:'2027-03-14 09:10',departureLocal:'2027-03-14 06:10'},{origin:'CDG',destination:'MXP',departureLocal:'2027-03-14 10:15',arrivalLocal:'2027-03-14 11:45'}]}
  ];
  const ids=fixture(async(url,opts)=>{calls++;return {ok:true,json:async()=>({stage:'outbound',context:JSON.parse(opts.body),flights,fetchedAt:'2026-11-14T12:00:00Z'})};});
- ids.searchMode.value='exact';ids.liveAirport.value='MXP';ids.liveOutbound.value='2027-03-14';ids.liveReturn.value='2027-03-18';
+ ids.showCityFallback.checked=false;ids.skiResort.value='6';ids.searchMode.value='exact';ids.liveAirport.value='MXP';ids.liveOutbound.value='2027-03-14';ids.liveReturn.value='2027-03-18';
  ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);
  const count=()=>ids.liveResults.children.filter(n=>n.tag==='article').length;
  assert.equal(count(),1);assert.equal(calls,1);
@@ -50,4 +50,17 @@ test('live timetable filters update immediately while typing without provider ca
  ids.maxLayover.value='4';ids.maxLayover.listeners.input[0]();assert.equal(count(),1);
  ids.maxLayover.value='24';ids.maxLayover.listeners.input[0]();assert.equal(count(),1,'late landing stays hidden even when layover cap is raised');
  assert.equal(calls,1,'filter edits must not query provider');
+});
+
+test('Cervinia dinner results keep late arrivals in optional reserve list and unknown transit separate',async()=>{
+ let calls=0;const flights=[{quotedPriceSEK:3000,segments:[{origin:'ARN',destination:'MXP',departureLocal:'2027-03-14 10:00',arrivalLocal:'2027-03-14 12:00'}]},{quotedPriceSEK:2000,segments:[{origin:'ARN',destination:'MXP',departureLocal:'2027-03-14 16:00',arrivalLocal:'2027-03-14 18:30'}]}];
+ const ids=fixture(async(url,opts)=>{calls++;return {ok:true,json:async()=>({stage:'outbound',context:JSON.parse(opts.body),flights,fetchedAt:'2026-11-14T12:00:00Z'})};});
+ ids.showCityFallback.checked=false;ids.skiResort.value='6';ids.searchMode.value='exact';ids.liveAirport.value='MXP';ids.liveOutbound.value='2027-03-14';ids.liveReturn.value='2027-03-18';
+ ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);
+ const primary=()=>ids.liveResults.children.filter(n=>n.tag==='article');
+ assert.equal(primary().length,1);assert.ok(primary()[0].children.some(n=>String(n.textContent).includes('3')));
+ assert.equal(ids.liveResults.querySelectorAll('summary').filter(n=>/reserver/.test(n.textContent)).length,0);
+ ids.showCityFallback.checked=true;ids.showCityFallback.listeners.change[0]();assert.equal(primary().length,1);assert.equal(ids.liveResults.querySelectorAll('summary').filter(n=>/reserver/.test(n.textContent)).length,1);
+ ids.groundMode.value='public';ids.groundMode.listeners.change[0]();assert.equal(primary().length,0);assert.equal(ids.liveResults.querySelectorAll('summary').filter(n=>/utan kontrollerad transfer/.test(n.textContent)).length,1);
+ assert.equal(calls,1);
 });
