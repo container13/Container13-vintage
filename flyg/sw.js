@@ -20,13 +20,23 @@ self.addEventListener('install',event=>event.waitUntil((async()=>{
 })()));
 self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_UPDATE')self.skipWaiting()});
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('flyg-shell-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+// App shell is network-first. Only flight search responses are cached by SearchGate.
 self.addEventListener('fetch',event=>{
  const req=event.request,url=new URL(req.url);
  if(req.method!=='GET'||url.origin!==self.location.origin)return;
  if(url.pathname.endsWith('/release.json')||url.pathname.includes('/api/'))return;
- if(req.mode==='navigate'&&url.pathname.startsWith(new URL(self.registration.scope).pathname)){
-  event.respondWith(caches.open(CACHE).then(async cache=>(await cache.match('./index.html'))||fetch(req)));return;
- }
- if(!SHELL.some(path=>new URL(path,self.registration.scope).pathname===url.pathname))return;
- event.respondWith(caches.open(CACHE).then(async cache=>(await cache.match(url.pathname))||fetch(req)));
+ const inScope=url.pathname.startsWith(new URL(self.registration.scope).pathname);
+ const isShell=SHELL.some(path=>new URL(path,self.registration.scope).pathname===url.pathname);
+ if(!inScope&&!isShell)return;
+ event.respondWith((async()=>{
+  try{
+   const fresh=await fetch(req,{cache:'no-store'});
+   if(fresh.ok)return fresh;
+   throw new Error('HTTP '+fresh.status);
+  }catch(error){
+   const cache=await caches.open(CACHE);
+   const fallback=await cache.match(req,{ignoreSearch:true})||(req.mode==='navigate'?await cache.match('./index.html'):null);
+   return fallback||Response.error();
+  }
+ })());
 });
