@@ -10,19 +10,19 @@
     "previousVerified": null,
     "currentVerified": null,
     "candidate": "0.1.28",
-    "integrity": "ALL16_HTTPS_ASSETS_SHA256_MATCH"
+    "integrity": "PRODUCTION_AND_DEV_CRITICAL_BLOBS_EQUAL; DEVICE_UNVERIFIED"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
     "targetRelease": "0.1.28",
-    "goal": "Legacy 0.1.24 cache-first rescue: after verified SW install, auto skipWaiting only if flyg-shell-0.1.24 exists; otherwise preserve normal activation. 0.1.28 promoted to production branch, public Safari/device test pending.",
+    "goal": "Fix misleading hardcoded footer, reconcile 0.1.28 source/production critical assets, retire competing mutating workflows. No iPhone SW state evidence; device update remains unverified.",
     "plan": [
-      "Verify Safari public 0.1.28 and service worker delivery",
-      "Verify old installed iPhone 0.1.24 updates without reinstall and check offline behavior",
-      "Only after device PASS promote CURRENT/PREVIOUS"
+      "Verify GitHub Actions read-only candidate integrity and branch drift workflow result",
+      "Verify public HTTP delivery of 0.1.28 and 16 precache asset digests",
+      "Only after actual installed-iPhone confirmation mark CURRENT"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "Source and production release 0.1.28 have identical version.js, release.json and sw.js Git blobs. Do not retrigger one-shot 0.1.28 workflow, as it asserts source 0.1.27. User previously saw public Safari 0.1.27 while installed app remained 0.1.24. 0.1.28 legacy rescue not yet device verified.",
+    "resumeInstruction": "2026-11-14: production index.html now derives footer from window.ProjectVersion.release; both index.html and SW integrity hash changed. Critical 0.1.28 files index/version/release/sw copied verbatim from prod into dev; two legacy workflows replaced with read-only verification and disabled manual-only legacy. Do not bump version or overwrite production. User on Karon beach with iPhone, no Mac. Installed UI formerly showed hardcoded 0.1.24 so this number is not authoritative evidence of SW version. Need runtime evidence and workflow verification.",
     "rollbackCommit": "8fdfcfdcfaba8b3e30a30eb50cf6c9b020ea83f9"
   },
   "currentWork": {
