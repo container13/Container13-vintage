@@ -1,0 +1,39 @@
+name: Flyg 0.1.25 error reporting build
+on:
+  push:
+    branches: [flyg-alperna-init]
+    paths: ['.github/workflows/flyg-build-0125.yml']
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Update release and integrity hashes
+        run: |
+          python3 - <<'PY'
+          import pathlib,json,re,hashlib
+          root=pathlib.Path('flyg')
+          v=root/'version.js'
+          assert "RELEASE='0.1.24'" in v.read_text()
+          v.write_text(v.read_text().replace("RELEASE='0.1.24'","RELEASE='0.1.25'"))
+          r=root/'release.json';data=json.loads(r.read_text());data['release']='0.1.25';data['status']='CANDIDATE_ERROR_REPORTING';r.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
+          sw=root/'sw.js';source=sw.read_text();source=source.replace("flyg-shell-0.1.24","flyg-shell-0.1.25")
+          match=re.search(r'const INTEGRITY=(\{[^;]+\});',source);assert match
+          hashes=json.loads(match.group(1))
+          for key in hashes:
+            p=root/('index.html' if key=='./' else key)
+            hashes[key]=hashlib.sha256(p.read_bytes()).hexdigest()
+          source=source[:match.start(1)]+json.dumps(hashes,separators=(',',':'))+source[match.end(1):]
+          sw.write_text(source)
+          PY
+          node --check flyg/live-search.js
+          node --check flyg/sw.js
+          node --test flyg/server/worker.test.mjs
+      - name: Commit candidate only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add flyg/live-search.js flyg/version.js flyg/release.json flyg/sw.js
+          git diff --cached --quiet || { git commit -m "Flyg: build 0.1.25 with search error diagnostics"; git push origin HEAD:flyg-alperna-init; }
