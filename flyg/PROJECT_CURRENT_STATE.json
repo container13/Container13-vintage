@@ -13,30 +13,16 @@
     "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_WHOLE_SKI_DAYS_RETURN_AND_PRICE_RANKING_PASS; IPHONE_PENDING"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "frontend0.1.35/backend0.1.29",
-    "goal": "Cervinia planning: three whole skiing days, optional final city night, rested departure and matched fare comparison; device acceptance pending",
-    "completed": [
-      "72 backend/journey/UI/week/updater/SW tests PASS; final static/integrityCI PASS",
-      "Canonical journey-engine.skiTrip counts planned full ski dates and total nights through home arrival, including overnight return; does not verify lifts/weather/hotels",
-      "Default last city night after ski end16:00,earliest hotel departure07:00,airport120min,city-airport90min; all editable assumptions; alternative direct resort return",
-      "City planning Cervinia->Milano146min orTurin101min uses published reverse-direction drive estimate as explicit assumption, plus existing road margin; ground availability/prices unknown",
-      "Return candidates requiring too early departure, too few ski days or excess nights are rejected; calendar retains fetched alternatives and chooses later valid return locally on edits",
-      "Known matched quotes ranked first3462,4006,4182 in real week11Cervinia; remaining calendar floors separately grouped; no global all-in cheapest claim",
-      "Browser0.1.35:3planned ski dates + finalMilano night; earliest02:00 restores06:30return;07:00removes it;4skiDays0selectable;restore3/direct/city PASS with17cards preserved",
-      "Manual calendar->outbound->return->details carries same plan; Back3steps restores17datecards; cached replay observed",
-      "Pages43592210140 SUCCESS;18published hashes PASS; only7Flyg runtime files changed; backend0.1.29/Free/secrets unchanged"
-    ],
+    "status": "IN_PROGRESS",
+    "targetRelease": "0.1.36",
+    "goal": "Three ski days with optional extra night up to1000SEK incremental trip cost for two, automatic breakfast-aware direct/city return",
     "plan": [
-      "Installed iPhone0.1.35 acceptance pending;CURRENT/PREVIOUS not rotated",
-      "Expand source-backed transfer coverage beyond Cervinia",
-      "Exact checked/cabin baggage and complete ground/hotel costs remain unknown; actual booked transport, hotel endpoints and lift schedules must be verified"
+      "Search baseline and baseline+1night using existing bounded cached provider path",
+      "Automatic return prefers direct after calm breakfast, city night if needed; explicit choices remain",
+      "Only assess extra1000 tolerance against a matched baseline plus entered hotel/ground/baggage/other incremental estimates; unknown remains unknown",
+      "Regression, deploy only Flyg, actual browser proof and checkpoint readback"
     ],
-    "sourceCommit": "4ed9f7af3274c0998397d2de702652a9a82e1a77",
-    "deploymentCommit": "7813e4265fb2a9a007ac4e4f4fa34ac6199fe038",
-    "deploymentRun": 43592210140,
-    "rollbackCommit": "355519f6543a3cc50be4a4eb07fab1e7aaf51cfe",
-    "resumeInstruction": "Continue from0.1.35 whole-ski-day and return planning. User prioritizes evening dinner at ski resort,3full ski days,city night preferably last.72tests/18hashes/live browser PASS. New matched fare ranking separates known route quotes from unchecked calendar floors. Earliest hotel07:00 and all margins are editable assumptions,not operator facts. Cervinia road estimates only; no booked/price/lift guarantee. Device pending;CURRENT/PREVIOUS unchanged."
+    "resumeInstruction": "Latest user replaces4night hard limit with1optional extra night; accepts about1000SEK extra total for TWO.3ski days sufficient; extra skiing optional. City night optional, can precede early or later flight; prefer resort/direct if calm breakfast possible. No invented hotel/ground/bag costs."
   },
   "currentWork": {
     "completed": "72 backend/journey/UI/week/updater/SW tests PASS; final static/integrityCI PASS\nCanonical journey-engine.skiTrip counts planned full ski dates and total nights through home arrival, including overnight return; does not verify lifts/weather/hotels\nDefault last city night after ski end16:00,earliest hotel departure07:00,airport120min,city-airport90min; all editable assumptions; alternative direct resort return\nCity planning Cervinia->Milano146min orTurin101min uses published reverse-direction drive estimate as explicit assumption, plus existing road margin; ground availability/prices unknown\nReturn candidates requiring too early departure, too few ski days or excess nights are rejected; calendar retains fetched alternatives and chooses later valid return locally on edits\nKnown matched quotes ranked first3462,4006,4182 in real week11Cervinia; remaining calendar floors separately grouped; no global all-in cheapest claim\nBrowser0.1.35:3planned ski dates + finalMilano night; earliest02:00 restores06:30return;07:00removes it;4skiDays0selectable;restore3/direct/city PASS with17cards preserved\nManual calendar->outbound->return->details carries same plan; Back3steps restores17datecards; cached replay observed\nPages43592210140 SUCCESS;18published hashes PASS; only7Flyg runtime files changed; backend0.1.29/Free/secrets unchanged",
