@@ -28,3 +28,29 @@ Origin ARN, 2 adults; Alps 23kg checked bag per person, hotel cutoff 22:00 edita
 
 ## Next decision
 An interim free search hub may open user-triggered searches on suppliers' own websites. It cannot show their live prices in Flyg, verify baggage or assert hotel feasibility. This alternative is proposed only, not implemented. Full in-app comparison still requires a suitable provider's permission/account, a tested secret-bearing server endpoint, a cost ceiling and a successful live request before UI claims change. Do not put API keys in GitHub Pages.
+
+## Zero-cost constraint and candidate — latest 2026-11-14
+User requires 0 SEK setup and ongoing; account creation is acceptable. No paid activation, card, subscription upgrade or trial-only solution authorized.
+
+SerpApi Free candidate: official pricing lists $0/month, 250 searches/month and 50/hour. Official flight-search guide explicitly describes use for price comparison and registering on Free. It is a third-party Google Flights scraping service, not an official Google API or a demonstrated upstream data licence; current legal terms reviewed and no legal guarantee asserted. No provider-specific connector found. Actual account eligibility, Free enforcement and live response remain unverified.
+
+Important API details:
+- Set adults=2 explicitly, ARN, SEK; multiple arrival airports possible, but complete round-trip and booking detail requests can consume extra searches. 250 API calls is not 250 full app-wide searches.
+- The bags parameter is carry-on count, NOT 23kg checked baggage.
+- Booking-options endpoint exposes baggage policy text, but weight may be absent. Missing weight/cost remains UNKNOWN, not included in an asserted all-in fare.
+- no_cache=true requests fresh results; default cache can be up to one hour old.
+- Live proof: ARN -> ZRH, 2027-03-14 / 2027-03-18, 2 adults, SEK. First verify account is Free with remaining quota, then one search only; record search ID/time and response summary, not key.
+- No backend or UI implementation until useful real response; no accounts or live calls made this session.
+- Alternatives reviewed: FlightAPI/Ignav offer initial credits, not demonstrated recurring free allowances; Travelpayouts Data is cached indicative data. LetsFG free MCP path differs from its product Developer API, which requires payment setup/look-to-book, so no assumed free embedded-app permission.
+
+Sources:
+- https://serpapi.com/pricing
+- https://serpapi.com/blog/how-to-scrape-google-flights/
+- https://serpapi.com/google-flights-api
+- https://serpapi.com/google-flights-booking-options
+- https://serpapi.com/account-api
+- https://serpapi.com/legal
+- https://serpapi.com/users/sign_up
+- https://letsfg.co/developers/docs/getting-started/index.html
+
+Next user step: create SerpApi Free account; establish secure server-side key handling and run the single proof before app integration. Runtime stays 0.1.10.
