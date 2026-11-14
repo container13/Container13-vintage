@@ -1,3 +1,15 @@
+# Senaste checkpoint — 14 november 2026 — frontend 0.1.38 publicerad och webbläsarverifierad
+
+**Detta är senaste fortsättningspunkt.** Publik frontend **0.1.38**, befintlig backend **0.1.37** orörd. Installerad iPhone 0.1.38 är **INTE** accepterad/testad ännu. **CURRENT/PREVIOUS har inte roterats.**
+
+- Endast `flyg/journey-engine.js`, `flyg/version.js`, `flyg/release.json`, `flyg/sw.js` publicerades säkert via Git tree + skyddad förväntad SHA från isolerad `flyg-alperna-init` till `ccc-demo-public-test`. Publik commit `e7d549fac1edc5031eda796b5e0920a446e66782`; föregående `ecaccaec56138817974404e07e321e6cc3b0bdd4`. GitHub Pages körning `43607156643` **SUCCESS**.
+- **Direkt webbläsarprov av https://container13.se/flyg/** via GitHub Actions Chromium `43607323882` **PASS**: HTTP200, körande 0.1.38, release.json 0.1.38, St. Anton privat vägtransfer INN75/ZRH135/MUC195/FDH100 minuter, alla uppskattning `ESTIMATE_ONLY`, saknad stadsnattsrutt **UNKNOWN**, 0 JS-fel och **0 provider searches**. Läs Actions-loggar för evidens. GitHub resort static checks `43602412189` PASS, 93 tester.
+- Tiderna kommer från https://www.taxi-st-anton.at/most-driven-destinations/ och är **inte** garanterad transfer/tillgänglighet/pris, väglag eller exakt hotelldörr. Cervinias italienska stadsnattsrutt får inte återanvändas för St. Anton. Helresepriset inklusive bagage/hotell/transport är fortfarande ofta **UNKNOWN**, aldrig noll. Ändra inte Worker/secrets/kvot/driftsbudget.
+- **Nästa:** bekräfta att den redan installerade iPhone-PWA:n faktiskt går till 0.1.38 och genomför en sökning. Ingen ominstallation eller rutinmässig cacherensning. Därefter prioritera bredare källbelagd transfer/skidortstäckning och verkliga kostnadsunderlag. Webbläsartest får inte kallas iPhone-test.
+- Bindande önskemål: ARN, **två resenärer**, minst **19,9 kg** incheckat/person + separat kabinväska för pjäxor + liten personlig väska; **tre hela skiddagar**, fyra grundnätter + en **valfri femte natt** som kan vara okej om **hela resans merkostnad för båda är cirka 1 000 SEK**; inget krav på extranatt. Första kvällen middag på skidorten, lugn frukost vid direkt hemresa, frivillig sista stadsnatt (inte låst till tidigt flyg). Inga fiktiva totaler.
+
+---
+
 # Senaste checkpoint — 14 november 2026 — kandidat 0.1.38 (EJ PUBLICERAD)
 
 **Detta ersätter 0.1.37 som utvecklingsfortsättning, men inte som publicerad version.** Publicerad frontend/backend är fortfarande 0.1.37. Installerad iPhone 0.1.37 saknar slutlig verifiering; CURRENT/PREVIOUS ej roterade.
