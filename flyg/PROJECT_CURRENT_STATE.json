@@ -13,9 +13,9 @@
     "integrity": "HTTPS_ALL_14_ASSETS_BYTE_MATCH_PASS"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IN_PROGRESS",
     "targetRelease": "0.1.8",
-    "goal": "Confirm installed iPhone launch, offline and update behavior",
+    "goal": "Verify installed app update from 0.1.8 to 0.1.9",
     "plan": [
       "Open https://container13.se/flyg/ in iPhone Safari",
       "Share -> Add to Home Screen; launch Flyg from globe icon",
@@ -28,7 +28,7 @@
   },
   "currentWork": {
     "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired.",
-    "next": "User iPhone installation and offline/cold-start verification. Live flight provider remains unconnected.",
+    "next": "Deploy 0.1.9 after automated update-controller checks; verify existing iPhone installation updates without reinstall.",
     "blocked": false
   },
   "pausedWork": {},
@@ -94,12 +94,12 @@
     "syntax": "PASS",
     "ui": "HTTPS_BROWSER_FORM_SUBMIT_PASS",
     "deployment": "PAGES_SUCCESS_bd4228563d216c1cf4b6f250309bb03a714fc7e7",
-    "device": "IPHONE_NOT_TESTED",
+    "device": "IPHONE_STANDALONE_AND_AIRPLANE_MODE_FORM_PASS_USER_SCREENSHOT_2026-11-14",
     "flightAPI": "NOT_CONNECTED",
     "engine": "9_SYNTHETIC_CASES_PASS",
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "SOURCE_SYNTAX_PASS; REAL_UPGRADE_NOT_TESTED",
-    "pwa": "HTTPS_DEPLOYED; ICONS_TREE_SIZE_SHA_PASS; REAL_OFFLINE_DEVICE_PENDING",
+    "pwa": "INSTALLED_IPHONE_OFFLINE_FORM_PASS; UPDATE_PENDING",
     "deployedAssets": "All 14 release assets fetched via HTTPS and byte-matched to committed local files; PASS 2026-11-14"
   },
   "airportCatalog": {
