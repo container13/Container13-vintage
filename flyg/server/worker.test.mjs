@@ -7,6 +7,10 @@ test('fixed origin, two adults and allowed airport/date input',()=>{
  assert.equal(validate(input,now).destination,'ZRH');
  for(const change of [{destination:'https://evil.test'},{outbound:'2027-02-30'},{return:'2027-03-14'},{outbound:'2026-01-01'},{stage:'anything'}])assert.throws(()=>validate({...input,...change},now));
 });
+test('bounded multi-airport searches accept valid groups and reject duplicates, unknown or oversized lists',()=>{
+ assert.equal(validate({...input,destination:'ZRH,GVA,INN'},now).destination,'ZRH,GVA,INN');
+ for(const destination of ['ZRH,GVA,INN,TRN','ZRH,ZRH','ZRH,XXX','ZRH,','all'])assert.throws(()=>validate({...input,destination},now));
+});
 test('reject raw provider token injection; selection ids only',()=>{
  assert.throws(()=>validate({stage:'details',selection:'raw-provider-token'}));
  assert.deepEqual(validate({stage:'returns',selection:'11111111-1111-1111-1111-111111111111'}),{stage:'returns',selection:'11111111-1111-1111-1111-111111111111'});
@@ -53,6 +57,11 @@ test('failed provider request still consumes local reservation; no automatic ret
 });
 test('expired selection causes zero provider calls',async()=>{
  const store=storage();const gate=new SearchGate({storage:store},{FLYG_SERPAPI_KEY:'KEY'});const r=await gate.fetch(request({stage:'details',selection:'11111111-1111-1111-1111-111111111111'}));assert.equal(r.status,400);assert.match(await r.text(),/SELECTION_EXPIRED/);
+});
+test('batch request preserves airport coverage and sorts all returned flight prices',async()=>{
+ const store=storage();const gate=new SearchGate({storage:store},{FLYG_SERPAPI_KEY:'KEY'});const original=global.fetch;
+ global.fetch=async url=>{if(url.pathname==='/account.json')return Response.json({plan_id:'free',plan_monthly_price:0,plan_searches_left:244});assert.equal(url.searchParams.get('arrival_id'),'ZRH,GVA,INN');assert.equal(url.searchParams.get('sort_by'),'2');const d=data();d.search_parameters.arrival_id='ZRH,GVA,INN';d.best_flights.push({price:1000,flights:[{flight_number:'TEST',arrival_airport:{id:'GVA'}}],departure_token:'private'});return Response.json(d);};
+ try{const r=await gate.fetch(request({...input,destination:'ZRH,GVA,INN'}));const body=await r.json();assert.equal(r.status,200);assert.equal(body.context.destination,'ZRH,GVA,INN');assert.deepEqual(body.flights.map(x=>x.quotedPriceSEK),[1000,3680]);assert.equal(store.value.monthUsed,1);}finally{global.fetch=original;}
 });
 
 test('Cloudflare-compatible fetch rejects redirect response without following key to another host',async()=>{

@@ -1,1 +1,1 @@
-{"version":"0.1.14","requested":"2026-11-14","attempt":5,"purpose":"Root cause: Workers does not implement redirect:error. Use manual and reject non-2xx, regression-tested"}
+{"version":"0.1.15","requested":"2026-11-14","purpose":"Allow strictly validated groups of up to3 airports and sort returned offers by price; persistent quota unchanged"}

@@ -1,5 +1,5 @@
 /* Flyg runtime 0.1.11. Secrets and provider selection tokens stay server-side. */
-export const VERSION='0.1.14';
+export const VERSION='0.1.15';
 const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
@@ -11,7 +11,8 @@ export function validate(input,now=Date.now()){
   if(typeof input.selection!=='string'||! /^[a-f\d-]{36}$/.test(input.selection))throw new SafeError('INVALID_SELECTION');
   return {stage:input.stage,selection:input.selection};
  }
- if(input.stage!=='outbound'||!AIRPORTS.has(input.destination))throw new SafeError('INVALID_DESTINATION');
+ const destinations=typeof input.destination==='string'?input.destination.split(','):[];
+ if(input.stage!=='outbound'||destinations.length<1||destinations.length>3||new Set(destinations).size!==destinations.length||destinations.some(code=>!AIRPORTS.has(code)))throw new SafeError('INVALID_DESTINATION');
  const dates=[input.outbound,input.return];
  if(!dates.every(s=>typeof s==='string'&&/^\d{4}-\d\d-\d\d$/.test(s)&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s))throw new SafeError('INVALID_DATES');
  const start=Date.parse(dates[0]),end=Date.parse(dates[1]);
@@ -44,7 +45,7 @@ export function normalizeBooking(data){
 export async function provider(path,params,key,fetcher=fetch){
  const url=new URL('https://serpapi.com/'+path);url.search=new URLSearchParams({...params,api_key:key});
  const phase=path==='account.json'?'ACCOUNT':'SEARCH';
- let r;try{r=await fetcher(url,{redirect:'manual',signal:AbortSignal.timeout(25000),headers:{'Accept':'application/json','User-Agent':'Flyg/0.1.14 (+https://container13.se/flyg/)'}});}catch(error){const reason=/not allowed|blocked|restricted|forbidden/i.test(String(error?.message))?'ACCESS_DENIED':error?.name==='TimeoutError'?'TIMEOUT':'NETWORK';throw new SafeError(phase+'_'+reason,502);}
+ let r;try{r=await fetcher(url,{redirect:'manual',signal:AbortSignal.timeout(70000),headers:{'Accept':'application/json','User-Agent':'Flyg/0.1.15 (+https://container13.se/flyg/)'}});}catch(error){const reason=/not allowed|blocked|restricted|forbidden/i.test(String(error?.message))?'ACCESS_DENIED':error?.name==='TimeoutError'?'TIMEOUT':'NETWORK';throw new SafeError(phase+'_'+reason,502);}
  if(!r.ok)throw new SafeError((path==='account.json'?'ACCOUNT':'SEARCH')+'_HTTP_'+r.status,502);
  let data;try{data=await r.json();}catch{throw new SafeError(phase+'_INVALID_JSON',502);}
  if(data.error){const reason=/invalid.*api.*key|api.*key.*invalid/i.test(String(data.error))?'KEY_REJECTED':/run out|quota|limit/i.test(String(data.error))?'QUOTA':'SOURCE_ERROR';throw new SafeError(phase+'_'+reason,502);}
@@ -97,7 +98,7 @@ export class SearchGate {
   saved.monthUsed++;saved.hourUsed++;await this.storage.put('state',saved);
   const account=await provider('account.json',{},this.env.FLYG_SERPAPI_KEY);
   const remaining=freeAccount(account);
-  const query={engine:'google_flights',departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,type:'1',adults:'2',currency:'SEK',hl:'en',gl:'se',stops:context.direct?'1':'0',no_cache:'false',...extra};
+  const query={engine:'google_flights',departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,type:'1',adults:'2',currency:'SEK',hl:'en',gl:'se',stops:context.direct?'1':'0',no_cache:'false',sort_by:'2',...extra};
   const data=await provider('search.json',query,this.env.FLYG_SERPAPI_KEY);
   if(data.search_metadata?.status!=='Success')throw new SafeError('PROVIDER_UNAVAILABLE',502);
   if(input.stage==='outbound')for(const [key,value]of Object.entries({departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,adults:'2',currency:'SEK'}))if(String(data.search_parameters?.[key])!==value)throw new SafeError('PROVIDER_CONTEXT_MISMATCH',502);
@@ -105,13 +106,15 @@ export class SearchGate {
   if(input.stage==='details')Object.assign(body,normalizeBooking(data));
   else{
    body.flights=[];
-   for(const offer of [...(data.best_flights||[]),...(data.other_flights||[])].slice(0,30)){
+   for(const offer of [...(data.best_flights||[]),...(data.other_flights||[])].sort((a,b)=>(price(a.price)??Infinity)-(price(b.price)??Infinity)).slice(0,30)){
     const flight=normalizeFlight(offer);if(!flight)continue;
     const token=input.stage==='outbound'?offer.departure_token:offer.booking_token;
-    if(typeof token==='string'&&token.length<20000){const id=crypto.randomUUID();saved.records[id]={token,context,nextStage:input.stage==='outbound'?'returns':'details',expires:now+TTL};flight.selection=id;}
+    if(typeof token==='string'&&token.length<20000){const id=crypto.randomUUID();saved.records[id]={token,context:{...context,selectedDestination:input.stage==='outbound'?flight.segments.at(-1)?.destination:context.selectedDestination},nextStage:input.stage==='outbound'?'returns':'details',expires:now+TTL};flight.selection=id;}
     body.flights.push(flight);
    }
   }
+  if(body.flights)body.flights.sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);
+  if(body.options)body.options.sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);
   saved.cache[cacheKey]={body,expires:now+TTL};await this.storage.put('state',saved);
   return response(body);
  }catch(e){const code=e instanceof SafeError?e.message:'SEARCH_FAILED';await this.storage.put('lastFailure',{code,time:new Date().toISOString()});return response({error:code},e instanceof SafeError?e.status:503);}}
