@@ -1,4 +1,4 @@
 {
   "release": "0.1.24",
-  "reason": "Guarded 0.1.24 Worker deploy plus new required live /health version/enabled/configured verification; no provider calls"
+  "reason": "Diagnose isolated Worker 0.1.24 deploy with automatic sanitized status committed to branch; no user screenshots or provider searches"
 }
