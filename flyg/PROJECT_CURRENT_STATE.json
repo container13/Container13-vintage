@@ -13,7 +13,7 @@
     "integrity": "ALL16_HTTPS_ASSETS_SHA256_MATCH"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "UNVERIFIED",
     "targetRelease": "0.1.24",
     "goal": "Alps resort selector mapped to airports; provider-side airline exclusion; remove app 20/hour and 180/month caps while retaining Free plan account check. Static tests and deployment NOT YET VERIFIED.",
     "plan": [
@@ -23,7 +23,7 @@
       "Source fee intervals translated and shown; eligibility and exact bag-inclusive total still UNKNOWN"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "2026-11-14 commits: resort selector c18b1c5, multi-airport exact date dc772e2, airline backend 49e9d53, frontend 58eb877, free-only quota 36da88d, tests cf2ce6d. GitHub commits only. Run Node worker tests and browser syntax checks, verify SerpApi airline filter on calendar engine without paid calls, fix defects, bump version/manifest/SW, deploy and device verify before promotion. No live provider calls made in this sequence.",
+    "resumeInstruction": "2026-11-14: added isolated GitHub Actions workflow .github/workflows/flyg-resort-static-check.yml at d87dbaad21a51a6013ae29b34c739251ebccc9f9. GitHub fetch_commit_workflow_runs returned [] and commit status [] immediately afterward; DO NOT claim CI PASS. Run workflow and inspect jobs/logs. Need resolve potential provider calendar exclude_airlines support, test frontend resort mappings and all-airports batching. Version bump/deploy/device verification still pending. No paid or live SerpApi searches made.",
     "rollbackCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
   },
   "currentWork": {
