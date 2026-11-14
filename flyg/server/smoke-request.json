@@ -1,1 +1,1 @@
-{"version":"0.1.11","attempt":1,"purpose":"Use actual deployed endpoint; no Cloudflare account discovery permission required","maxRequests":3}
+{"version":"0.1.21","mode":"calendar","maxRequests":2}

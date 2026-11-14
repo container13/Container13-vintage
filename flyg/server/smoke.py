@@ -8,8 +8,22 @@ def main():
     assert url=='https://flyg-search-api.mangaj73.workers.dev'
     PHASE='health'
     with urllib.request.urlopen(url+'/health',timeout=30) as r:health=json.load(r)
-    assert health=={'version':'0.1.11','configured':True,'enabled':True}
+    assert health['configured'] is True and health['enabled'] is True
     print('Runtime endpoint:',url)
+    config=json.load(open('flyg/server/smoke-request.json'))
+    if config.get('mode')=='calendar':
+        assert health['version']=='0.1.21'
+        for destination in ['BGY','ZRH,GVA,INN']:
+            PHASE='calendar'
+            query={'stage':'calendar','destination':destination,'from':'2027-03-13','to':'2027-03-21','nights':4}
+            req=urllib.request.Request(url+'/search',data=json.dumps(query).encode(),headers={'Origin':'https://container13.se','Content-Type':'application/json'})
+            with urllib.request.urlopen(req,timeout=90) as r:data=json.load(r)
+            assert data['stage']=='calendar' and data['adults']==2 and data['currency']=='SEK'
+            assert data['prices']
+            assert all('2027-03-13'<=row['outbound']<='2027-03-21' and ( __import__('datetime').date.fromisoformat(row['return'])-__import__('datetime').date.fromisoformat(row['outbound'])).days==4 for row in data['prices'])
+            print('PASS calendar',destination,'dated quotes',len(data['prices']),'first departure',min(row['outbound'] for row in data['prices']),'minimum',min(row['quotedPriceSEK'] for row in data['prices']),'cached',data['cached'])
+        print('PASS bounded calendar smoke; two requests; fixed4nights/two adults/SEK')
+        return
     query={'stage':'outbound','destination':'ZRH','outbound':'2027-03-14','return':'2027-03-18'}
     count=0
     for stage in ['outbound','returns','details']:
