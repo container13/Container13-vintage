@@ -29,3 +29,7 @@ test('quota stop preserves unsearched airport for continuation and keeps prior d
  ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);assert.deepEqual(calls,['ZRH','GVA','INN']);assert.ok(ids.liveResults.children.some(n=>/gratiskvot/.test(n.textContent)));
  blocked=false;ids.liveResults.querySelectorAll('button').find(n=>n.textContent==='Fortsätt söka återstående flygplatser').listeners.click[0]();await settle(ids);assert.equal(calls[3],'INN');assert.equal(calls.filter(x=>x==='ZRH').length,1);assert.equal(calls.filter(x=>x==='GVA').length,1);
 });
+
+test('editing nights updates visible hint and selected date window immediately',()=>{
+ const ids=fixture(async()=>{throw Error('editing must not query provider');});ids.tripWeek.value='13';ids.tripWeek.listeners.change[0]();ids.nights.value='3';ids.nights.listeners.input[0]();assert.match(ids.weekHint.textContent,/2027-03-27–2027-04-04 · 3 nätter/);assert.equal(ids.liveReturn.value,'2027-03-30');
+});

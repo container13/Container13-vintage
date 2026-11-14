@@ -20,7 +20,7 @@ function datesFromWeek(){
  try{const w=selectedWindow();if(mode.value==='week'){start.value=w.from;end.value=w.firstReturn;}document.getElementById('weekHint').textContent=mode.value==='week'?`Avresa ${w.from}–${w.to} · ${w.nights} nätter. Lördagen före veckan ingår.`:`Exakta datum: ${start.value}–${end.value}.`;}
  catch{document.getElementById('weekHint').textContent='Kontrollera vecka och antal nätter.';}
 }
-for(const control of [week,nightsInput,year])control.addEventListener('change',()=>{mode.value='week';datesFromWeek();});
+for(const control of [week,nightsInput,year])control.addEventListener(control===nightsInput?'input':'change',()=>{mode.value='week';datesFromWeek();});
 mode.addEventListener('change',datesFromWeek);
 for(const control of [start,end])control.addEventListener('input',()=>{mode.value='exact';datesFromWeek();});
 datesFromWeek();
