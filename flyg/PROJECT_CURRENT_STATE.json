@@ -9,13 +9,13 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.14",
+    "candidate": "0.1.15",
     "integrity": "HTTPS_ALL_15_RELEASE_ASSETS_BYTE_MATCH_PASS; SW_15_SHELL_DIGESTS_PASS"
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "0.1.14",
-    "goal": "All relevant airports wired to live search in bounded batches; cheapest-first with unknown baggage separated",
+    "targetRelease": "0.1.15",
+    "goal": "0.1.15 deployed; browser running real23-airport query in8 batches, cheapest-first verification pending",
     "plan": [
       "Public0.1.14 browser upgrade from0.1.11 PASS",
       "Outbound -> selected return -> KLM booking details PASS; cached repeat PASS",
@@ -38,8 +38,8 @@
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
       "scope": "Only flyg/ subtree; other project bytes unchanged",
-      "sourceCommit": "b16c882093bbd95c3cdce8caff5c3adb1df804d1",
-      "deploymentCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
+      "sourceCommit": "835afc19587ae30579ea7fe699d8bbb3e5870ab9",
+      "deploymentCommit": "e69c5aa57da461881e04ae84f40c40dd47675578"
     },
     "secrets": "NONE_COMMITTED",
     "secretCollection": {
@@ -52,7 +52,7 @@
     "runtimeHosting": {
       "target": "flyg-search-api",
       "url": "https://flyg-search-api.mangaj73.workers.dev",
-      "version": "0.1.14",
+      "version": "0.1.15",
       "status": "DEPLOYED_ENABLED; BROWSER_END_TO_END_PASS",
       "plan": "WORKERS_FREE_USER_SCREENSHOT_CONFIRMED",
       "run": 43563231253,
@@ -134,7 +134,7 @@
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "Browser existing0.1.11 shell auto-updated to0.1.14; installed iPhone0.1.14 not tested",
     "pwa": "PREVIOUS_IPHONE_INSTALL_OFFLINE_AND_0.1.10_UPGRADE_PASS; BROWSER_0.1.11_TO_0.1.14_UPGRADE_PASS; IPHONE_0.1.14_PENDING",
-    "deployedAssets": "0.1.14 all15 HTTPS release assets SHA256 byte-match PASS",
+    "deployedAssets": "0.1.15 all15 HTTPS release asset SHA256 byte-match PASS",
     "providerResearch": "2026-11-14 official eligibility, pricing and agreement checked; report flyg/FLIGHT_DATA_ACCESS.md",
     "probe": "probe-0.1.0: 5 mock guard tests PASS; missing key zero calls PASS",
     "fareDetails": {
@@ -168,7 +168,7 @@
     "runtimeCandidate": {
       "version": "0.1.14",
       "commit": "317309aa8925954222ad6bd58c8bbf7e64a68d71",
-      "tests": "13_NODE_BACKEND_TESTS_PASS; 9_JOURNEY_CASES_PASS; 5_UPDATE_TESTS_PASS; SW_REGRESSION_PASS",
+      "tests": "15 backend tests PASS; journey/updater/SW regression suites PASS",
       "deployment": "DEPLOYED_ENABLED",
       "browser": "OUTBOUND_RETURNS_BOOKING_DETAILS_AND_CACHED_REPLAY_PASS",
       "device": "0.1.14_IPHONE_PENDING"
