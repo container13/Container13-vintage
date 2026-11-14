@@ -13,9 +13,9 @@
     "integrity": "HTTPS_ALL_14_ASSETS_BYTE_MATCH_PASS; EMBEDDED_SHA256_PASS"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IN_PROGRESS",
     "targetRelease": "0.1.10",
-    "goal": "Research complete: branded 23kg offers conditionally supported; exact KLM API bag-inclusive price remains unknown",
+    "goal": "Implement staged live search with existing Actions credentials and isolated Free Cloudflare Worker; protected key, persistent quotas and unknown-baggage state",
     "plan": [
       "Use option-specific fare and baggage evidence when present; schema supports it but KLM response did not",
       "Never treat bags or exclude_basic as checked23kg guarantee",
@@ -28,7 +28,7 @@
   "currentWork": {
     "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected. Recurring zero-cost candidate SerpApi identified: official Free 250 monthly requests and flight-comparison use case documented. Google Flights scraping intermediary, not official Google API; no live probe yet. Limited trial-only services excluded. User screenshots confirm SerpApi Free account and successful Playground ARN-ZRH search for 2027-03-14/18 with two adults selected; exact total and checked bag weight not verified. Prepared probe-0.1.0 and five guard tests PASS; missing key sends zero requests. Live GitHub Actions run 43559215595 PASS: Free plan verified, 248 free searches before call, exactly one fresh ARN-ZRH search, 11 priced results. Key remained in Actions secret. Total-for-two/23kg/transfer still unverified. Details run 43559500002 PASS: cached base plus return and booking requests, quota 247->245. Pinned one-adult comparison run 43559664340 PASS, quota245->244, KLM1840 vs two-adult3680 on identical flights. Booking policies contain only 1 free carry-on. 23kg NOT VERIFIED.",
     "next": "Implement protected zero-cost runtime search and per-offer baggage evidence/UNKNOWN fallback. Do not promise full bag-inclusive comparison or automatically apply manual Standard upgrade.",
-    "blocked": true
+    "blocked": false
   },
   "pausedWork": {},
   "dependencies": {
