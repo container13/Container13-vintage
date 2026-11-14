@@ -89,7 +89,7 @@ for(const id of ['baggage','cabinBoots','personalBag'])document.getElementById(i
 function scheduleRequirements(data){
  return {stage:data.stage,outbound:data.context.outbound,allowConnections:document.getElementById('connections').value!=='direct',airportCutoff:document.getElementById('arrival').value.padStart(2,'0')+':00',hotelCutoff:document.getElementById('hotelArrival').value,maxLayoverMinutes:Number(document.getElementById('maxLayover').value)*60};
 }
-for(const id of ['arrival','hotelArrival','connections','maxLayover'])document.getElementById(id).addEventListener('change',()=>{if(history.length)render(history.at(-1));});
+for(const id of ['arrival','hotelArrival','connections','maxLayover'])document.getElementById(id).addEventListener(id==='maxLayover'?'input':'change',()=>{if(history.length)render(history.at(-1));});
 function segments(card,flight){for(const s of flight.segments){card.append(el('p',`${s.origin||'?'} → ${s.destination||'?'} · ${s.number||s.airline||'Flyg'}`),el('p',`${s.departureLocal||'?'} → ${s.arrivalLocal||'?'} (lokala tider)`,'muted'));}}
 function render(data){
  const ceiling=Number(maxPrice.value);
