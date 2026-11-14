@@ -1,6 +1,7 @@
 """Read-only deployment feasibility check. Never print credentials or account responses."""
 import json
 import os
+import urllib.error
 import urllib.request
 
 def main():
@@ -13,6 +14,8 @@ def main():
     try:
         with urllib.request.urlopen(req,timeout=30) as response:
             data=json.load(response)
+    except urllib.error.HTTPError as error:
+        print(f'BLOCKED: Cloudflare subscriptions HTTP {error.code}; no deployment attempted'); return 1
     except Exception:
         print('BLOCKED: cannot verify Cloudflare subscriptions with existing token; no deployment attempted'); return 1
     if data.get('success') is not True or not isinstance(data.get('result'),list):

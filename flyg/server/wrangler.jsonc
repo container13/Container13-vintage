@@ -1,0 +1,11 @@
+{
+  "name": "flyg-search-api",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "keep_vars": true,
+  "vars": {"FLYG_ENABLED":"false"},
+  "observability": {"enabled":false},
+  "durable_objects": {"bindings":[{"name":"SEARCH_GATE","class_name":"SearchGate"}]},
+  "migrations": [{"tag":"v1","new_sqlite_classes":["SearchGate"]}]
+}

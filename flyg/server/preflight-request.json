@@ -1,1 +1,1 @@
-{"version":"0.1.11","purpose":"Read-only free hosting feasibility check; no provider queries or deployment","requested":"2026-11-14"}
+{"version":"0.1.11","purpose":"Read-only diagnosis: distinguish subscription permission failure from network failure; no provider queries or deployment","requested":"2026-11-14","attempt":2}

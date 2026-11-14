@@ -1,0 +1,112 @@
+/* Flyg runtime 0.1.11. Secrets and provider selection tokens stay server-side. */
+export const VERSION='0.1.11';
+const ORIGIN='https://container13.se';
+const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
+const TTL=30*60*1000;
+export class SafeError extends Error {constructor(code,status=400){super(code);this.status=status;}}
+function response(data,status=200){return Response.json(data,{status,headers:{'Cache-Control':'no-store','Access-Control-Allow-Origin':ORIGIN,'Vary':'Origin','X-Content-Type-Options':'nosniff'}});}
+export function validate(input,now=Date.now()){
+ if(!input||typeof input!=='object'||Array.isArray(input))throw new SafeError('INVALID_REQUEST');
+ if(input.stage==='returns'||input.stage==='details'){
+  if(typeof input.selection!=='string'||! /^[a-f\d-]{36}$/.test(input.selection))throw new SafeError('INVALID_SELECTION');
+  return {stage:input.stage,selection:input.selection};
+ }
+ if(input.stage!=='outbound'||!AIRPORTS.has(input.destination))throw new SafeError('INVALID_DESTINATION');
+ const dates=[input.outbound,input.return];
+ if(!dates.every(s=>typeof s==='string'&&/^\d{4}-\d\d-\d\d$/.test(s)&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s))throw new SafeError('INVALID_DATES');
+ const start=Date.parse(dates[0]),end=Date.parse(dates[1]);
+ if(start<Math.floor(now/86400000)*86400000||end<=start||end-start>30*86400000||end-now>365*86400000)throw new SafeError('INVALID_DATES');
+ return {stage:'outbound',destination:input.destination,outbound:dates[0],return:dates[1],direct:input.direct===true};
+}
+export function freeAccount(data){
+ if(data?.plan_id!=='free'||data.plan_monthly_price!==0||!Number.isInteger(data.plan_searches_left)||data.plan_searches_left<=0)throw new SafeError('FREE_QUOTA_UNAVAILABLE',429);
+ return data.plan_searches_left;
+}
+function price(value){return typeof value==='number'&&Number.isFinite(value)&&value>0?value:null;}
+function short(value){return typeof value==='string'?value.slice(0,250):null;}
+function policies(value){return Array.isArray(value)?value.filter(x=>typeof x==='string').slice(0,12).map(short):[];}
+export function normalizeFlight(offer){
+ if(!Array.isArray(offer.flights)||!offer.flights.length||price(offer.price)===null)return null;
+ return {quotedPriceSEK:price(offer.price),priceScope:'PROVIDER_QUOTE_FOR_REQUESTED_TWO_ADULTS',type:short(offer.type),baggageStatus:'UNVERIFIED',hotelArrivalStatus:'UNVERIFIED',
+  segments:offer.flights.slice(0,8).map(s=>({number:short(s.flight_number),airline:short(s.airline),origin:short(s.departure_airport?.id),destination:short(s.arrival_airport?.id),departureLocal:short(s.departure_airport?.time),arrivalLocal:short(s.arrival_airport?.time)}))};
+}
+export function normalizeBooking(data){
+ const result=[];
+ for(const row of (data.booking_options||[]).slice(0,30)){
+  // Separate-ticket prices must never masquerade as a combined roundtrip total.
+  const o=row.together;if(!o||row.separate_tickets===true||price(o.price)===null)continue;
+  result.push({seller:short(o.book_with),fare:short(o.option_title),quotedPriceSEK:price(o.price),baggagePolicies:policies(o.baggage_prices),extensions:policies(o.extensions),baggageStatus:'UNVERIFIED',hotelArrivalStatus:'UNVERIFIED'});
+ }
+ // Free-text policy does not establish every passenger/direction's allowance.
+ // Keep UNKNOWN until a structured, offer-bound proof exists for that scope.
+ return {options:result,routeBaggagePolicies:Object.fromEntries(['together','departing','returning'].map(k=>[k,policies(data.baggage_prices?.[k])]))};
+}
+export async function provider(path,params,key,fetcher=fetch){
+ const url=new URL('https://serpapi.com/'+path);url.search=new URLSearchParams({...params,api_key:key});
+ let r;try{r=await fetcher(url,{redirect:'error',signal:AbortSignal.timeout(25000)});}catch{throw new SafeError('PROVIDER_UNAVAILABLE',502);}
+ if(!r.ok)throw new SafeError('PROVIDER_UNAVAILABLE',502);
+ let data;try{data=await r.json();}catch{throw new SafeError('PROVIDER_UNAVAILABLE',502);}
+ if(data.error)throw new SafeError('PROVIDER_UNAVAILABLE',502);
+ return data;
+}
+export default {async fetch(req,env){
+ const url=new URL(req.url);
+ if(url.pathname==='/health'&&req.method==='GET')return response({version:VERSION,configured:Boolean(env.FLYG_SERPAPI_KEY),enabled:env.FLYG_ENABLED==='true'});
+ if(req.headers.get('Origin')!==ORIGIN)return response({error:'ORIGIN_NOT_ALLOWED'},403);
+ if(req.method==='OPTIONS')return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Methods':'POST','Access-Control-Allow-Headers':'Content-Type','Vary':'Origin'}});
+ if(url.pathname!=='/search'||req.method!=='POST')return response({error:'NOT_FOUND'},404);
+ if(env.FLYG_ENABLED!=='true'||!env.FLYG_SERPAPI_KEY)return response({error:'SEARCH_NOT_ENABLED'},503);
+ if(!req.headers.get('Content-Type')?.startsWith('application/json'))return response({error:'INVALID_REQUEST'},400);
+ try{
+  const raw=await req.text();if(raw.length>2048)throw new SafeError('INVALID_REQUEST');
+  let input;try{input=validate(JSON.parse(raw));}catch(e){throw e instanceof SafeError?e:new SafeError('INVALID_REQUEST');}
+  const stub=env.SEARCH_GATE.get(env.SEARCH_GATE.idFromName('flyg-global-v1'));
+  return await stub.fetch(new Request('https://internal/search',{method:'POST',body:JSON.stringify(input)}));
+ }catch(e){return response({error:e instanceof SafeError?e.message:'SEARCH_FAILED'},e instanceof SafeError?e.status:503);}
+}};
+// One persistent object owns the cache, selection records and ALL runtime quotas.
+// Queue holds through provider I/O, preventing concurrent quota/account races.
+export class SearchGate {
+ constructor(state,env){this.storage=state.storage;this.env=env;this.tail=Promise.resolve();}
+ fetch(req){const work=this.tail.then(()=>this.run(req));this.tail=work.catch(()=>{});return work;}
+ async run(req){try{
+  const input=validate(await req.json());const now=Date.now();
+  const saved=await this.storage.get('state')||{schema:1,month:'',monthUsed:0,hour:'',hourUsed:0,records:{},cache:{}};
+  if(saved.schema!==1)throw new SafeError('STATE_UNAVAILABLE',503);
+  for(const k of ['records','cache'])for(const [id,v]of Object.entries(saved[k]))if(v.expires<=now)delete saved[k][id];
+  let context=input,extra={};
+  if(input.stage!=='outbound'){
+   const selection=saved.records[input.selection];
+   if(!selection||selection.nextStage!==input.stage)throw new SafeError('SELECTION_EXPIRED');
+   context=selection.context;extra={[input.stage==='returns'?'departure_token':'booking_token']:selection.token};
+  }
+  const cacheKey=JSON.stringify(input);const hit=saved.cache[cacheKey];
+  if(hit)return response({...hit.body,cached:true});
+  const month=new Date(now).toISOString().slice(0,7),hour=new Date(now).toISOString().slice(0,13);
+  if(saved.month!==month){saved.month=month;saved.monthUsed=0;}
+  if(saved.hour!==hour){saved.hour=hour;saved.hourUsed=0;}
+  // Global caps include failures, count before I/O, persist across deploy/restarts.
+  if(saved.monthUsed>=180||saved.hourUsed>=20)throw new SafeError('APP_QUOTA_REACHED',429);
+  if(Object.keys(saved.records).length>500)throw new SafeError('APP_BUSY',429);
+  const account=await provider('account.json',{},this.env.FLYG_SERPAPI_KEY);
+  const remaining=freeAccount(account);
+  saved.monthUsed++;saved.hourUsed++;await this.storage.put('state',saved);
+  const query={engine:'google_flights',departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,type:'1',adults:'2',currency:'SEK',hl:'en',gl:'se',stops:context.direct?'1':'0',no_cache:'false',...extra};
+  const data=await provider('search.json',query,this.env.FLYG_SERPAPI_KEY);
+  if(data.search_metadata?.status!=='Success')throw new SafeError('PROVIDER_UNAVAILABLE',502);
+  if(input.stage==='outbound')for(const [key,value]of Object.entries({departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,adults:'2',currency:'SEK'}))if(String(data.search_parameters?.[key])!==value)throw new SafeError('PROVIDER_CONTEXT_MISMATCH',502);
+  const body={version:VERSION,stage:input.stage,context,adults:2,currency:'SEK',fetchedAt:new Date(now).toISOString(),expiresAt:new Date(now+TTL).toISOString(),cached:false,remainingAtLastCheck:remaining-1};
+  if(input.stage==='details')Object.assign(body,normalizeBooking(data));
+  else{
+   body.flights=[];
+   for(const offer of [...(data.best_flights||[]),...(data.other_flights||[])].slice(0,30)){
+    const flight=normalizeFlight(offer);if(!flight)continue;
+    const token=input.stage==='outbound'?offer.departure_token:offer.booking_token;
+    if(typeof token==='string'&&token.length<20000){const id=crypto.randomUUID();saved.records[id]={token,context,nextStage:input.stage==='outbound'?'returns':'details',expires:now+TTL};flight.selection=id;}
+    body.flights.push(flight);
+   }
+  }
+  saved.cache[cacheKey]={body,expires:now+TTL};await this.storage.put('state',saved);
+  return response(body);
+ }catch(e){return response({error:e instanceof SafeError?e.message:'SEARCH_FAILED'},e instanceof SafeError?e.status:503);}}
+}
