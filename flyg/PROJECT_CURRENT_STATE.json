@@ -15,7 +15,7 @@
   "workCheckpoint": {
     "status": "UNVERIFIED",
     "targetRelease": "0.1.24",
-    "goal": "0.1.24 candidate committed. Worker version aligned and guarded deploy re-requested; deployment success unverified. Public branch remains 0.1.22.",
+    "goal": "Worker deploy CLI stages confirmed SUCCESS by GitHub persisted diagnostic at source commit a0abe56: deployDisabled, injectSecret, enableSearch all success; GitHub runner /health HTTP403. Frontend 0.1.24 not yet public.",
     "plan": [
       "Ski default19.9kg per person;20kg qualifies",
       "Separate cabin boot bag and personal item selected by default",
@@ -23,7 +23,7 @@
       "Source fee intervals translated and shown; eligibility and exact bag-inclusive total still UNKNOWN"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "2026-11-14: GitHub fetch of public ccc-demo-public-test/flyg/version.js shows 0.1.22, source flyg-alperna-init/flyg/version.js 0.1.24. Worker source VERSION was stale 0.1.22, fixed to 0.1.24 at 61d15b6; guarded deploy-request.json retriggered at 43b8002. GitHub workflow runs/status endpoint returned [] for previous request, and public web URLs inaccessible to web tool. Do not claim deploy success or promote. Verify GitHub Actions flyg-runtime-deploy run and Worker health first, then copy ONLY flyg frontend subtree to ccc-demo-public-test with exact asset hash checks; keep unrelated projects untouched. No live SerpApi calls.",
+    "resumeInstruction": "2026-11-14: flyg/server/deploy-diagnostics.json now shows all three Wrangler deploy/secret/enable steps SUCCESS and only health FAILURE HTTP403. Root cause of failed Actions job is GitHub runner health request, not Wrangler deployment. Workflow updated at 117adf3 to make health diagnostic non-blocking while still reporting failure; no redeploy triggered by workflow edit. Do not claim Worker live health/browser PASS. Public branch frontend still 0.1.22; publish frontend separately after appropriate checks. No further repeated Worker deploys just to retry health.",
     "rollbackCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
   },
   "currentWork": {
