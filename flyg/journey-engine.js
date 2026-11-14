@@ -53,6 +53,29 @@ function checkSchedule(flight,requirements){
  }
  return {status:'NOT_REJECTED',reasons:[],hotelArrivalStatus:'UNVERIFIED'};
 }
+// Published road journey estimates, not booked transfers or live traffic.
+const cerviniaRoad={TRN:{minutes:102,source:'https://cervinia.it/en/'},MXP:{minutes:136,source:'https://cervinia.it/en/'},LIN:{minutes:149,source:'https://cervinia.it/en/'},BGY:{minutes:170,source:'https://taxicervinia.com/en'}};
+function resortArrival(flight,requirements){
+ const unknown=reason=>({status:'UNKNOWN',reason});
+ if(requirements.resort!=='Cervinia')return unknown('Källbelagd transfertid saknas för vald skidort.');
+ if(requirements.transport!=='road')return unknown('Kollektivtrafikens avgångar och byten behöver kontrolleras.');
+ const last=flight?.segments?.at(-1),route=cerviniaRoad[last?.destination];
+ if(!route)return unknown('Källbelagd transfertid saknas från ankomstflygplatsen.');
+ const raw=last.arrivalLocal;
+ if(typeof raw!=='string'||!/^\d{4}-\d\d-\d\d[ T]\d\d:\d\d$/.test(raw))return unknown('Lokal ankomsttid saknas.');
+ const normalized=raw.replace(' ','T'),landing=Date.parse(normalized+':00Z');
+ if(!Number.isFinite(landing)||new Date(landing).toISOString().slice(0,16)!==normalized)return unknown('Ogiltig ankomsttid.');
+ const values=[requirements.airportMinutes,requirements.roadBufferMinutes,requirements.checkinMinutes];
+ if(values.some(v=>!Number.isFinite(v)||v<0||v>360))return unknown('Kontrollera tiderna för bagage, marginal och incheckning.');
+ const date=normalized.slice(0,10);
+ const clock=value=>/^\d\d:\d\d$/.test(value||'')?Date.parse(date+'T'+value+':00Z'):NaN;
+ const target=clock(requirements.dinnerTarget),latest=clock(requirements.hotelCutoff);
+ if(!Number.isFinite(target)||!Number.isFinite(latest)||target>latest)return unknown('Middagstiden måste vara senast den sista hotellankomsten.');
+ const hotel=landing+(requirements.airportMinutes+route.minutes+requirements.roadBufferMinutes)*60000;
+ const ready=hotel+requirements.checkinMinutes*60000;
+ const format=t=>new Date(t).toISOString().slice(0,16).replace('T',' ');
+ return {status:hotel>latest?'TOO_LATE':ready>target?'LATE':'ON_TIME',hotelLocal:format(hotel),readyLocal:format(ready),roadMinutes:route.minutes,airportMinutes:requirements.airportMinutes,roadBufferMinutes:requirements.roadBufferMinutes,checkinMinutes:requirements.checkinMinutes,source:route.source,verification:'ESTIMATE_ONLY',transport:'Bil eller privat transfer; tillgänglighet och pris ej bekräftade'};
+}
 function weekWindow(year,week,nights){
  if(!Number.isInteger(year)||year<2026||year>2100||!Number.isInteger(week)||week<1||!Number.isInteger(nights)||nights<1||nights>30)throw new RangeError('Ogiltig vecka eller antal nätter');
  const monday=y=>{const d=new Date(Date.UTC(y,0,4));d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d;};
@@ -60,6 +83,6 @@ function weekWindow(year,week,nights){
  mon.setUTCDate(mon.getUTCDate()+(week-1)*7);const day=offset=>new Date(mon.getTime()+offset*86400000).toISOString().slice(0,10);
  return {from:day(-2),to:day(6),monday:day(0),firstReturn:day(-2+nights),nights};
 }
-return Object.freeze({evaluate,weekWindow,checkSchedule});
+return Object.freeze({evaluate,weekWindow,checkSchedule,resortArrival});
 });
 

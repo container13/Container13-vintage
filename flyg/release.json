@@ -1,5 +1,5 @@
 {
-  "release": "0.1.31",
+  "release": "0.1.32",
   "updated": "2026-11-14",
   "entrypoints": [
     "index.html"
@@ -22,5 +22,5 @@
     "live-search.js",
     "selection-feedback.js"
   ],
-  "status": "PENDING_TIME_FILTER_DEVICE"
+  "status": "PENDING_RESORT_ARRIVAL_DEVICE"
 }
