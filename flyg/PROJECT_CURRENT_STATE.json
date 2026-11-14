@@ -9,12 +9,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.5",
+    "candidate": "0.1.6",
     "integrity": "PENDING"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
-    "targetRelease": "0.1.5",
+    "targetRelease": "0.1.6",
     "goal": "Validate mobile flight-search prototype and connect authorized data provider",
     "plan": [
       "Static/UI checks and device smoke test (PENDING)",
@@ -26,8 +26,8 @@
     "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified."
   },
   "currentWork": {
-    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending. UI now exposes connection preference and hotel cutoff; readback PASS. Added pure journey-engine.js and 9 synthetic Node test cases; GitHub readback PASS, tests NOT EXECUTED. Hotel arrival cutoff selector now supports half-hour steps; GitHub readback PASS. Added one central release.json manifest and auto-update.js controller to index; GitHub readback PASS.",
-    "next": "Run automated JS tests and UI integration checks; verify updater under deployed hosting and on iPhone; integrate actual authorized flight/ground data.",
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending. UI now exposes connection preference and hotel cutoff; readback PASS. Added pure journey-engine.js and 9 synthetic Node test cases; GitHub readback PASS, tests NOT EXECUTED. Hotel arrival cutoff selector now supports half-hour steps; GitHub readback PASS. Added one central release.json manifest and auto-update.js controller to index; GitHub readback PASS. Added manifest, SVG icon, service worker and registration for PWA; GitHub readback PASS.",
+    "next": "Create real PNG icons (especially iOS), run tests, verify SW update lifecycle/offline on deployed HTTPS and installed iPhone; flight API still unselected.",
     "blocked": false
   },
   "pausedWork": {},
@@ -91,7 +91,8 @@
     "flightAPI": "NOT_CONNECTED",
     "engine": "COMMITTED_READBACK_ONLY",
     "tests": "NOT_EXECUTED",
-    "updateController": "COMMITTED_UNTESTED"
+    "updateController": "COMMITTED_UNTESTED",
+    "pwa": "SOURCE_ONLY_NOT_DEVICE_TESTED"
   },
   "airportCatalog": {
     "version": "2026-11-14",
