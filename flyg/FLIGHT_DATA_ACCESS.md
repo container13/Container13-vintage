@@ -54,3 +54,17 @@ Sources:
 - https://letsfg.co/developers/docs/getting-started/index.html
 
 Next user step: create SerpApi Free account; establish secure server-side key handling and run the single proof before app integration. Runtime stays 0.1.10.
+
+## Current verified conclusion — 2026-11-14 (supersedes onboarding/pending statements above)
+- Existing SerpApi Free account and Actions secret FLYG_SERPAPI_KEY already work. Do not ask for account/key again. Live proof and price-scope runs are recorded in PROJECT_HANDOFF_CURRENT.md.
+- Two-adult exact KLM ARN-ZRH 14–18 March2027 base fare3680SEK verified by pinned one-adult1840 comparison. API booking response only confirmed carry-on.
+- Expedia.se review manually confirmed Standard5680SEK total,2840SEK per adult, first checked bag23kg included; same flights06:25–11:00 outbound and14:20–19:05 return via AMS. No booking. This is a manually observed quote, not automated API output and not proof of hotel transfer feasibility.
+- Official SerpApi booking-options documentation DOES demonstrate multiple fare brands with option_title, price and option-specific baggage_prices, including an example Economy Plus with first checked bag up to23kg free. Therefore do not assert that the API never returns checked baggage or branded fares.
+- However, no documented universal checked-bag filter, specific KLM Standard selector, or Expedia fare-upgrade endpoint was found in the reviewed SerpApi API reference. bags counts carry-on. exclude_basic concerns carry-on and seat selection, not23kg. selected_flights_json pins flights, not fare brand. Existing KLM response does not satisfy the checked-bag requirement. Repeating identical requests is not justified by this documentation review.
+- Feasibility result: opportunistic automatic bag-inclusive offers are supported by the schema; reliable complete bag-inclusive comparison for all requested flights is NOT proven. No paid/new provider selected.
+- Integration rule: retain price, passenger count, currency, quote time, exact fare/seller identity and option-specific baggage evidence. Only label23kg-inclusive if evidence proves weight/allowance for each traveler and both directions of that exact offer. Do not apply a carrier's generic Standard policy to an unnamed base fare. Do not add the manually observed2000SEK difference to future quotes. Missing scope/weight/direction or ambiguous add-on cost remains UNKNOWN.
+- Fallback display: "Bagagepris ej verifierat"; exclude such offers from a ranking labelled complete23kg-inclusive total. User can open supplier to confirm. Football exception remains.
+- No runtime UI/backend implemented or deployed by this research update. Next implementation: protected zero-cost live-search endpoint with quota protection, exact offer normalization and explicit unknown-baggage state; runtime remains0.1.10.
+Sources checked2026-11-14:
+https://serpapi.com/google-flights-api (bags; exclude_basic; selected_flights_json)
+https://serpapi.com/google-flights-booking-options (option_title; option-specific baggage_prices; Economy Plus23kg example)
