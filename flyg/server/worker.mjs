@@ -4,7 +4,7 @@ const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
 const AIRLINES=new Set('FR W6 U2 D8 DY SK LH KL LX OS'.split(' '));
-function validateExcluded(value){if(value===undefined)return '';if(!Array.isArray(value)||value.length>AIRLINES.size||new Set(value).size!==value.length||value.some(code=>!AIRLINES.has(code)))throw new SafeError('INVALID_AIRLINES');return [...value].sort().join(',');}
+function validateExcluded(value){if(value===undefined)return '';const codes=typeof value==='string'?(value===''?[]:value.split(',')):value;if(!Array.isArray(codes)||codes.length>AIRLINES.size||new Set(codes).size!==codes.length||codes.some(code=>!AIRLINES.has(code)))throw new SafeError('INVALID_AIRLINES');return [...codes].sort().join(',');}
 export class SafeError extends Error {constructor(code,status=400){super(code);this.status=status;}}
 function response(data,status=200){return Response.json(data,{status,headers:{'Cache-Control':'no-store','Access-Control-Allow-Origin':ORIGIN,'Vary':'Origin','X-Content-Type-Options':'nosniff'}});}
 export function validate(input,now=Date.now()){
