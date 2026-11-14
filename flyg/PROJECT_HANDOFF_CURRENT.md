@@ -71,3 +71,8 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Added standalone manifest, SVG app icon, service worker (network-first shell, offline fallback), registration and Apple standalone metadata. Scoped to flyg/; flight API responses and release.json are not cached.
 - iOS-compatible PNG touch icon still needed. Installability, offline, update lifecycle and real iPhone PWA behavior are **not tested**; do not claim installable until verified on HTTPS.
 - Source committed/readback PASS, no deployment.
+
+## Candidate 0.1.7 — selected globe icon
+- Chosen globe-and-airplane image #3 rendered to 180, 192, 512, 1024 PNG files in local work environment.
+- Manifest, Apple touch icon, favicon, SW cache list and release asset list wired to those paths. **Binary PNG files have not been committed to GitHub**; SW install will fail until all assets exist. Do not deploy.
+- Next: GitHub binary upload with blob/tree/commit/ref and tree readback, then PWA tests.
