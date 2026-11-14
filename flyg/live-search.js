@@ -12,11 +12,18 @@ const el=(tag,text,className)=>{const n=document.createElement(tag);if(text!=nul
 const money=v=>new Intl.NumberFormat('sv-SE',{style:'currency',currency:'SEK',maximumFractionDigits:0}).format(v);
 function syncAirports(){const current=airport.value;airport.replaceChildren(...[...document.getElementById('destination').options].map(o=>o.cloneNode(true)));if([...airport.options].some(o=>o.value===current))airport.value=current;}
 syncAirports();airport.value=document.getElementById('destination').value;
-document.querySelectorAll('[name=profile]').forEach(r=>r.addEventListener('change',syncAirports));
+document.querySelectorAll('[name=profile]').forEach(r=>r.addEventListener('change',()=>{syncAirports();datesFromWeek();}));
 document.getElementById('destination').addEventListener('change',e=>{airport.value=e.target.value;});
-function datesFromWeek(){if(start.dataset.edited)return;const year=Number(document.getElementById('year').value),week=Number(document.querySelector('#weeks input:checked')?.value||11);const jan=new Date(Date.UTC(year,0,4));jan.setUTCDate(jan.getUTCDate()-(jan.getUTCDay()+6)%7+(week-1)*7-1);start.value=jan.toISOString().slice(0,10);jan.setUTCDate(jan.getUTCDate()+Number(document.getElementById('nights').value||4));end.value=jan.toISOString().slice(0,10);}
-datesFromWeek();start.addEventListener('input',()=>{start.dataset.edited='true';});end.addEventListener('input',()=>{start.dataset.edited='true';});
-document.getElementById('weeks').addEventListener('change',datesFromWeek);document.getElementById('year').addEventListener('change',datesFromWeek);
+const week=document.getElementById('tripWeek'),nightsInput=document.getElementById('nights'),year=document.getElementById('year'),mode=document.getElementById('searchMode');
+function selectedWindow(){return window.FlygJourney.weekWindow(Number(year.value),Number(week.value),Number(nightsInput.value));}
+function datesFromWeek(){
+ try{const w=selectedWindow();if(mode.value==='week'){start.value=w.from;end.value=w.firstReturn;}document.getElementById('weekHint').textContent=mode.value==='week'?`Avresa ${w.from}–${w.to} · ${w.nights} nätter. Lördagen före veckan ingår.`:`Exakta datum: ${start.value}–${end.value}.`;}
+ catch{document.getElementById('weekHint').textContent='Kontrollera vecka och antal nätter.';}
+}
+for(const control of [week,nightsInput,year])control.addEventListener('change',()=>{mode.value='week';datesFromWeek();});
+mode.addEventListener('change',datesFromWeek);
+for(const control of [start,end])control.addEventListener('input',()=>{mode.value='exact';datesFromWeek();});
+datesFromWeek();
 function button(text,action){const b=el('button',text);b.type='button';b.disabled=busy;b.addEventListener('click',action);return b;}
 function setBusy(value){busy=value;form.setAttribute('aria-busy',String(value));document.getElementById('liveSearch').disabled=value;results.querySelectorAll('button').forEach(b=>b.disabled=value);}
 const errors={ACCOUNT_HTTP_403:'Datakällan nekar servern åtkomst till kontokontrollen (403).',ACCOUNT_HTTP_401:'Datakällan godkänner inte den sparade nyckeln.',SEARCH_HTTP_403:'Datakällan nekar servern åtkomst till flygsökningen (403).',SEARCH_HTTP_429:'Datakällans anropsgräns är nådd. Försök igen senare.',APP_QUOTA_REACHED:'Appens gratiskvot är nådd. Försök igen senare; ingen betaltjänst aktiveras.',FREE_QUOTA_UNAVAILABLE:'Datakällans gratiskvot är slut eller gratisvillkoret kan inte bekräftas.',SELECTION_EXPIRED:'Valet har gått ut. Starta en ny sökning.',PROVIDER_UNAVAILABLE:'Datakällan svarade inte. Försök igen senare.',INVALID_DATES:'Kontrollera datumen. Hemresan ska vara efter utresan, inom 30 nätter och högst ett år framåt.',SEARCH_NOT_ENABLED:'Livesökningen är inte aktiverad ännu.'};
@@ -27,7 +34,7 @@ async function requestData(query){
 async function search(query,trigger=null){
  if(busy)return;
  if(!maxPrice.checkValidity()){status.textContent='Kontrollera maxpriset. Ange ett belopp i steg om 100 kr.';choices.open=true;maxPrice.reportValidity();maxPrice.focus();return;}
- const loading=query.stage==='returns'?'Hämtar hemresor…':query.stage==='details'?'Hämtar biljettvillkor…':'Hämtar flyg…';
+ const loading=query.stage==='returns'?'Hämtar hemresor…':query.stage==='details'?'Hämtar biljettvillkor…':query.stage==='calendar'?'Jämför avresedatum…':'Hämtar flyg…';
  const action=window.FlygSelectionUI.begin(trigger,loading);
  if(!navigator.onLine){const message='Du är offline. Aktuella flyg behöver internet.';status.textContent=message;window.FlygSelectionUI.error(action,message);window.FlygSelectionUI.finish(action);if(!action)status.scrollIntoView({block:'center'});return;}
  setBusy(true);status.textContent=loading;const active=++generation;
@@ -39,12 +46,13 @@ async function search(query,trigger=null){
 }
 async function searchAll(query){
  if(busy)return;if(!navigator.onLine){status.textContent='Du är offline. Aktuella flyg behöver internet.';return;}
- const requested=[...airport.options].map(o=>o.value).filter(code=>code!=='all');
- const data={stage:'outbound',context:{...query,destination:'alla relevanta flygplatser'},adults:2,currency:'SEK',flights:[],fetchedAt:new Date().toISOString(),coverage:{requested,completed:[],failed:[],unsearched:[]}};
+ const requested=airport.value==='all'?[...airport.options].map(o=>o.value).filter(code=>code!=='all'):[airport.value];
+ const calendar=query.stage==='calendar';
+ const data={stage:query.stage,context:{...query,destination:airport.value==='all'?'alla relevanta flygplatser':airport.value},adults:2,currency:'SEK',flights:[],prices:[],fetchedAt:new Date().toISOString(),coverage:{requested,completed:[],failed:[],unsearched:[]}};
  setBusy(true);let index=0;
  try{
   for(;index<requested.length;index+=3){const group=requested.slice(index,index+3);status.textContent=`Söker ${group.join(', ')} · ${Math.min(index+3,requested.length)}/${requested.length} flygplatser…`;
-   try{const part=await requestData({...query,destination:group.join(',')});data.flights.push(...part.flights);data.coverage.completed.push(...group);}
+   try{const part=await requestData({...query,destination:group.join(',')});if(calendar)data.prices.push(...part.prices);else data.flights.push(...part.flights);data.coverage.completed.push(...group);}
    catch(error){data.coverage.failed.push(...group);if(['APP_QUOTA_REACHED','FREE_QUOTA_UNAVAILABLE','ACCOUNT_HTTP_401'].includes(error.message)){data.coverage.unsearched=requested.slice(index+3);data.stopReason=errors[error.message];break;}}
   }
   history.push(data);render(data);window.FlygSelectionUI.reveal(results);status.textContent=data.coverage.failed.length||data.coverage.unsearched.length?'Sökningen är delvis klar. Se vilka flygplatser som saknas i resultatet.':'Alla valda flygplatser har sökts. Billigast först.';
@@ -63,8 +71,8 @@ function render(data){
  const ceiling=Number(maxPrice.value);
  if(!maxPrice.checkValidity())return;
  const withinBudget=items=>items.filter(item=>Number.isFinite(item.quotedPriceSEK)&&item.quotedPriceSEK<=ceiling).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);
- results.replaceChildren();const titles={outbound:'Välj utresa',returns:'Välj hemresa',details:'Biljettpris och villkor'};
- results.append(el('h3',titles[data.stage]),el('p',`ARN ↔ ${data.context.selectedDestination||data.context.destination} · ${data.context.outbound}–${data.context.return} · 2 vuxna`));
+ results.replaceChildren();const titles={calendar:'Välj avresedatum',outbound:'Välj utresa',returns:'Välj hemresa',details:'Biljettpris och villkor'};
+ results.append(el('h3',titles[data.stage]),el('p',`ARN ↔ ${data.context.selectedDestination||data.context.destination} · ${data.context.from||data.context.outbound}–${data.context.to||data.context.return} · 2 vuxna`));
  if(history.length>1)results.append(button('Tillbaka till föregående val',()=>{if(!busy){history.pop();render(history.at(-1));window.FlygSelectionUI.reveal(results);}}));
  results.append(el('p',`Maxpris ${money(ceiling)} totalt för två. Eventuellt okänt bagage tillkommer.`,'muted'));
  const h=history.find(x=>x.stage==='outbound');if(data.stage!=='outbound'&&h)results.append(el('p','Retur och villkor gäller den utresa du valt.','muted'));
@@ -73,7 +81,11 @@ function render(data){
  const needBag=Number(document.getElementById('baggage').value)>0;
  const note=el('p',needBag?'Bagageavgifter visas när de finns. Vikt, båda kabinväskorna och exakt totalpris är ännu inte bekräftade.':'Kontrollera att valda kabinväskor är tillåtna tillsammans, med rätt vikt och mått.');note.className='muted';results.append(note);
  results.append(el('h3',needBag?'Bagagepris ej verifierat – billigaste prisuppgift först':'Billigaste prisuppgift först'));
- if(data.stage==='details'){
+ if(data.stage==='calendar'){
+  results.append(el('p',`${data.context.nights} nätter. Kalenderpriser för två, tur och retur; flygtider och bagage kontrolleras efter datumval.`,'muted'));
+  const affordable=withinBudget(data.prices);if(!affordable.length)results.append(el('p','Inga kalenderpriser inom maxpriset för de sökta flygplatserna.'));
+  for(const row of affordable){const card=el('article',null,'flight-card');card.append(el('h3',`${row.outbound} → ${row.return}`),el('p',`${row.destination} · från ${money(row.quotedPriceSEK)} för två`),button('Visa avgångar',event=>search({stage:'outbound',destination:row.destination,outbound:row.outbound,return:row.return,direct:data.context.direct},event.currentTarget)));results.append(card);}
+ }else if(data.stage==='details'){
   if(!data.options.length)results.append(el('p','Inga säljarpriser kunde verifieras för det här valet. Öppna sökningen hos Google Flights.'));
   const affordable=withinBudget(data.options);if(data.options.length&&!affordable.length)results.append(el('p','Inga biljettpriser inom maxpriset. Höj beloppet för att visa fler, utan ny sökning.'));
   for(const o of affordable){const card=el('article',null,'flight-card');card.append(el('h3',`${o.seller||'Säljare'}${o.fare?' · '+o.fare:''}`),el('p',`${money(o.quotedPriceSEK)} · prisuppgift för två, tur och retur`));
@@ -96,7 +108,7 @@ function render(data){
  results.append(el('p',`Hämtat ${new Date(data.fetchedAt).toLocaleString('sv-SE')}. Källan kan återanvända upp till en timme gamla uppgifter. Priset bekräftas hos säljaren.`,'muted'));
  results.append(el('p','Transfer, hotellankomst och hela skiddagar är ännu inte verifierade för dessa flyg.','muted'));
 }
-form.addEventListener('submit',e=>{e.preventDefault();if(busy)return;const nights=(Date.parse(end.value)-Date.parse(start.value))/86400000;const max=Number(document.getElementById('nights').value);
+form.addEventListener('submit',e=>{e.preventDefault();if(busy)return;if(mode.value==='week'){let w;try{w=selectedWindow();}catch{status.textContent='Kontrollera vecka och antal nätter.';return;}choices.open=false;history=[];searchAll({stage:'calendar',from:w.from,to:w.to,nights:w.nights,direct:document.getElementById('connections').value==='direct'});return;}const nights=(Date.parse(end.value)-Date.parse(start.value))/86400000;const max=Number(document.getElementById('nights').value);
  if(!Number.isInteger(nights)||nights<1||nights>max){status.textContent=`Välj en resa med 1–${max} nätter enligt ditt sökunderlag.`;return;}
  choices.open=false;history=[];const query={stage:'outbound',destination:airport.value,outbound:start.value,return:end.value,direct:document.getElementById('connections').value==='direct'};if(airport.value==='all')searchAll(query);else search(query);
 });

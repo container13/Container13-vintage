@@ -20,5 +20,12 @@ function evaluate(itinerary,requirements){
  if(!Number.isFinite(itinerary.totalPriceForTwoIncludingRequiredBaggage)||itinerary.totalPriceForTwoIncludingRequiredBaggage<0)return {status:'UNKNOWN',reasons:['Verifierat totalpris för två inklusive nödvändigt bagage saknas']};
  return {status:'ELIGIBLE',reasons:[],hotelArrival:transfer.hotelArrival,stops,totalTravelMinutes:minutes(segments[0].departure,transfer.hotelArrival),totalPriceForTwo:itinerary.totalPriceForTwoIncludingRequiredBaggage};
 }
-return Object.freeze({evaluate});
+function weekWindow(year,week,nights){
+ if(!Number.isInteger(year)||year<2026||year>2100||!Number.isInteger(week)||week<1||!Number.isInteger(nights)||nights<1||nights>30)throw new RangeError('Ogiltig vecka eller antal nätter');
+ const monday=y=>{const d=new Date(Date.UTC(y,0,4));d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d;};
+ const mon=monday(year),next=monday(year+1);if(week>(next-mon)/604800000)throw new RangeError('Veckan finns inte det året');
+ mon.setUTCDate(mon.getUTCDate()+(week-1)*7);const day=offset=>new Date(mon.getTime()+offset*86400000).toISOString().slice(0,10);
+ return {from:day(-2),to:day(6),monday:day(0),firstReturn:day(-2+nights),nights};
+}
+return Object.freeze({evaluate,weekWindow});
 });
