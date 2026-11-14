@@ -73,8 +73,10 @@ function render(data){
    results.append(card);
   }
  }
- const q=`Flights from ARN to ${data.context.selectedDestination||data.coverage?.requested.join(',')||data.context.destination} on ${data.context.outbound} returning ${data.context.return} for 2 adults`;
- const link=el('a','Öppna samma datum och sträcka i Google Flights');link.href='https://www.google.com/travel/flights?hl=sv&curr=SEK&q='+encodeURIComponent(q);link.target='_blank';link.rel='noopener noreferrer';results.append(link);
+ if(data.stage==='details'){
+  if(data.selectedFlightUrl){const link=el('a','Öppna valt flyg i Google Flights');link.href=data.selectedFlightUrl;link.target='_blank';link.rel='noopener noreferrer';results.append(link);}
+  else results.append(el('p','Datakällan saknar en direktlänk till just detta flyg. Ingen allmän startsida öppnas.','muted'));
+ }
  results.append(el('p',`Hämtat ${new Date(data.fetchedAt).toLocaleString('sv-SE')}. Källan kan återanvända upp till en timme gamla uppgifter. Priset bekräftas hos säljaren.`,'muted'));
  results.append(el('p','Transfer, hotellankomst och hela skiddagar är ännu inte verifierade för dessa flyg.','muted'));
 }
