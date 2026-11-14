@@ -15,25 +15,27 @@
   "workCheckpoint": {
     "status": "UNVERIFIED",
     "targetRelease": "0.1.10",
-    "goal": "Find authorized live-flight-data access suitable for personal comparison app",
+    "goal": "Verify SerpApi recurring free tier with one real ARN-ZRH search before app integration",
     "plan": [
-      "Skyscanner rejected for present scope: commercial audience >=100K MAU",
-      "Duffel not selected: services agreement prohibits metasearch without applicable express permission",
-      "Do not use sandbox fares as live; do not spend or activate accounts without agreed access",
-      "Next: user chooses external-search hub as interim, or obtain express authorized provider access"
+      "User creates SerpApi Free account (250 searches/month advertised), no paid plan",
+      "Verify actual Free plan/quota via account endpoint before one live call",
+      "Single live test ARN-ZRH, outbound 2027-03-14, return 2027-03-18, adults=2, currency=SEK, no_cache=true",
+      "Check returned times/fares, price scope, baggage text/weight and booking option needs; bags means carry-on, not checked baggage",
+      "Do not promise 23kg total or lawful upstream licensing from provider marketing alone; retain unknown statuses",
+      "Only after proof plan free server-side credential storage and quota guard; no API keys in public source"
     ],
     "lastSafeRelease": null,
     "resumeInstruction": "Read latest canonical checkpoint. iPhone 0.1.8 installation/offline PASS; verify update to 0.1.9 without reinstall. No live flight provider.",
     "rollbackCommit": "ff4244680ce148a22517c84e779141c1e0919db2"
   },
   "currentWork": {
-    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected.",
-    "next": "Live data blocked on suitable provider permission/account. Proposed interim: free outbound search links; not implemented or represented as in-app price comparison.",
+    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected. Recurring zero-cost candidate SerpApi identified: official Free 250 monthly requests and flight-comparison use case documented. Google Flights scraping intermediary, not official Google API; no live probe yet. Limited trial-only services excluded.",
+    "next": "User Free account required for live probe; no app code until real response proves useful. No keys requested in public source.",
     "blocked": true
   },
   "pausedWork": {},
   "dependencies": {
-    "flightAPI": "NOT_CONNECTED; NO_SUITABLE_AUTHORIZED_ACCESS_VERIFIED",
+    "flightAPI": "SERPAPI_FREE_CANDIDATE; ACCOUNT_KEY_AND_LIVE_PROBE_PENDING; NOT_CONNECTED",
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
@@ -110,5 +112,13 @@
     "candidateCount": 23,
     "directRouteRequirement": "Check nonstop ARN routes on the requested travel dates before suggesting an itinerary; do not assume every candidate has nonstop flights.",
     "notes": "ZRH and GVA included; some airports are speculative nearby alternatives and must be filtered by live route coverage and realistic transfer time."
+  },
+  "costConstraint": {
+    "monthlyBudgetSEK": 0,
+    "setupBudgetSEK": 0,
+    "accountCreationAllowed": true,
+    "paidPlanAllowed": false,
+    "trialOnlyNotSufficient": true,
+    "quotaPolicy": "Stay on Free; no upgrades or billable renewal; stop requests at quota limit"
   }
 }
