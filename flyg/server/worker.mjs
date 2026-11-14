@@ -1,5 +1,5 @@
 /* Flyg runtime 0.1.11. Secrets and provider selection tokens stay server-side. */
-export const VERSION='0.1.22';
+export const VERSION='0.1.24';
 const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
