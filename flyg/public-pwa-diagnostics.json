@@ -1,0 +1,24 @@
+{
+  "target": "https://container13.se/flyg/",
+  "expected": "0.1.24",
+  "pageHttp": 200,
+  "clientVersion": "0.1.24",
+  "sw": {
+    "active": "activated",
+    "waiting": null,
+    "installing": null,
+    "controller": true
+  },
+  "release.json": {
+    "http": 200,
+    "snippet": "{\n  \"release\": \"0.1.24\",\n  \"updated\": \"2026-11-14\",\n  \"entrypoints\": [\n    \"index.html\"\n  ],\n  \"assets\": [\n    \"index.html\",\n    \"style.css\",\n    \"app.js\",\n    \"journey-engine.js\",\n    \"version.js\",\n    \"auto-update.js\","
+  },
+  "version.js": {
+    "http": 200,
+    "snippet": "(function(){\n  'use strict';\n  const RELEASE='0.1.24';\n  if (typeof window !== 'undefined') window.ProjectVersion=Object.freeze({release:RELEASE});\n})();\n"
+  },
+  "sw.js": {
+    "http": 200,
+    "snippet": "/* Versioned static shell. Flight data and release checks always use the network. */\n"
+  }
+}
