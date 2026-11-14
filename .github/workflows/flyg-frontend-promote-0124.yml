@@ -2,7 +2,7 @@ name: Flyg scoped frontend promotion 0.1.25
 on:
   push:
     branches: [flyg-alperna-init]
-    paths: ['.github/workflows/flyg-frontend-promote-0125.yml']
+    paths: ['.github/workflows/flyg-frontend-promote-0124.yml']
 permissions:
   contents: write
 concurrency:
