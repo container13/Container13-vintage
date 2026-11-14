@@ -64,7 +64,7 @@ async function search(query,trigger=null){
 async function searchAll(query,previous=null){
  if(busy)return;if(!navigator.onLine){status.textContent='Du är offline. Aktuella flyg behöver internet.';return;}
  const calendar=query.stage==='calendar';
- const requested=previous?previous.coverage.requested:airport.value==='all'?[...airport.options].map(o=>o.value).filter(code=>code!=='all'):[airport.value];
+ const requested=previous?previous.coverage.requested:(regionSelect.value==='alps'&&resortCodes()?resortCodes():airport.value==='all'?[...airport.options].map(o=>o.value).filter(code=>code!=='all'):[airport.value]);
  const data=previous||{stage:query.stage,context:{...query,destination:airport.value==='all'?'alla relevanta flygplatser':airport.value},adults:2,currency:'SEK',flights:[],prices:[],resumeQuery:query,fetchedAt:new Date().toISOString(),coverage:{requested,completed:[],failed:[],unsearched:[...requested]}};
  const pending=[...data.coverage.unsearched];data.stopReason='';
  setBusy(true);let index=0,calls=0;const groupSize=calendar?1:3;
@@ -130,6 +130,6 @@ function render(data){
 }
 form.addEventListener('submit',e=>{e.preventDefault();if(busy)return;if(mode.value==='week'){let w;try{w=selectedWindow();}catch{status.textContent='Kontrollera vecka och antal nätter.';return;}choices.open=false;history=[];searchAll({stage:'calendar',from:w.from,to:w.to,nights:w.nights,direct:document.getElementById('connections').value==='direct'});return;}const nights=(Date.parse(end.value)-Date.parse(start.value))/86400000;const max=Number(document.getElementById('nights').value);
  if(!Number.isInteger(nights)||nights<1||nights>max){status.textContent=`Välj en resa med 1–${max} nätter enligt ditt sökunderlag.`;return;}
- choices.open=false;history=[];const query={stage:'outbound',destination:airport.value,outbound:start.value,return:end.value,direct:document.getElementById('connections').value==='direct'};if(airport.value==='all')searchAll(query);else search(query);
+ choices.open=false;history=[];const query={stage:'outbound',destination:airport.value,outbound:start.value,return:end.value,direct:document.getElementById('connections').value==='direct'};if(airport.value==='all'||(regionSelect.value==='alps'&&resortCodes()))searchAll(query);else search(query);
 });
 })();
