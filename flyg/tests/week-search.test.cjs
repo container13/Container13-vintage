@@ -70,12 +70,12 @@ test('calendar enriches three date pairs with matched outbound/return times and 
  const ids=fixture(async(url,opts)=>{const q=JSON.parse(opts.body);calls.push(q);
   if(q.stage==='calendar')return {ok:true,json:async()=>({stage:'calendar',context:q,prices:q.destination==='MXP'?dates.map((d,i)=>({outbound:d,return:d.slice(0,8)+String(Number(d.slice(-2))+4),destination:'MXP',quotedPriceSEK:3440+i})):[]})};
   if(q.stage==='outbound'){active=q;return {ok:true,json:async()=>({stage:q.stage,context:q,flights:[{quotedPriceSEK:3632,selection:'out-'+q.outbound,segments:[{origin:'ARN',destination:'MXP',departureLocal:q.outbound+' 07:00',arrivalLocal:q.outbound+' 10:00'}]}]})};}
-  assert.equal(q.selection,'out-'+active.outbound);return {ok:true,json:async()=>({stage:'returns',context:active,fetchedAt:'2026-11-14T12:00:00Z',flights:[{quotedPriceSEK:3662,selection:'return-'+active.outbound,segments:[{origin:'MXP',destination:'ARN',departureLocal:active.return+' 16:00',arrivalLocal:active.return+' 19:00'}]}]})};
+  assert.equal(q.selection,'out-'+active.outbound);return {ok:true,json:async()=>({stage:'returns',context:active,fetchedAt:'2026-11-14T12:00:00Z',flights:[{quotedPriceSEK:active.outbound==='2027-03-14'?3500:3662,selection:'return-'+active.outbound,segments:[{origin:'MXP',destination:'ARN',departureLocal:active.return+' 16:00',arrivalLocal:active.return+' 19:00'}]}]})};
  });
  ids.skiResort.value='6';ids.showCityFallback.checked=false;ids.liveForm.listeners.submit[0]({preventDefault(){}});await settle(ids);
  assert.equal(calls.filter(q=>q.stage==='calendar').length,3);assert.equal(calls.filter(q=>q.stage==='outbound').length,3);assert.equal(calls.filter(q=>q.stage==='returns').length,3);
  const cards=ids.liveResults.children.filter(n=>n.tag==='article');assert.equal(cards.length,4);
- const text=cards[0].children.map(n=>n.textContent).join(' ');assert.match(text,/Utresa: 2027-03-13 07:00 ARN/);assert.match(text,/Hemresa: 2027-03-17 16:00 MXP/);assert.match(text,/3\s*662/);assert.match(text,/3\s*440/);assert.ok(cards[0].children.some(n=>n.tag==='button'&&n.textContent==='Välj denna resa'));
+ const text=cards[0].children.map(n=>n.textContent).join(' ');assert.match(text,/Utresa: 2027-03-14 07:00 ARN/);assert.match(text,/Hemresa: 2027-03-18 16:00 MXP/);assert.match(text,/3\s*500/);assert.match(text,/3\s*441/);assert.ok(cards[0].children.some(n=>n.tag==='button'&&n.textContent==='Välj denna resa'));
  const before=calls.length;ids.dinnerTarget.value='19:00';ids.dinnerTarget.listeners.input[0]();assert.equal(calls.length,before);
  cards[3].children.find(n=>n.tag==='button'&&n.textContent==='Hämta ut- och hemresetider').listeners.click[0]();await settle(ids);assert.equal(calls.length,before+2);assert.equal(ids.liveResults.children.filter(n=>n.tag==='article').length,4);
 });
