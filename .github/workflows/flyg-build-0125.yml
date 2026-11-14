@@ -16,10 +16,10 @@ jobs:
           import pathlib,json,re,hashlib
           root=pathlib.Path('flyg')
           v=root/'version.js'
-          assert "RELEASE='0.1.25'" in v.read_text()
-          v.write_text(v.read_text().replace("RELEASE='0.1.25'","RELEASE='0.1.27'"))
+          assert "RELEASE='0.1.26'" in v.read_text()
+          v.write_text(v.read_text().replace("RELEASE='0.1.26'","RELEASE='0.1.27'"))
           r=root/'release.json';data=json.loads(r.read_text());data['release']='0.1.27';data['status']='CANDIDATE_ERROR_REPORTING';r.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
-          sw=root/'sw.js';source=sw.read_text();source=source.replace("flyg-shell-0.1.25","flyg-shell-0.1.27")
+          sw=root/'sw.js';source=sw.read_text();source=source.replace("flyg-shell-0.1.26","flyg-shell-0.1.27")
           assert "fetch(req,{cache:'no-store'})" in source, 'App shell must be network-first'
           assert "cache.match(req,{ignoreSearch:true})" in source, 'Offline fallback required'
           match=re.search(r'const INTEGRITY=(\{[^;]+\});',source);assert match
