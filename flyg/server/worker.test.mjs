@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import worker,{validate,freeAccount,normalizeBooking,normalizeFlight,provider,SearchGate} from './worker.mjs';
+import worker,{validate,freeAccount,normalizeBooking,normalizeFlight,provider,SearchGate,selectedFlightUrl} from './worker.mjs';
 const input={stage:'outbound',destination:'ZRH',outbound:'2027-03-14',return:'2027-03-18'};
 const now=Date.parse('2026-11-14');
 test('fixed origin, two adults and allowed airport/date input',()=>{
@@ -66,4 +66,10 @@ test('batch request preserves airport coverage and sorts all returned flight pri
 
 test('Cloudflare-compatible fetch rejects redirect response without following key to another host',async()=>{
  let calls=0;await assert.rejects(provider('account.json',{},'KEY',async(u,o)=>{calls++;if(o.redirect==='error')throw new TypeError('Unsupported redirect mode');assert.equal(o.redirect,'manual');return new Response(null,{status:302,headers:{Location:'https://untrusted.test'}});}),/ACCOUNT_HTTP_302/);assert.equal(calls,1);
+});
+
+test('selected itinerary link must be Google HTTPS with tfs; no generic search or secrets',()=>{
+ const good='https://www.google.com/travel/flights/booking?tfs=opaque-itinerary&hl=sv';assert.equal(selectedFlightUrl(good),good);
+ for(const url of ['https://www.google.com/travel/flights?q=ARN','https://evil.test/travel/flights?tfs=x','javascript:alert(1)','http://www.google.com/travel/flights?tfs=x','https://www.google.com/travel/flights?tfs=x&api_key=SECRET'])assert.equal(selectedFlightUrl(url,'SECRET'),null);
+ assert.equal(selectedFlightUrl(undefined),null);
 });

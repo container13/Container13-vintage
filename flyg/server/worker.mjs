@@ -1,5 +1,5 @@
 /* Flyg runtime 0.1.11. Secrets and provider selection tokens stay server-side. */
-export const VERSION='0.1.15';
+export const VERSION='0.1.17';
 const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
@@ -42,10 +42,17 @@ export function normalizeBooking(data){
  // Keep UNKNOWN until a structured, offer-bound proof exists for that scope.
  return {options:result,routeBaggagePolicies:Object.fromEntries(['together','departing','returning'].map(k=>[k,policies(data.baggage_prices?.[k])]))};
 }
+export function selectedFlightUrl(value,key=''){
+ if(typeof value!=='string'||value.length>20000||(key&&value.includes(key)))return null;
+ try{const u=new URL(value);if(u.protocol!=='https:'||u.hostname!=='www.google.com'||u.username||u.password||!['/travel/flights','/travel/flights/booking'].includes(u.pathname)||!u.searchParams.get('tfs'))return null;
+  if([...u.searchParams.keys()].some(k=>/api.?key|access.?token/i.test(k)))return null;
+  return value;
+ }catch{return null;}
+}
 export async function provider(path,params,key,fetcher=fetch){
  const url=new URL('https://serpapi.com/'+path);url.search=new URLSearchParams({...params,api_key:key});
  const phase=path==='account.json'?'ACCOUNT':'SEARCH';
- let r;try{r=await fetcher(url,{redirect:'manual',signal:AbortSignal.timeout(70000),headers:{'Accept':'application/json','User-Agent':'Flyg/0.1.15 (+https://container13.se/flyg/)'}});}catch(error){const reason=/not allowed|blocked|restricted|forbidden/i.test(String(error?.message))?'ACCESS_DENIED':error?.name==='TimeoutError'?'TIMEOUT':'NETWORK';throw new SafeError(phase+'_'+reason,502);}
+ let r;try{r=await fetcher(url,{redirect:'manual',signal:AbortSignal.timeout(70000),headers:{'Accept':'application/json','User-Agent':'Flyg/0.1.17 (+https://container13.se/flyg/)'}});}catch(error){const reason=/not allowed|blocked|restricted|forbidden/i.test(String(error?.message))?'ACCESS_DENIED':error?.name==='TimeoutError'?'TIMEOUT':'NETWORK';throw new SafeError(phase+'_'+reason,502);}
  if(!r.ok)throw new SafeError((path==='account.json'?'ACCOUNT':'SEARCH')+'_HTTP_'+r.status,502);
  let data;try{data=await r.json();}catch{throw new SafeError(phase+'_INVALID_JSON',502);}
  if(data.error){const reason=/invalid.*api.*key|api.*key.*invalid/i.test(String(data.error))?'KEY_REJECTED':/run out|quota|limit/i.test(String(data.error))?'QUOTA':'SOURCE_ERROR';throw new SafeError(phase+'_'+reason,502);}
@@ -87,7 +94,7 @@ export class SearchGate {
    if(!selection||selection.nextStage!==input.stage)throw new SafeError('SELECTION_EXPIRED');
    context=selection.context;extra={[input.stage==='returns'?'departure_token':'booking_token']:selection.token};
   }
-  const cacheKey=JSON.stringify(input);const hit=saved.cache[cacheKey];
+  const cacheKey=(input.stage==='details'?VERSION+':':'')+JSON.stringify(input);const hit=saved.cache[cacheKey];
   if(hit)return response({...hit.body,cached:true});
   const month=new Date(now).toISOString().slice(0,7),hour=new Date(now).toISOString().slice(0,13);
   if(saved.month!==month){saved.month=month;saved.monthUsed=0;}
@@ -103,7 +110,7 @@ export class SearchGate {
   if(data.search_metadata?.status!=='Success')throw new SafeError('PROVIDER_UNAVAILABLE',502);
   if(input.stage==='outbound')for(const [key,value]of Object.entries({departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,adults:'2',currency:'SEK'}))if(String(data.search_parameters?.[key])!==value)throw new SafeError('PROVIDER_CONTEXT_MISMATCH',502);
   const body={version:VERSION,stage:input.stage,context,adults:2,currency:'SEK',fetchedAt:new Date(now).toISOString(),expiresAt:new Date(now+TTL).toISOString(),cached:false,remainingAtLastCheck:remaining-1};
-  if(input.stage==='details')Object.assign(body,normalizeBooking(data));
+  if(input.stage==='details')Object.assign(body,normalizeBooking(data),{selectedFlightUrl:selectedFlightUrl(data.search_metadata?.google_flights_url,this.env.FLYG_SERPAPI_KEY)});
   else{
    body.flights=[];
    for(const offer of [...(data.best_flights||[]),...(data.other_flights||[])].sort((a,b)=>(price(a.price)??Infinity)-(price(b.price)??Infinity)).slice(0,30)){

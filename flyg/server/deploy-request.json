@@ -1,1 +1,1 @@
-{"version":"0.1.15","requested":"2026-11-14","purpose":"Allow strictly validated groups of up to3 airports and sort returned offers by price; persistent quota unchanged"}
+{"version":"0.1.17","requested":"2026-11-14","purpose":"Return validated source-generated selected-itinerary URL; remove generic Google q links"}
