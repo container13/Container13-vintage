@@ -13,22 +13,19 @@
     "integrity": "HTTPS_ALL_14_ASSETS_BYTE_MATCH_PASS; EMBEDDED_SHA256_PASS"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IDLE",
     "targetRelease": "0.1.10",
-    "goal": "Recover installed 0.1.8 via fresh validated shell; verify iPhone update",
+    "goal": "PWA installation, initial offline form and installed-app update confirmed on iPhone",
     "plan": [
-      "Deploy 0.1.10 only Flyg subtree",
-      "Verify HTTPS bytes and Pages success",
-      "User opens installed app online; Update should load 0.1.10",
-      "Keep device upgrade UNVERIFIED until screenshot"
+      "Next development task: evaluate and connect an authorized flight-data provider"
     ],
     "lastSafeRelease": null,
     "resumeInstruction": "Read latest canonical checkpoint. iPhone 0.1.8 installation/offline PASS; verify update to 0.1.9 without reinstall. No live flight provider.",
     "rollbackCommit": "ff4244680ce148a22517c84e779141c1e0919db2"
   },
   "currentWork": {
-    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS.",
-    "next": "User opens existing Flyg online, taps Update; confirm 0.1.10. Do not reinstall or clear cache. Preserve failed 0.1.9 evidence.",
+    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall.",
+    "next": "Evaluate authorized flight-data provider for real schedules, baggage-inclusive fares for two and booking links; no live provider currently connected.",
     "blocked": false
   },
   "pausedWork": {},
@@ -94,11 +91,11 @@
     "syntax": "PASS",
     "ui": "HTTPS_BROWSER_FORM_SUBMIT_PASS",
     "deployment": "PAGES_SUCCESS_7b92b46285e1eabed8ea22bfc6386a064b8d7d30",
-    "device": "0.1.8 INSTALL_OFFLINE_PASS; 0.1.9 UPDATE_FAIL; 0.1.10 RECOVERY_PENDING",
+    "device": "USER_CONFIRMED_IPHONE: 0.1.8 installed/offline form PASS; existing installation updated to 0.1.10 without reinstall PASS, 2026-11-14",
     "flightAPI": "NOT_CONNECTED",
     "engine": "9_SYNTHETIC_CASES_PASS",
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
-    "updateController": "0.1.9 DEVICE_FAIL; stale HTTP cache reproduction FAIL before fix, PASS after fix; five updater VM cases PASS",
+    "updateController": "IPHONE_UPDATE_TO_0.1.10_USER_CONFIRMED_PASS; VM regression PASS; dirty-form upgrade and 0.1.10 offline retest not device-tested",
     "pwa": "INSTALLED_IPHONE_OFFLINE_FORM_PASS; UPDATE_PENDING",
     "deployedAssets": "0.1.10 all 14 HTTPS assets byte-match PASS; all embedded shell SHA-256 digests PASS"
   },
