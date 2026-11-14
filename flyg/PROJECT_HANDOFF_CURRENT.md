@@ -76,3 +76,9 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Chosen globe-and-airplane image #3 rendered to 180, 192, 512, 1024 PNG files in local work environment.
 - Manifest, Apple touch icon, favicon, SW cache list and release asset list wired to those paths. **Binary PNG files have not been committed to GitHub**; SW install will fail until all assets exist. Do not deploy.
 - Next: GitHub binary upload with blob/tree/commit/ref and tree readback, then PWA tests.
+
+## 2026-11-14 — icon upload pending
+- User selected icon #3 (white airplane in front of Earth). Four actual PNG binaries exist as generated conversation artifacts, sizes 180/192/512/1024. They are not in GitHub yet.
+- Candidate 0.1.7 HTML, manifest, release.json, version.js, SW point at these exact filenames. SW install updated to tolerate missing optional PNGs during staging (readback PASS), but iPhone icon will not be correct until PNG files are committed.
+- Follow `solutions/github-binary-upload/README.md`: base64 blobs -> tree -> commit -> update_ref with expected SHA -> tree verification. Do not substitute a different generated SVG or claim upload done.
+- The GitHub connector accepts base64 strings, but the working container's PNG bytes have not been bridged to the connector. No deployment, no device test. Need a verified binary transfer path.
