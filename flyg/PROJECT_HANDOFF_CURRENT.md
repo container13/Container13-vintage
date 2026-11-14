@@ -97,3 +97,9 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Syntax PASS, nine synthetic journey cases PASS. SW mock harness PASS: complete shell, offline assets/navigation, release/API bypass, scoped cleanup, explicit activation. Local Chromium blocked by environment socket permissions; real browser offline/update and iPhone tests remain UNVERIFIED.
 - Added pwa.js and shared mobile-view-policy.js to offline shell; atomic install requires all shell files. Cache-first versioned shell; updater coordinates worker activation while respecting dirty forms.
 - iPhone: Safari -> Share -> Add to Home Screen -> launch globe icon. Then airplane-mode reopen test. Keep candidate unpromoted until actual device evidence; live prices/provider still absent.
+
+## Latest checkpoint — iPhone offline PASS; update test 0.1.9
+- User screenshots show standalone 0.1.8 and generated search summary in airplane mode (no Wi-Fi symbol), 2026-11-14. Installation/offline form accepted.
+- Candidate 0.1.9 is a deliberate version/cache bump to test existing installed-app upgrade; no flight provider or new flight results.
+- Added five VM regression tests: clean reload, dirty form deferral, offline no fetch, reload loop prevention, waiting-worker activation before reload. All PASS plus existing journey/SW checks. Real iPhone update still PENDING.
+- Next: publish only Flyg subtree, verify deployed bytes, then user opens existing icon online; expect 0.1.9 or Update banner. No reinstall.

@@ -9,12 +9,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.8",
-    "integrity": "HTTPS_ALL_14_ASSETS_BYTE_MATCH_PASS"
+    "candidate": "0.1.9",
+    "integrity": "STATIC_PASS_DEPLOY_PENDING"
   },
   "workCheckpoint": {
     "status": "IN_PROGRESS",
-    "targetRelease": "0.1.8",
+    "targetRelease": "0.1.9",
     "goal": "Verify installed app update from 0.1.8 to 0.1.9",
     "plan": [
       "Open https://container13.se/flyg/ in iPhone Safari",
@@ -23,11 +23,11 @@
       "Verify safe update with modified form on next version"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified.",
+    "resumeInstruction": "Read latest canonical checkpoint. iPhone 0.1.8 installation/offline PASS; verify update to 0.1.9 without reinstall. No live flight provider.",
     "rollbackCommit": "ff4244680ce148a22517c84e779141c1e0919db2"
   },
   "currentWork": {
-    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired.",
+    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS.",
     "next": "Deploy 0.1.9 after automated update-controller checks; verify existing iPhone installation updates without reinstall.",
     "blocked": false
   },
@@ -98,7 +98,7 @@
     "flightAPI": "NOT_CONNECTED",
     "engine": "9_SYNTHETIC_CASES_PASS",
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
-    "updateController": "SOURCE_SYNTAX_PASS; REAL_UPGRADE_NOT_TESTED",
+    "updateController": "5_VM_TESTS_PASS: clean reload, dirty deferral, offline, loop guard, worker activation. IPHONE_UPGRADE_PENDING",
     "pwa": "INSTALLED_IPHONE_OFFLINE_FORM_PASS; UPDATE_PENDING",
     "deployedAssets": "All 14 release assets fetched via HTTPS and byte-matched to committed local files; PASS 2026-11-14"
   },
