@@ -8,8 +8,8 @@ const airlineNames={FR:/ryanair/i,W6:/wizz air/i,U2:/easyjet/i,D8:/norwegian/i,S
 const airlineChecks=Object.keys(airlineNames).map(code=>({code,element:document.getElementById('exclude'+code)}));
 const airlineStore='flyg-excluded-airlines-v1';
 try{const stored=JSON.parse(localStorage.getItem(airlineStore));if(Array.isArray(stored))for(const a of airlineChecks)a.element.checked=stored.includes(a.code);}catch{}
-function excludedAirlines(){return airlineChecks.filter(a=>a.element.checked).map(a=>a.code);}
-function excludedFlight(f){return (f.segments||[]).some(seg=>excludedAirlines().some(code=>airlineNames[code].test(seg.airline||'')||String(seg.number||'').replace(/\s/g,'').toUpperCase().startsWith(code)));}
+function excludedAirlines(){const selected=airlineChecks.filter(a=>a.element.checked).map(a=>a.code);if(selected.includes('D8'))selected.push('DY');return selected;}
+function excludedFlight(f){return (f.segments||[]).some(seg=>excludedAirlines().some(code=>(airlineNames[code]||(/norwegian/i)).test(seg.airline||'')||String(seg.number||'').replace(/\s/g,'').toUpperCase().startsWith(code)));}
 for(const a of airlineChecks)a.element.addEventListener('change',()=>{try{localStorage.setItem(airlineStore,JSON.stringify(excludedAirlines()));}catch{}if(history.length)render(history.at(-1));});
 
 let busy=false,history=[],generation=0;
