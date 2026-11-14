@@ -1,4 +1,4 @@
-name: Flyg 0.1.27 verify and guarded promotion
+name: Flyg 0.1.28 verify and guarded promotion
 on:
   push:
     branches: [flyg-alperna-init]
@@ -10,6 +10,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Build 0.1.28 legacy recovery candidate and integrity manifest
+        run: |
+          python3 - <<'PY'
+          import pathlib,json,re,hashlib
+          root=pathlib.Path('flyg')
+          v=root/'version.js'
+          assert "RELEASE='0.1.27'" in v.read_text()
+          v.write_text(v.read_text().replace("RELEASE='0.1.27'","RELEASE='0.1.28'"))
+          r=root/'release.json'
+          data=json.loads(r.read_text());assert data['release']=='0.1.27'
+          data['release']='0.1.28';data['status']='PENDING_LEGACY_RECOVERY'
+          r.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
+          sw=root/'sw.js';source=sw.read_text()
+          assert "flyg-shell-0.1.27" in source
+          assert "existing.includes('flyg-shell-0.1.24')" in source
+          source=source.replace("flyg-shell-0.1.27","flyg-shell-0.1.28")
+          match=re.search(r'const INTEGRITY=(\{[^;]+\});',source);assert match
+          hashes=json.loads(match.group(1))
+          for key in hashes:
+            p=root/('index.html' if key=='./' else key)
+            hashes[key]=hashlib.sha256(p.read_bytes()).hexdigest()
+          source=source[:match.start(1)]+json.dumps(hashes,separators=(',',':'))+source[match.end(1):]
+          sw.write_text(source)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add flyg/version.js flyg/release.json flyg/sw.js
+          git diff --cached --quiet || { git commit -m "Flyg: build legacy recovery 0.1.28"; git push origin HEAD:flyg-alperna-init; }
       - name: Check source release and run tests without rewriting history
         run: |
           node --check flyg/auto-update.js
@@ -21,8 +49,8 @@ jobs:
           python3 - <<'PY'
           import json,re,hashlib,pathlib
           root=pathlib.Path('flyg')
-          assert "RELEASE='0.1.27'" in (root/'version.js').read_text()
-          assert json.loads((root/'release.json').read_text())['release']=='0.1.27'
+          assert "RELEASE='0.1.28'" in (root/'version.js').read_text()
+          assert json.loads((root/'release.json').read_text())['release']=='0.1.28'
           sw=(root/'sw.js').read_text()
           assert "fetch(req,{cache:'no-store'})" in sw
           hashes=json.loads(re.search(r'const INTEGRITY=(\{[^;]+\});',sw).group(1))
@@ -37,7 +65,7 @@ jobs:
           git fetch origin ccc-demo-public-test
           git worktree add /tmp/flyg-public origin/ccc-demo-public-test
           cd /tmp/flyg-public
-          git switch -c flyg-promote-0127-combined
+          git switch -c flyg-promote-0128-combined
           assets=(index.html style.css app.js live-search.js selection-feedback.js journey-engine.js version.js auto-update.js pwa.js sw.js manifest.webmanifest release.json assets/flyg-icon-180.png assets/flyg-icon-192.png assets/flyg-icon-512.png assets/flyg-icon-1024.png)
           for asset in "${assets[@]}"; do
             mkdir -p "flyg/$(dirname "$asset")"
@@ -47,20 +75,20 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- flyg/
           if ! git diff --cached --quiet; then
-            git commit -m "Flyg: promote guarded PWA network-first release 0.1.27"
+            git commit -m "Flyg: promote guarded PWA network-first release 0.1.28"
             git push origin HEAD:ccc-demo-public-test
           fi
       - name: Verify public release without provider API calls
         run: |
           python3 - <<'PY'
           import urllib.request,time
-          url='https://container13.se/flyg/version.js?_flyg_verify=0127'
+          url='https://container13.se/flyg/version.js?_flyg_verify=0128'
           for i in range(12):
             try:
               with urllib.request.urlopen(urllib.request.Request(url,headers={'Cache-Control':'no-cache'}),timeout=12) as r:
                 body=r.read().decode()
-              if "RELEASE='0.1.27'" in body:
-                print('PASS public 0.1.27');break
+              if "RELEASE='0.1.28'" in body:
+                print('PASS public 0.1.28');break
             except Exception as exc: print('Public verification pending',type(exc).__name__)
             if i==11: raise SystemExit('FAIL public release unverified')
             time.sleep(10)
