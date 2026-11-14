@@ -119,3 +119,10 @@ See FLIGHT_DATA_ACCESS.md. No live provider connected. Official Skyscanner audie
 
 ## Latest: zero-cost only, SerpApi proof pending
 User explicitly requires 0 kr setup/ongoing; account allowed. SerpApi recurring Free 250 requests/month is a candidate, NOT connected/proven. See FLIGHT_DATA_ACCESS.md. User account/key needed for one real ARN-ZRH 2-adult SEK test. No paid plan, trial-only solution, code implementation or 23kg baggage guarantee. PWA remains 0.1.10. Read costConstraint in structured state.
+
+## Latest checkpoint — secure key collection / probe-0.1.0
+- User has copied SerpApi key. Never ask to paste into chat or public source. Exact secure entry: repository Settings > Secrets and variables > Actions > New repository secret, Name FLYG_SERPAPI_KEY. URL https://github.com/container13/Container13-vintage/settings/secrets/actions/new. Field is native GitHub; no custom key-collection website.
+- New workflow .github/workflows/flyg-provider-probe.yml on isolated branch only, triggered by pushes to flyg/probes/** or workflow. No PR, schedule, write permission, deploy or auto-upgrade. First run without secret is WAITING_FOR_SECRET with zero calls.
+- flyg/probes/serpapi_probe.py (probe-0.1.0) checks account.json before a single fixed ARN-ZRH call. Requires plan_id=free, monthly price=0 and monthly quota>0; rejects redirects; no retries; only allowlisted summary logged, no account response/key/errors. Five guard tests PASS.
+- After user saves secret, push flyg/probes/request.json checkpoint to trigger. Read workflow evidence; do not assume green WAITING_FOR_SECRET means live PASS. No perpetual backend built yet; GitHub Actions here is only proof execution. PWA remains 0.1.10.
+- Supabase inventory read-only: organization Container13-Remember plan free; remember-test INACTIVE, prod ACTIVE_HEALTHY. Neither restored/modified; no new project/function/secret. Avoid coupling Flyg to inactive test or production just to collect a key.
