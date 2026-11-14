@@ -13,9 +13,9 @@
     "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BACKEND_AND_BROWSER_EMPTY_RESULTS_PASS; IPHONE_PENDING"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
+    "status": "IN_PROGRESS",
     "targetRelease": "frontend0.1.37/backend0.1.37",
-    "goal": "FDH calendar empty result correctly distinguished from source failures; other airport results retained; installed device acceptance pending",
+    "goal": "Extend sourced road-transfer planning to St. Anton without inventing city-night transfer or all-in costs",
     "completed": [
       "User IMG_4279 root cause proven with one Free-only credential-safe diagnostic:provider statusSuccess/contextmatchtrue,error exactly Google Flights Calendar hasn't returned any results for this query.,no prices array",
       "Diagnostic43598117287 PASS;175free searches observed before1bounded search;key never exposed",
@@ -28,16 +28,17 @@
       "Backend43598719873 SUCCESS;Pages43598724849 SUCCESS;same Worker/secrets/vars/globalDO/schema/cache preserved"
     ],
     "plan": [
-      "Installed iPhone0.1.37 repeat search acceptance pending;CURRENT/PREVIOUS not rotated",
-      "Source-backed transfers and full itinerary validation beyond Cervinia remain incomplete;timed flights with unknown transfer are inspectable,not approved whole trips",
-      "Actual baggage/ground/hotel costs still unknown;no all-in price or1000compliance inferred"
+      "Reuse existing journey-engine resortArrival owner and its test suite",
+      "Add only explicitly published private-road times for St Anton INN/ZRH/MUC/FDH; city-night routes remain UNKNOWN without separate source",
+      "Run local Node regression; commit on flyg-alperna-init only; no automatic publication or CURRENT rotation",
+      "0.1.37 installed iPhone still unverified; baseline 3 ski days, optional 5th night and 1000SEK for two unchanged"
     ],
     "sourceCommit": "662b8894c098428ea1ffabdc246903b28372b7ca",
     "deploymentCommit": "ecaccaec56138817974404e07e321e6cc3b0bdd4",
     "backendRun": 43598719873,
     "deploymentRun": 43598724849,
     "rollbackCommit": "32f7936a0be39f236001f073c47a4024b149ad6b",
-    "resumeInstruction": "Continue from0.1.37 FDH no-result fix. Exact successful provider no-results message was misclassified asSEARCH_SOURCE_ERROR;now30mincachedempty,notfalsefailure. Live4/5night+replays and browserall4airports43cards PASS. Genuine errors remain errors;unknown transfers remain unverified. Device pending;CURRENT/PREVIOUS unchanged. All flexible-stay1000forTWO/breakfast preferences preserved."
+    "resumeInstruction": "0.1.38 St Anton transfer candidate IN_PROGRESS; protect 0.1.37 production; don't mark device verified."
   },
   "currentWork": {
     "completed": "User IMG_4279 root cause proven with one Free-only credential-safe diagnostic:provider statusSuccess/contextmatchtrue,error exactly Google Flights Calendar hasn't returned any results for this query.,no prices array\nDiagnostic43598117287 PASS;175free searches observed before1bounded search;key never exposed\nOnly evidenced successful calendar empty message becomes prices[]/NO_RESULTS;wrongstatus,otherengine,conflictingprices,genuineerrors and contextmismatch still fail;no broad error masking\nLive Worker0.1.37 enabled/configured;FDH4and5nights bothHTTP200/NO_RESULTS/0prices;each identical replaycachedtrue withsamefetchedAt/1800secondTTL\nUI distinguishes checked-empty from failed;technical details collapsed for genuine failures; completed airport results retained\nUnknown resort transfer now permits flight-time inspection explicitly labelled transfer missing;no whole-trip or budget compliance inferred from unknown transfer\nBrowser0.1.37 Ischgl test INN/MUC/ZRH/FDH:all4checked,FDH4/5emptyplainnote,43datecards,0errorpanels,3timedflightpairsinspectablewithunknowntransfer\n91Node tests plus3dedicated diagnostic tests PASS;CI static/integrity/probe/backend deploy PASS;18published hashes PASS\nBackend43598719873 SUCCESS;Pages43598724849 SUCCESS;same Worker/secrets/vars/globalDO/schema/cache preserved",
