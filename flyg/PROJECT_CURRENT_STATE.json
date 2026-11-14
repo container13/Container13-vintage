@@ -23,7 +23,7 @@
       "Source fee intervals translated and shown; eligibility and exact bag-inclusive total still UNKNOWN"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "2026-11-14: added isolated GitHub Actions workflow .github/workflows/flyg-resort-static-check.yml at d87dbaad21a51a6013ae29b34c739251ebccc9f9. GitHub fetch_commit_workflow_runs returned [] and commit status [] immediately afterward; DO NOT claim CI PASS. Run workflow and inspect jobs/logs. Need resolve potential provider calendar exclude_airlines support, test frontend resort mappings and all-airports batching. Version bump/deploy/device verification still pending. No paid or live SerpApi searches made.",
+    "resumeInstruction": "2026-11-14: GitHub Actions workflow .github/workflows/flyg-resort-static-check.yml exists and readback PASS, but fetch_commit_workflow_runs returned [] and commit combined status empty; no verified CI execution. Container git clone failed due DNS github.com unavailable. Official SerpApi docs https://serpapi.com/google-flights-calendar-api and https://serpapi.com/google-flights-api confirm exclude_airlines support for BOTH engines. Next: run GitHub Actions test workflow, inspect logs, fix any failures, then bump version/cache/release and deploy; no live API calls or device PASS yet.",
     "rollbackCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
   },
   "currentWork": {
