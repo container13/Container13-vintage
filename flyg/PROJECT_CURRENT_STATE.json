@@ -13,9 +13,9 @@
     "integrity": "HTTPS_ALL_16_RELEASE_ASSETS_BYTE_MATCH_PASS; SW_16_SHELL_DIGESTS_PASS"
   },
   "workCheckpoint": {
-    "status": "DEPLOYED_BROWSER_VERIFIED_DEVICE_PENDING",
-    "targetRelease": "0.1.19",
-    "goal": "Fix selected-flight action feedback and viewport transition; show errors inline at clicked card",
+    "status": "IN_PROGRESS",
+    "targetRelease": "0.1.20",
+    "goal": "Default Alperna destination menu; hide all editable search choices behind native details. Preserve field IDs/form owners and values. Tropical destinations listed upcoming, not falsely connected.",
     "plan": [
       "Ski default19.9kg per person;20kg qualifies",
       "Separate cabin boot bag and personal item selected by default",
