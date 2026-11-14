@@ -110,3 +110,6 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Fix: all 14 shell requests use cache:no-store plus release query; SHA-256 validates every body before any cache writes. A partial/stale deployment is rejected, preserving active worker. No second updater, no root SW changes.
 - All JS syntax, journey, five updater cases, stale-HTTP-cache and corrupt-rollout/offline SW tests PASS. Candidate 0.1.10; actual installed-iPhone update still UNVERIFIED.
 - Rollback: previous source 452e6a458038294e3c3c427850daccef4ffcd8f0, public 94bb5cad5ceccb9d4f4cb243dbf62a0a932b5d81. Only flyg subtree deployment.
+
+## Latest acceptance — 2026-11-14
+User confirms existing installed iPhone app now displays 0.1.10 after Update. Recovery/upgrade PASS without reinstall. Initial installed 0.1.8 airplane-mode search form previously PASS. Dirty-form device upgrade and offline retest specifically on 0.1.10 remain untested. PWA task checkpoint IDLE; no live flight provider connected. Next development task: authorized real flight data, baggage-inclusive fares for two and booking links. No new runtime or publication in this documentation update.
