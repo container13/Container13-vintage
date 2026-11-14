@@ -9,40 +9,38 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.37",
-    "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BACKEND_AND_BROWSER_EMPTY_RESULTS_PASS; IPHONE_PENDING"
+    "candidate": "0.1.38",
+    "integrity": "0.1.38_CANDIDATE_SOURCE_HASH_TESTS_PASS; PRODUCTION_DRIFT_EXPECTED; NOT_DEPLOYED_OR_DEVICE_VERIFIED"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "frontend0.1.37/backend0.1.37",
-    "goal": "Extend sourced road-transfer planning to St. Anton without inventing city-night transfer or all-in costs",
+    "status": "UNVERIFIED",
+    "targetRelease": "frontend candidate 0.1.38; published frontend/backend 0.1.37",
+    "goal": "Source-backed St Anton road planning, preserving strict UNKNOWN treatment for city night and all-in pricing",
     "completed": [
-      "User IMG_4279 root cause proven with one Free-only credential-safe diagnostic:provider statusSuccess/contextmatchtrue,error exactly Google Flights Calendar hasn't returned any results for this query.,no prices array",
-      "Diagnostic43598117287 PASS;175free searches observed before1bounded search;key never exposed",
-      "Only evidenced successful calendar empty message becomes prices[]/NO_RESULTS;wrongstatus,otherengine,conflictingprices,genuineerrors and contextmismatch still fail;no broad error masking",
-      "Live Worker0.1.37 enabled/configured;FDH4and5nights bothHTTP200/NO_RESULTS/0prices;each identical replaycachedtrue withsamefetchedAt/1800secondTTL",
-      "UI distinguishes checked-empty from failed;technical details collapsed for genuine failures; completed airport results retained",
-      "Unknown resort transfer now permits flight-time inspection explicitly labelled transfer missing;no whole-trip or budget compliance inferred from unknown transfer",
-      "Browser0.1.37 Ischgl test INN/MUC/ZRH/FDH:all4checked,FDH4/5emptyplainnote,43datecards,0errorpanels,3timedflightpairsinspectablewithunknowntransfer",
-      "91Node tests plus3dedicated diagnostic tests PASS;CI static/integrity/probe/backend deploy PASS;18published hashes PASS",
-      "Backend43598719873 SUCCESS;Pages43598724849 SUCCESS;same Worker/secrets/vars/globalDO/schema/cache preserved"
+      "Read canonical handoff/state/rules and inspected existing journey-engine, 0.1.37 production checkpoint",
+      "Published St Anton taxi operator times: INN75/ZRH135/MUC195/FDH100 minutes; existing resortArrival owner extended as ESTIMATE_ONLY",
+      "City-night assumptions explicitly scoped to Cervinia: St Anton city-night remains UNKNOWN, not Italian city transfer",
+      "Added two regression tests, 0.1.38 version/manifest/SW shell hashes prepared and committed on isolated branch",
+      "GitHub Actions static/resort suite run43602282659 SUCCESS (93 test cases including two new St Anton cases)",
+      "Integrity run43602282634 asset SHA/version check SUCCESS; production drift stage FAIL because candidate is intentionally not deployed",
+      "No billing, provider calls, secret access, worker change or unrelated project edits"
     ],
     "plan": [
-      "Reuse existing journey-engine resortArrival owner and its test suite",
-      "Add only explicitly published private-road times for St Anton INN/ZRH/MUC/FDH; city-night routes remain UNKNOWN without separate source",
-      "Run local Node regression; commit on flyg-alperna-init only; no automatic publication or CURRENT rotation",
-      "0.1.37 installed iPhone still unverified; baseline 3 ski days, optional 5th night and 1000SEK for two unchanged"
+      "Publish only Flyg subtree through established safe source->public process once runtime/browser verification can be done; do not bypass production drift gate",
+      "Verify published 0.1.38 manifest, real browser St Anton INN/ZRH/MUC/FDH and unknown city night; then installed iPhone acceptance",
+      "Existing 0.1.37 installed-iPhone gate remains unresolved; do not rotate CURRENT/PREVIOUS",
+      "Expand more resorts using independently sourced route times; no all-in total or extra night 1000SEK classification without all mandatory costs"
     ],
-    "sourceCommit": "662b8894c098428ea1ffabdc246903b28372b7ca",
+    "sourceCommit": "cba17c9da566e246fdd816323ccba3bcc2ef7496",
     "deploymentCommit": "ecaccaec56138817974404e07e321e6cc3b0bdd4",
     "backendRun": 43598719873,
     "deploymentRun": 43598724849,
-    "rollbackCommit": "32f7936a0be39f236001f073c47a4024b149ad6b",
-    "resumeInstruction": "0.1.38 St Anton transfer candidate IN_PROGRESS; protect 0.1.37 production; don't mark device verified."
+    "rollbackCommit": "662b8894c098428ea1ffabdc246903b28372b7ca",
+    "resumeInstruction": "0.1.38 candidate (unpublished) adds source-backed St Anton airport road estimates and preserves UNKNOWN city night; resort test run43602282659 PASS, asset hash/version stage PASS in43602282634 but expected production drift fail. Public0.1.37 unchanged. Next safe deploy Flyg-only and verify browser/device. 3 ski days, optional extra night ~1000 SEK total for two preserved."
   },
   "currentWork": {
-    "completed": "User IMG_4279 root cause proven with one Free-only credential-safe diagnostic:provider statusSuccess/contextmatchtrue,error exactly Google Flights Calendar hasn't returned any results for this query.,no prices array\nDiagnostic43598117287 PASS;175free searches observed before1bounded search;key never exposed\nOnly evidenced successful calendar empty message becomes prices[]/NO_RESULTS;wrongstatus,otherengine,conflictingprices,genuineerrors and contextmismatch still fail;no broad error masking\nLive Worker0.1.37 enabled/configured;FDH4and5nights bothHTTP200/NO_RESULTS/0prices;each identical replaycachedtrue withsamefetchedAt/1800secondTTL\nUI distinguishes checked-empty from failed;technical details collapsed for genuine failures; completed airport results retained\nUnknown resort transfer now permits flight-time inspection explicitly labelled transfer missing;no whole-trip or budget compliance inferred from unknown transfer\nBrowser0.1.37 Ischgl test INN/MUC/ZRH/FDH:all4checked,FDH4/5emptyplainnote,43datecards,0errorpanels,3timedflightpairsinspectablewithunknowntransfer\n91Node tests plus3dedicated diagnostic tests PASS;CI static/integrity/probe/backend deploy PASS;18published hashes PASS\nBackend43598719873 SUCCESS;Pages43598724849 SUCCESS;same Worker/secrets/vars/globalDO/schema/cache preserved",
-    "next": "Installed iPhone0.1.37 repeat search acceptance pending;CURRENT/PREVIOUS not rotated\nSource-backed transfers and full itinerary validation beyond Cervinia remain incomplete;timed flights with unknown transfer are inspectable,not approved whole trips\nActual baggage/ground/hotel costs still unknown;no all-in price or1000compliance inferred",
+    "completed": "0.1.38 St Anton road planning committed and regression suite PASS on flyg-alperna-init; source INN75 ZRH135 MUC195 FDH100; city-night UNKNOWN; candidate source only",
+    "next": "Flyg-only safe publish 0.1.38 + real browser tests + iPhone confirmation. Existing 0.1.37 device pending and CURRENT/PREVIOUS untouched",
     "blocked": false
   },
   "pausedWork": {},
