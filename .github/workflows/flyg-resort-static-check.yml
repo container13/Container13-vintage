@@ -6,6 +6,12 @@ on:
       - 'flyg/**'
       - '.github/workflows/flyg-resort-static-check.yml'
   workflow_dispatch:
+    inputs:
+      commit_candidate:
+        description: 'Commit prepared 0.1.24 assets on isolated branch after tests (no deploy)'
+        type: boolean
+        required: true
+        default: false
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -29,3 +35,38 @@ jobs:
         run: |
           node flyg/tools/prepare-release.mjs 0.1.24
           git diff --check
+  commit_candidate:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.commit_candidate == true && github.ref == 'refs/heads/flyg-alperna-init' }}
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: flyg-candidate-commit
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          ref: flyg-alperna-init
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify branch head has not moved since tested
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA" || { echo 'Branch moved; rerun tests'; exit 1; }
+      - name: Prepare candidate and verify hashes
+        run: |
+          node flyg/tools/prepare-release.mjs 0.1.24
+          git diff --check
+          node --check flyg/sw.js
+      - name: Commit candidate assets only (never deploy)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- flyg/version.js flyg/index.html flyg/release.json flyg/sw.js
+          if git diff --cached --quiet; then echo 'Candidate already prepared'; exit 0; fi
+          git commit -m "Flyg: prepare 0.1.24 integrity-checked candidate"
+          git push origin HEAD:flyg-alperna-init
