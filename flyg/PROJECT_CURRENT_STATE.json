@@ -10,12 +10,12 @@
     "previousVerified": null,
     "currentVerified": null,
     "candidate": "0.1.9",
-    "integrity": "STATIC_PASS_DEPLOY_PENDING"
+    "integrity": "PAGES_SUCCESS; HTTPS_VERSION_0.1.9_PASS; DEVICE_UPDATE_PENDING"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "UNVERIFIED",
     "targetRelease": "0.1.9",
-    "goal": "Verify installed app update from 0.1.8 to 0.1.9",
+    "goal": "Await iPhone installed-app update confirmation to 0.1.9",
     "plan": [
       "Open https://container13.se/flyg/ in iPhone Safari",
       "Share -> Add to Home Screen; launch Flyg from globe icon",
@@ -28,7 +28,7 @@
   },
   "currentWork": {
     "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS.",
-    "next": "Deploy 0.1.9 after automated update-controller checks; verify existing iPhone installation updates without reinstall.",
+    "next": "User restarts existing app online; confirm footer 0.1.9 and form still works. Then select authorized flight-data provider.",
     "blocked": false
   },
   "pausedWork": {},
@@ -38,8 +38,8 @@
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
       "scope": "Only flyg/ subtree; other project bytes unchanged",
-      "sourceCommit": "a87b93b97dcfb687fad5f8fa92dbf4a108a0da32",
-      "deploymentCommit": "bd4228563d216c1cf4b6f250309bb03a714fc7e7"
+      "sourceCommit": "452e6a458038294e3c3c427850daccef4ffcd8f0",
+      "deploymentCommit": "94bb5cad5ceccb9d4f4cb243dbf62a0a932b5d81"
     },
     "secrets": "NONE_COMMITTED"
   },
@@ -93,7 +93,7 @@
     "githubReadback": true,
     "syntax": "PASS",
     "ui": "HTTPS_BROWSER_FORM_SUBMIT_PASS",
-    "deployment": "PAGES_SUCCESS_bd4228563d216c1cf4b6f250309bb03a714fc7e7",
+    "deployment": "PAGES_SUCCESS_94bb5cad5ceccb9d4f4cb243dbf62a0a932b5d81",
     "device": "IPHONE_STANDALONE_AND_AIRPLANE_MODE_FORM_PASS_USER_SCREENSHOT_2026-11-14",
     "flightAPI": "NOT_CONNECTED",
     "engine": "9_SYNTHETIC_CASES_PASS",
