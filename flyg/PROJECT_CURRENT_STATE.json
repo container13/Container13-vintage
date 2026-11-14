@@ -10,7 +10,7 @@
     "previousVerified": null,
     "currentVerified": null,
     "candidate": "0.1.8",
-    "integrity": "DEPLOYED_BYTES_PENDING_READBACK"
+    "integrity": "HTTPS_ALL_14_ASSETS_BYTE_MATCH_PASS"
   },
   "workCheckpoint": {
     "status": "UNVERIFIED",
@@ -99,7 +99,8 @@
     "engine": "9_SYNTHETIC_CASES_PASS",
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "SOURCE_SYNTAX_PASS; REAL_UPGRADE_NOT_TESTED",
-    "pwa": "HTTPS_DEPLOYED; ICONS_TREE_SIZE_SHA_PASS; REAL_OFFLINE_DEVICE_PENDING"
+    "pwa": "HTTPS_DEPLOYED; ICONS_TREE_SIZE_SHA_PASS; REAL_OFFLINE_DEVICE_PENDING",
+    "deployedAssets": "All 14 release assets fetched via HTTPS and byte-matched to committed local files; PASS 2026-11-14"
   },
   "airportCatalog": {
     "version": "2026-11-14",
