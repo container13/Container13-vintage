@@ -13,30 +13,16 @@
     "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_FLEXIBLE_STAY_COST_TOLERANCE_AND_BREAKFAST_PASS; IPHONE_PENDING"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "frontend0.1.36/backend0.1.29",
-    "goal": "Optional extra night up to about1000SEK incremental whole-trip cost for two and breakfast-aware automatic return; device acceptance pending",
-    "completed": [
-      "84 backend/journey/UI/week/SW/updater tests PASS; final static/integrityCI PASS",
-      "User rules replace fixed4night/defaultcity policy:3ski days sufficient,1extra night welcome even if total trip up toabout1000SEK more for two",
-      "Calendar searches4and5night variants per airport,8calls/batch,per-variant completion/resume; toggling extra off skips pending longer queries without repeating finished work",
-      "Automatic return prefers direct resort transfer after calm breakfast09:00; otherwise evaluates city night. Explicitcity remains valid with late flight. Resort07:00/city05:00 earliest are editable planning assumptions, not hard08–12flight windows",
-      "Cost comparison uses matched baseline fare plus entered whole-trip hotel/ground/baggage/other differences for TWO; blanks stay UNKNOWN, signed savings allowed; no calendar-floor or all-in guarantee",
-      "At most3date pairs enriched, deliberately including base and extra variants; extra skiing is optional even if4whole days fit",
-      "Browser0.1.36 actual week11Cervinia35cards;extraoff17/on35 preserved; defaultauto chose direct after breakfast;explicitcity with later flight worked; restoredauto",
-      "Temporary browser test only:hotel difference1200 and other0 produced906within1000 and1576over1000 against current matched baseline4182; all temporary amounts then cleared toUNKNOWN",
-      "Pages43594560066 SUCCESS;18published asset/manifest hashes PASS; only7publicFlyg runtimefiles changed; backend0.1.29,Free plan,secrets unchanged"
-    ],
+    "status": "IN_PROGRESS",
+    "targetRelease": "0.1.37",
+    "goal": "Diagnose FDH calendar SEARCH_SOURCE_ERROR; distinguish explicit no-results response from genuine source failure; preserve other airports",
     "plan": [
-      "Installed iPhone0.1.36 acceptance pending;CURRENT/PREVIOUS unchanged",
-      "Actual hotel/ground/baggage/other prices remain unavailable; estimates never become verified all-in totals",
-      "Broaden source-backed transfer coverage beyond Cervinia and validate selected transport/hotel endpoints before booking recommendations"
+      "One bounded Free-only provider diagnostic for exact FDH4night query, sanitize error message without exposing credentials",
+      "Implement narrowly evidenced empty-result handling or explicit source-unsupported classification; do not turn arbitrary source errors into no flights",
+      "Cache explicit empty responses and keep successful airports; plain summary with technical details collapsed",
+      "Regression, existing Worker preserve-secret deployment, live exact-route/cache and frontend verification"
     ],
-    "sourceCommit": "796e2f5030643576312e7fb932221f6049b9aa50",
-    "deploymentCommit": "32f7936a0be39f236001f073c47a4024b149ad6b",
-    "deploymentRun": 43594560066,
-    "rollbackCommit": "7813e4265fb2a9a007ac4e4f4fa34ac6199fe038",
-    "resumeInstruction": "Continue from0.1.36 flexible stay. Binding user preferences:3whole ski days suffice;1extra night accepted even about1000SEK more TOTAL FOR TWO. No fixed4night maximum. City night optional even for late return; prefer direct resort return if calm breakfast works.84tests/18hashes/browserPASS;devicepending. UNKNOWN costs never0; comparison is only matched baseline plus explicitly entered difference estimates. All browser test amounts cleared."
+    "resumeInstruction": "User IMG_4279:INN/MUC/ZRH completed,FDH4and5calendar SEARCH_SOURCE_ERROR. Generic provider.error discarded all distinctions. Need actual sanitized provider evidence; no assumption FDH unavailable. No key/account/plan changes."
   },
   "currentWork": {
     "completed": "84 backend/journey/UI/week/SW/updater tests PASS; final static/integrityCI PASS\nUser rules replace fixed4night/defaultcity policy:3ski days sufficient,1extra night welcome even if total trip up toabout1000SEK more for two\nCalendar searches4and5night variants per airport,8calls/batch,per-variant completion/resume; toggling extra off skips pending longer queries without repeating finished work\nAutomatic return prefers direct resort transfer after calm breakfast09:00; otherwise evaluates city night. Explicitcity remains valid with late flight. Resort07:00/city05:00 earliest are editable planning assumptions, not hard08–12flight windows\nCost comparison uses matched baseline fare plus entered whole-trip hotel/ground/baggage/other differences for TWO; blanks stay UNKNOWN, signed savings allowed; no calendar-floor or all-in guarantee\nAt most3date pairs enriched, deliberately including base and extra variants; extra skiing is optional even if4whole days fit\nBrowser0.1.36 actual week11Cervinia35cards;extraoff17/on35 preserved; defaultauto chose direct after breakfast;explicitcity with later flight worked; restoredauto\nTemporary browser test only:hotel difference1200 and other0 produced906within1000 and1576over1000 against current matched baseline4182; all temporary amounts then cleared toUNKNOWN\nPages43594560066 SUCCESS;18published asset/manifest hashes PASS; only7publicFlyg runtimefiles changed; backend0.1.29,Free plan,secrets unchanged",
