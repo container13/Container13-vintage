@@ -1,0 +1,39 @@
+{
+  "schema": "PROJECT-CURRENT-STATE-1",
+  "project": "Flyg – Alperna",
+  "repository": "container13/Container13-vintage",
+  "branch": "flyg-alperna-init",
+  "projectRoot": "flyg/",
+  "riskClass": "LOW",
+  "projectMode": "ACTIVE_DEVELOPMENT",
+  "release": {
+    "previousVerified": null,
+    "currentVerified": null,
+    "candidate": "0.1.0",
+    "integrity": "PENDING"
+  },
+  "workCheckpoint": {
+    "status": "IDLE",
+    "targetRelease": "0.1.0",
+    "goal": "Create isolated template-based foundation for a personal Alpine flight search",
+    "plan": [
+      "Verify flight-data provider access and terms",
+      "Build flexible itinerary/date rules and UI",
+      "Integrate authorized live flight data",
+      "Test on iPhone and verify deployment"
+    ],
+    "lastSafeRelease": null,
+    "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified."
+  },
+  "currentWork": {
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented.",
+    "next": "Inventory existing solutions and confirm usable live flight API access before building runtime.",
+    "blocked": false
+  },
+  "pausedWork": {},
+  "dependencies": {
+    "flightAPI": "UNSELECTED_UNVERIFIED",
+    "deployment": "NOT_CONFIGURED",
+    "secrets": "NONE_COMMITTED"
+  }
+}
