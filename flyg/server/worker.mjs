@@ -1,5 +1,5 @@
 /* Flyg runtime 0.1.11. Secrets and provider selection tokens stay server-side. */
-export const VERSION='0.1.29';
+export const VERSION='0.1.37';
 const ORIGIN='https://container13.se';
 const AIRPORTS=new Set('ZRH GVA INN SZG MXP LIN BGY TRN MUC LYS BSL VRN VCE BLQ STR VIE NCE GNB TSF TRS FDH GRZ KLU CGN LHR LGW STN'.split(' '));
 const TTL=30*60*1000;
@@ -66,6 +66,7 @@ export async function provider(path,params,key,fetcher=fetch){
  let r;try{r=await fetcher(url,{redirect:'manual',signal:AbortSignal.timeout(70000),headers:{'Accept':'application/json','User-Agent':'Flyg/0.1.17 (+https://container13.se/flyg/)'}});}catch(error){const reason=/not allowed|blocked|restricted|forbidden/i.test(String(error?.message))?'ACCESS_DENIED':error?.name==='TimeoutError'?'TIMEOUT':'NETWORK';throw new SafeError(phase+'_'+reason,502);}
  if(!r.ok)throw new SafeError((path==='account.json'?'ACCOUNT':'SEARCH')+'_HTTP_'+r.status,502);
  let data;try{data=await r.json();}catch{throw new SafeError(phase+'_INVALID_JSON',502);}
+ if(data.error==="Google Flights Calendar hasn't returned any results for this query."&&path==='search.json'&&params.engine==='google_flights_calendar'&&data.search_metadata?.status==='Success'&&(data.prices==null||(Array.isArray(data.prices)&&data.prices.length===0))){const {error,...rest}=data;return {...rest,prices:[],sourceStatus:'NO_RESULTS'};}
  if(data.error){const reason=/invalid.*api.*key|api.*key.*invalid/i.test(String(data.error))?'KEY_REJECTED':/run out|quota|limit/i.test(String(data.error))?'QUOTA':'SOURCE_ERROR';throw new SafeError(phase+'_'+reason,502);}
  return data;
 }
@@ -124,7 +125,7 @@ export class SearchGate {
   if(input.stage==='outbound')for(const [key,value]of Object.entries({departure_id:'ARN',arrival_id:context.destination,outbound_date:context.outbound,return_date:context.return,adults:'2',currency:'SEK'}))if(String(data.search_parameters?.[key])!==value)throw new SafeError('PROVIDER_CONTEXT_MISMATCH',502);
   if(input.stage==='calendar')for(const [key,value]of Object.entries({engine:'google_flights_calendar',departure_id:'ARN',arrival_id:context.destination,adults:'2',currency:'SEK',date_range_start:context.from,date_range_end:context.to,round_trip_days:String(context.nights)}))if(String(data.search_parameters?.[key])!==value)throw new SafeError('PROVIDER_CONTEXT_MISMATCH',502);
   const body={version:VERSION,stage:input.stage,context,adults:2,currency:'SEK',fetchedAt:new Date(now).toISOString(),expiresAt:new Date(now+TTL).toISOString(),cached:false,remainingAtLastCheck:remaining-1};
-  if(input.stage==='calendar')body.prices=normalizeCalendar(data,context);
+  if(input.stage==='calendar'){body.prices=normalizeCalendar(data,context);body.sourceStatus=data.sourceStatus==='NO_RESULTS'?'NO_RESULTS':body.prices.length?'RESULTS':'NO_PRICED_RESULTS';}
   else if(input.stage==='details')Object.assign(body,normalizeBooking(data),{selectedFlightUrl:selectedFlightUrl(data.search_metadata?.google_flights_url,this.env.FLYG_SERPAPI_KEY)});
   else{
    body.flights=[];
@@ -141,3 +142,4 @@ export class SearchGate {
   return response(body);
  }catch(e){const code=e instanceof SafeError?e.message:'SEARCH_FAILED';await this.storage.put('lastFailure',{code,time:new Date().toISOString()});return response({error:code},e instanceof SafeError?e.status:503);}}
 }
+

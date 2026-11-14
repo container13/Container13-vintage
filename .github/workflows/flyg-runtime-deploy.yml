@@ -45,10 +45,10 @@ jobs:
             try:
               with urllib.request.urlopen(url,timeout=12) as resp:
                 data=json.load(resp)
-              assert data.get('version')=='0.1.29',f"Unexpected Worker version: {data.get('version')}"
+              assert data.get('version')=='0.1.37',f"Unexpected Worker version: {data.get('version')}"
               assert data.get('enabled') is True,'Worker not enabled'
               assert data.get('configured') is True,'Worker provider secret missing'
-              print('PASS isolated Worker 0.1.29 health (zero SerpApi calls)')
+              print('PASS isolated Worker 0.1.37 health (zero SerpApi calls)')
               break
             except urllib.error.HTTPError as exc:
               if exc.code==403:
@@ -75,7 +75,7 @@ jobs:
           try:
             with urllib.request.urlopen('https://flyg-search-api.mangaj73.workers.dev/health',timeout=10) as resp:
               data=json.load(resp)
-            report['workerHealth']='PASS' if data.get('version')=='0.1.29' and data.get('enabled') is True and data.get('configured') is True else 'MISMATCH'
+            report['workerHealth']='PASS' if data.get('version')=='0.1.37' and data.get('enabled') is True and data.get('configured') is True else 'MISMATCH'
             report['workerVersion']=str(data.get('version',''))[:30]
           except urllib.error.HTTPError as e:
             report['workerHealth']='HTTP_'+str(e.code)

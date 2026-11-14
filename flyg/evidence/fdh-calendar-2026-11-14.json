@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-14",
+  "diagnosticRun": 43598117287,
+  "commit": "320ae96e74954acde9d936cf1977ba71b1198bea",
+  "request": {
+    "engine": "google_flights_calendar",
+    "departure": "ARN",
+    "arrival": "FDH",
+    "from": "2027-03-13",
+    "to": "2027-03-21",
+    "nights": 4,
+    "adults": 2,
+    "currency": "SEK",
+    "excludeAirlines": [
+      "FR"
+    ]
+  },
+  "searchesSent": 1,
+  "freeSearchesBefore": 175,
+  "metadataStatus": "Success",
+  "contextMatch": true,
+  "pricesArrayPresent": false,
+  "sanitizedError": "Google Flights Calendar hasn't returned any results for this query.",
+  "rootCause": "Provider no-result outcome was collapsed into SEARCH_SOURCE_ERROR; generic errors must remain errors."
+}

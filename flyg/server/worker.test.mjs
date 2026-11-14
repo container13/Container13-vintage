@@ -130,3 +130,25 @@ test('Norwegian exclusion accepts both DY and D8 carrier codes',()=>{
  const v=validate({...input,excludeAirlines:['D8','DY']},now);
  assert.equal(v.excludeAirlines,'D8,DY');
 });
+
+
+test('only the evidenced successful calendar no-results message becomes an explicit empty result',async()=>{
+ const message="Google Flights Calendar hasn't returned any results for this query.";
+ const value=await provider('search.json',{engine:'google_flights_calendar'},'KEY',async()=>Response.json({search_metadata:{status:'Success'},error:message}));assert.deepEqual(value.prices,[]);assert.equal(value.sourceStatus,'NO_RESULTS');assert.equal(value.error,undefined);
+ for(const [params,data]of [[{engine:'google_flights'},{search_metadata:{status:'Success'},error:message}],[{engine:'google_flights_calendar'},{search_metadata:{status:'Error'},error:message}],[{engine:'google_flights_calendar'},{search_metadata:{status:'Success'},error:'Failed to retrieve data'}],[{engine:'google_flights_calendar'},{search_metadata:{status:'Success'},error:message,prices:[{price:3000}]}]])await assert.rejects(provider('search.json',params,'KEY',async()=>Response.json(data)),/SEARCH_SOURCE_ERROR/);
+});
+test('FDH explicit empty calendar result preserves context and is cached without repeating provider requests',async()=>{
+ const store=storage(),gate=new SearchGate({storage:store},{FLYG_SERPAPI_KEY:'KEY'}),original=global.fetch,calls=[];
+ global.fetch=async url=>{calls.push(url.pathname);if(url.pathname==='/account.json')return Response.json({plan_id:'free',plan_monthly_price:0,plan_searches_left:175});return Response.json({search_metadata:{status:'Success'},search_parameters:Object.fromEntries(url.searchParams),error:"Google Flights Calendar hasn't returned any results for this query.",private:'KEY'});};
+ try{const query={...cal,destination:'FDH',excludeAirlines:['FR']};const a=await (await gate.fetch(request(query))).json();assert.equal(a.sourceStatus,'NO_RESULTS');assert.deepEqual(a.prices,[]);assert.equal(a.cached,false);assert.ok(!JSON.stringify(a).includes('KEY'));const b=await (await gate.fetch(request(query))).json();assert.equal(b.cached,true);assert.equal(b.fetchedAt,a.fetchedAt);assert.equal(calls.length,2);assert.equal(store.value.monthUsed,1);}finally{global.fetch=original;}
+});
+test('no-result recognition never bypasses echoed query context validation',async()=>{
+ const store=storage(),gate=new SearchGate({storage:store},{FLYG_SERPAPI_KEY:'KEY'}),original=global.fetch;
+ global.fetch=async url=>url.pathname==='/account.json'?Response.json({plan_id:'free',plan_monthly_price:0,plan_searches_left:175}):Response.json({search_metadata:{status:'Success'},search_parameters:{...Object.fromEntries(url.searchParams),arrival_id:'INN'},error:"Google Flights Calendar hasn't returned any results for this query."});
+ try{const r=await gate.fetch(request({...cal,destination:'FDH'}));assert.equal(r.status,502);assert.match(await r.text(),/PROVIDER_CONTEXT_MISMATCH/);assert.equal(Object.keys(store.value.cache).length,0);}finally{global.fetch=original;}
+});
+test('actual source errors remain errors and are not cached as no flights',async()=>{
+ const store=storage(),gate=new SearchGate({storage:store},{FLYG_SERPAPI_KEY:'KEY'}),original=global.fetch;
+ global.fetch=async url=>url.pathname==='/account.json'?Response.json({plan_id:'free',plan_monthly_price:0,plan_searches_left:175}):Response.json({search_metadata:{status:'Success'},search_parameters:Object.fromEntries(url.searchParams),error:'Failed to retrieve data'});
+ try{const r=await gate.fetch(request({...cal,destination:'FDH'}));assert.equal(r.status,502);assert.match(await r.text(),/SEARCH_SOURCE_ERROR/);assert.equal(Object.keys(store.value.cache).length,0);}finally{global.fetch=original;}
+});

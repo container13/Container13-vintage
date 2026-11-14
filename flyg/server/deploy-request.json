@@ -1,5 +1,5 @@
 {
-  "release": "0.1.29",
-  "frontend": "0.1.28",
-  "reason": "Fix idempotent airline exclusions; existing enabled Worker only; preserve secrets, variables, DO cache and Free plan"
+  "release": "0.1.37",
+  "frontend": "0.1.37",
+  "reason": "Recognize evidenced calendar no-results without masking real errors; preserve existing Worker variables/secrets/DO/cache"
 }
