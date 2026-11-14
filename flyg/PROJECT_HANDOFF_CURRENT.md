@@ -33,3 +33,9 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Added `index.html`, `style.css`, `app.js` on isolated branch. Mobile-first search form, skiing vs European football profile, ISO week date ranges, 2 travelers and ARN defaults; profile-dependent checked baggage; no invented flights.
 - Exact GitHub file readback PASS. No actual JS syntax/interaction or mobile-device test performed. No deployment and no provider access. Candidate remains UNVERIFIED.
 - Before any release: implement shared release manifest/updater, test syntax and UI, verify deployment and iPhone; use only an authorized flight data provider.
+
+## Alpine airport coverage — 2026-11-14
+- Expanded `app.js` catalog to 23 candidate airports including Zurich (ZRH), Geneva (GVA), Innsbruck, Salzburg, Milan (MXP/LIN), Bergamo, Turin, Munich, Lyon, Basel, Verona, Venice, Bologna, Stuttgart, Vienna and Nice, plus secondary airports requiring direct-route verification.
+- User flew via Zurich to St Anton last year; include Zurich as a strong St Anton gateway but do not assume live price or schedules.
+- Candidate airports are not confirmed nonstop routes for every date. Filter by actual ARN nonstop availability, arrival time, bag-inclusive total price, and ground transfer to chosen resort before recommendations.
+- Candidate v0.1.1 committed only, no deployment/device test. Flight provider not connected.
