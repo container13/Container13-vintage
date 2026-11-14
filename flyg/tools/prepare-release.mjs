@@ -25,7 +25,7 @@ if(!shellMatch)throw Error('SW shell declaration missing');
 const shell=JSON.parse(shellMatch[1].replaceAll("'",'"'));
 const integrity={};
 for(const asset of shell){
- const disk=resolve(root,asset);
+ const disk=resolve(root,asset==='./'?'index.html':asset);
  const bytes=await readFile(disk);
  integrity[asset]=createHash('sha256').update(bytes).digest('hex');
 }
@@ -34,7 +34,7 @@ if(!/const INTEGRITY=\{[^;]+\};/.test(sw))throw Error('SW integrity declaration 
 sw=sw.replace(/const INTEGRITY=\{[^;]+\};/,`const INTEGRITY=${JSON.stringify(integrity)};`);
 await put('sw.js',sw);
 for(const asset of shell){
- const actual=createHash('sha256').update(await readFile(resolve(root,asset))).digest('hex');
+ const actual=createHash('sha256').update(await readFile(resolve(root,asset==='./'?'index.html':asset))).digest('hex');
  if(actual!==integrity[asset])throw Error('Mismatch '+asset);
 }
 console.log(`Prepared ${release}: ${shell.length} SHA256 assets verified; no network calls`);
