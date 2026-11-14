@@ -13,9 +13,9 @@
     "integrity": "HTTPS_ALL_14_ASSETS_BYTE_MATCH_PASS; EMBEDDED_SHA256_PASS"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
+    "status": "IDLE",
     "targetRelease": "0.1.10",
-    "goal": "Collect SerpApi key in GitHub Actions secret and run one Free-only server-side proof",
+    "goal": "Single secret-backed Free-plan live search completed successfully",
     "plan": [
       "User saves copied key as FLYG_SERPAPI_KEY in repository Actions secrets",
       "Trigger bounded probe on isolated flyg-alperna-init branch",
@@ -23,17 +23,17 @@
       "Verify sanitized results before choosing production backend"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "Read latest state. User key copied; save as GitHub Actions secret FLYG_SERPAPI_KEY, then run isolated single-search proof. PWA 0.1.10 unchanged. 0 kr only.",
+    "resumeInstruction": "Read current state. Server-side SerpApi Free proof PASS run 43559215595: 1 call, 11 results. Existing secret FLYG_SERPAPI_KEY usable only in Actions. Need fare scope/baggage proof and protected runtime backend; PWA 0.1.10 unchanged.",
     "rollbackCommit": "ff4244680ce148a22517c84e779141c1e0919db2"
   },
   "currentWork": {
-    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected. Recurring zero-cost candidate SerpApi identified: official Free 250 monthly requests and flight-comparison use case documented. Google Flights scraping intermediary, not official Google API; no live probe yet. Limited trial-only services excluded. User screenshots confirm SerpApi Free account and successful Playground ARN-ZRH search for 2027-03-14/18 with two adults selected; exact total and checked bag weight not verified. Prepared probe-0.1.0 and five guard tests PASS; missing key sends zero requests.",
-    "next": "User saves FLYG_SERPAPI_KEY via GitHub repository Actions secret form, then agent triggers probe by isolated request-file commit. No key in chat/source. This is proof execution, not a deployed PWA backend.",
-    "blocked": true
+    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected. Recurring zero-cost candidate SerpApi identified: official Free 250 monthly requests and flight-comparison use case documented. Google Flights scraping intermediary, not official Google API; no live probe yet. Limited trial-only services excluded. User screenshots confirm SerpApi Free account and successful Playground ARN-ZRH search for 2027-03-14/18 with two adults selected; exact total and checked bag weight not verified. Prepared probe-0.1.0 and five guard tests PASS; missing key sends zero requests. Live GitHub Actions run 43559215595 PASS: Free plan verified, 248 free searches before call, exactly one fresh ARN-ZRH search, 11 priced results. Key remained in Actions secret. Total-for-two/23kg/transfer still unverified.",
+    "next": "Verify returned fare scope and checked baggage using bounded provider details, then design zero-cost protected runtime backend; PWA still not connected. Do not repeat broad live search merely to retrieve already observed evidence.",
+    "blocked": false
   },
   "pausedWork": {},
   "dependencies": {
-    "flightAPI": "SERPAPI_FREE_CANDIDATE; ACCOUNT_KEY_AND_LIVE_PROBE_PENDING; NOT_CONNECTED",
+    "flightAPI": "SERPAPI_FREE_SERVER_SIDE_LIVE_PROOF_PASS; PWA_NOT_CONNECTED",
     "deployment": {
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
@@ -46,7 +46,7 @@
       "provider": "GitHub Actions repository secret",
       "name": "FLYG_SERPAPI_KEY",
       "url": "https://github.com/container13/Container13-vintage/settings/secrets/actions/new",
-      "status": "AWAITING_USER_ENTRY",
+      "status": "PRESENT_AND_USED_BY_GITHUB_ACTIONS; VALUE_NOT_READ_OR_LOGGED",
       "runtimeScope": "Isolated branch proof workflow only; no PR or scheduled trigger"
     }
   },
@@ -102,7 +102,24 @@
     "ui": "HTTPS_BROWSER_FORM_SUBMIT_PASS",
     "deployment": "PAGES_SUCCESS_7b92b46285e1eabed8ea22bfc6386a064b8d7d30",
     "device": "USER_CONFIRMED_IPHONE: 0.1.8 installed/offline form PASS; existing installation updated to 0.1.10 without reinstall PASS, 2026-11-14",
-    "flightAPI": "PLAYGROUND_SCREENSHOT_SUCCESS; SERVER_SIDE_PROBE_PENDING",
+    "flightAPI": {
+      "status": "LIVE_PROOF_PASS",
+      "runId": 43559215595,
+      "jobId": 132338923670,
+      "commit": "6e793ae059dff7fce944dc03e44bae3d8d0c5991",
+      "result": "RESULTS_RECEIVED",
+      "freeSearchesBefore": 248,
+      "searchesSent": 1,
+      "pricedResults": 11,
+      "route": "ARN-ZRH",
+      "outbound": "2027-03-14",
+      "return": "2027-03-18",
+      "adults": 2,
+      "currency": "SEK",
+      "priceScope": "UNVERIFIED",
+      "checkedBag23kgEach": "UNVERIFIED",
+      "hotelArrival": "UNVERIFIED"
+    },
     "engine": "9_SYNTHETIC_CASES_PASS",
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "IPHONE_UPDATE_TO_0.1.10_USER_CONFIRMED_PASS; VM regression PASS; dirty-form upgrade and 0.1.10 offline retest not device-tested",
