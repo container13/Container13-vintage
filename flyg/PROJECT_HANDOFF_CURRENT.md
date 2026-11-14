@@ -46,3 +46,8 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Evaluate whole journey, including total elapsed time and all-in fare for two with required baggage. Do not disqualify a stop purely because it is not direct.
 - Example: Zurich to St Anton by train takes roughly 3 hours; do not assume evening Zurich landings are compatible with hotel arrival by 22:00.
 - Implemented in requirements only; runtime form and actual ground-transfer engine still pending.
+
+## Candidate 0.1.2 — connections and hotel arrival
+- Search UI now has direct-only vs connections-allowed selection and a separate **hotel arrival cutoff (default 22:00)**. Generated search requirements include these settings, for both profiles.
+- Airport-arrival preference is not the hotel deadline; actual feasibility must account for baggage, transit and transfer schedules. No live route/transfer computation implemented yet.
+- All changed files verified via GitHub readback; no deployment or device verification.
