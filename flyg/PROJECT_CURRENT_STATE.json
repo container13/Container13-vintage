@@ -13,28 +13,15 @@
     "integrity": "18_PUBLISHED_ASSET_MANIFEST_HASHES_PASS; BROWSER_RESORT_DINNER_PASS; IPHONE_PENDING"
   },
   "workCheckpoint": {
-    "status": "UNVERIFIED",
-    "targetRelease": "frontend0.1.32/backend0.1.29",
-    "goal": "Cervinia arrival before dinner prioritized with sourced road estimates and explicit margins; actual iPhone acceptance pending",
-    "completed": [
-      "60 backend/journey/week/arrival/selection/updater/SW tests PASS",
-      "Same canonical journey-engine.resortArrival: Cervinia TRN102min,MXP136,LIN149 from official resort;BGY170 from operator; estimates not booked/verified",
-      "Planning allowances default60min airport/baggage+30road margin+30checkin, editable; dinner target20:00,hard hotel22:00",
-      "Main list requires timetable constraints and estimated dinner readiness; later arrivals optional collapsed reserves; unsupported transfer/public transit separate UNKNOWN",
-      "Browser0.1.32 actual grouped query3of10 primary;AF1130 landing11:45 ->estimated resort15:31,ready16:01",
-      "Browser target16:00 ->1offer;20:00 ->3;optional reserves2;public transport0primary/4unknown;restore3primary",
-      "Pages43590271969 SUCCESS;18 published asset/manifest hashes PASS; no backend, secrets, paid routing or unrelated project changes"
-    ],
+    "status": "IN_PROGRESS",
+    "targetRelease": "0.1.33",
+    "goal": "Show matched outbound and return times with actual two-adult quote directly on calendar date cards",
     "plan": [
-      "Installed iPhone0.1.32 update and acceptance pending",
-      "Expand source-backed estimates to other resorts; actual dated transfer availability and complete baggage/ground costs remain unverified",
-      "Full three-ski-day and last-city-night itinerary remains a later end-to-end check; city-first fallback not a verified package"
+      "Enrich at most3best date rows automatically for selected resort, max2staged calls per row; other rows on demand",
+      "Only show timetable/price from one matched staged itinerary; respect current arrival/carrier/budget filters",
+      "Keep calendar from-price distinct; preserve date list and Free/cache guards; test source and live UI"
     ],
-    "sourceCommit": "12066815a600699ca1af6e070b06a4f42ab7274c",
-    "deploymentCommit": "f02fc969da44d2ead0530202dd74b56cc8cc18ed",
-    "deploymentRun": 43590271969,
-    "rollbackCommit": "51daa57ac981448690a0ee4713712d2b7afd4d8d",
-    "resumeInstruction": "Continue from0.1.32 resort dinner planning. User prioritizes direct resort first evening with relaxed dinner before sleep; first-night city fallback opt-in only, city night ideally after skiing. Cervinia sourced ROAD ESTIMATES ONLY, not verified/booked transfers. Main3of10 and input changes/browser/PWA/hash tests PASS. No CURRENT/PREVIOUS rotation from browser evidence alone."
+    "resumeInstruction": "User wants times in calendar comparison when price differs30SEK. No invented times from calendar-only feed. Matched outbound/returns required. Backend0.1.29 and30min cache unchanged."
   },
   "currentWork": {
     "completed": "60 backend/journey/week/arrival/selection/updater/SW tests PASS\nSame canonical journey-engine.resortArrival: Cervinia TRN102min,MXP136,LIN149 from official resort;BGY170 from operator; estimates not booked/verified\nPlanning allowances default60min airport/baggage+30road margin+30checkin, editable; dinner target20:00,hard hotel22:00\nMain list requires timetable constraints and estimated dinner readiness; later arrivals optional collapsed reserves; unsupported transfer/public transit separate UNKNOWN\nBrowser0.1.32 actual grouped query3of10 primary;AF1130 landing11:45 ->estimated resort15:31,ready16:01\nBrowser target16:00 ->1offer;20:00 ->3;optional reserves2;public transport0primary/4unknown;restore3primary\nPages43590271969 SUCCESS;18 published asset/manifest hashes PASS; no backend, secrets, paid routing or unrelated project changes",
