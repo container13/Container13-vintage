@@ -1,52 +1,63 @@
-name: Flyg public PWA update diagnosis
+name: Flyg public PWA read-only version and journey smoke
 on:
   push:
     branches: [flyg-alperna-init]
     paths: ['.github/workflows/flyg-public-pwa-diagnose.yml']
 permissions:
-  contents: write
+  contents: read
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - run: |
+      - name: Install browser
+        run: |
           python3 -m pip install --user playwright
           python3 -m playwright install --with-deps chromium
-      - name: Inspect live CDN and service worker in browser
+      - name: Probe published 0.1.38 and St Anton without API searches
         run: |
           python3 - <<'PY'
-          import json
+          import json,time
           from playwright.sync_api import sync_playwright
-          out={'target':'https://container13.se/flyg/','expected':'0.1.24'}
-          try:
-            with sync_playwright() as p:
-              browser=p.chromium.launch(headless=True)
-              context=browser.new_context(service_workers='allow')
-              page=context.new_page()
-              page.on('console',lambda m:out.setdefault('console',[]).append(m.text[:200]) if m.type=='error' else None)
-              page.on('pageerror',lambda e:out.setdefault('pageErrors',[]).append(str(e)[:200]))
-              response=page.goto(out['target'],wait_until='domcontentloaded',timeout=25000)
-              out['pageHttp']=response.status if response else None
-              page.wait_for_timeout(3000)
-              out['clientVersion']=page.evaluate('window.ProjectVersion?.release || null')
-              out['sw']=page.evaluate("""async()=>{let r=await navigator.serviceWorker.getRegistration();if(!r)return null;try{await r.update()}catch(e){return {updateError:String(e)}};await new Promise(r=>setTimeout(r,3000));return {active:r.active?.state,waiting:r.waiting?.state,installing:r.installing?.state,controller:!!navigator.serviceWorker.controller}}""")
-              for name in ['release.json','version.js','sw.js']:
-                try:
-                  r=page.request.get(out['target']+name+'?diagnostic=20261114',timeout=15000)
-                  body=r.text()
-                  out[name]={'http':r.status,'snippet':body[:220] if name!='sw.js' else body[:85]}
-                except Exception as e:out[name]={'error':type(e).__name__}
-              browser.close()
-          except Exception as e:out['probeError']=type(e).__name__
-          with open('flyg/public-pwa-diagnostics.json','w') as f:json.dump(out,f,indent=2,ensure_ascii=False)
-          print(json.dumps(out,ensure_ascii=False))
+          target='https://container13.se/flyg/'
+          expected='0.1.38'
+          result={'target':target,'expectedVersion':expected,'providerSearches':0}
+          with sync_playwright() as p:
+            browser=p.chromium.launch(headless=True)
+            context=browser.new_context(service_workers='allow')
+            page=context.new_page()
+            errors=[]
+            page.on('pageerror',lambda e:errors.append(str(e)[:240]))
+            for attempt in range(5):
+              response=page.goto(target,wait_until='domcontentloaded',timeout=30000)
+              page.wait_for_timeout(1000)
+              version=page.evaluate('window.ProjectVersion?.release || null')
+              r=context.request.get(target+'release.json?smoke=0138-'+str(attempt),headers={'Cache-Control':'no-cache'},timeout=15000)
+              info=r.json() if r.ok else {}
+              result.update({'pageHttp':response.status if response else None,'clientVersion':version,'manifestVersion':info.get('release'),'manifestHttp':r.status})
+              if response and response.status==200 and version==expected and r.status==200 and info.get('release')==expected:break
+              time.sleep(2)
+            result['roadCheck']=page.evaluate("""() => {
+              const req={resort:'St. Anton am Arlberg',transport:'road',dinnerTarget:'20:00',hotelCutoff:'22:00',airportMinutes:60,roadBufferMinutes:30,checkinMinutes:30};
+              const codes={INN:75,ZRH:135,MUC:195,FDH:100};
+              return Object.fromEntries(Object.entries(codes).map(([code,want])=>{
+                const a=window.FlygJourney?.resortArrival({segments:[{destination:code,arrivalLocal:'2027-03-14 12:00'}]},req);
+                return [code,{actual:a?.roadMinutes,estimated:a?.verification==='ESTIMATE_ONLY',pass:a?.roadMinutes===want&&a?.verification==='ESTIMATE_ONLY'}];
+              }));
+            }""")
+            result['unknownCity']=page.evaluate("""() => {
+              const req={resort:'St. Anton am Arlberg',transport:'road',dinnerTarget:'20:00',hotelCutoff:'22:00',airportMinutes:60,roadBufferMinutes:30,checkinMinutes:30,returnPlan:'city',maxNights:5,skiDays:3,skiStart:'09:00',skiEnd:'16:00',earliestHotelDeparture:'07:00',earliestCityDeparture:'05:00',airportReturnMinutes:120,cityAirportMinutes:90};
+              const out={segments:[{origin:'ARN',destination:'INN',departureLocal:'2027-03-14 07:00',arrivalLocal:'2027-03-14 12:00'}]};
+              const back={segments:[{origin:'INN',destination:'ARN',departureLocal:'2027-03-18 14:00',arrivalLocal:'2027-03-18 18:00'}]};
+              return window.FlygJourney?.skiTrip(out,back,req).status;
+            }""")
+            result['pageErrors']=errors
+            browser.close()
+          print(json.dumps(result,ensure_ascii=False,indent=2))
+          assert result['pageHttp']==200 and result['clientVersion']==expected and result['manifestHttp']==200 and result['manifestVersion']==expected,'Live CDN/version mismatch'
+          assert all(x['pass'] for x in result['roadCheck'].values()),'St Anton road-time mismatch'
+          assert result['unknownCity']=='UNKNOWN','Unverified city night must stay UNKNOWN'
+          assert not result['pageErrors'],'Browser JavaScript errors'
+          print('PASS: published version and St Anton modelling; ZERO provider API calls')
           PY
-      - name: Save diagnostics
-        if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add flyg/public-pwa-diagnostics.json
-          git diff --cached --quiet || { git commit -m "Flyg: record public PWA cache diagnosis"; git push origin HEAD:flyg-alperna-init; }
