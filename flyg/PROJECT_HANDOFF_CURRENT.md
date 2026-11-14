@@ -116,3 +116,6 @@ User confirms existing installed iPhone app now displays 0.1.10 after Update. Re
 
 ## Latest checkpoint — provider access investigation 2026-11-14
 See FLIGHT_DATA_ACCESS.md. No live provider connected. Official Skyscanner audience criteria exclude this personal app; Duffel services agreement restricts metasearch, so do not select it merely based on low search price. No credentials/accounts/costs activated. Current runtime remains 0.1.10. User decision/access required: interim outbound search hub vs authorized live-data provider. Do not imply links are in-app live results.
+
+## Latest: zero-cost only, SerpApi proof pending
+User explicitly requires 0 kr setup/ongoing; account allowed. SerpApi recurring Free 250 requests/month is a candidate, NOT connected/proven. See FLIGHT_DATA_ACCESS.md. User account/key needed for one real ARN-ZRH 2-adult SEK test. No paid plan, trial-only solution, code implementation or 23kg baggage guarantee. PWA remains 0.1.10. Read costConstraint in structured state.
