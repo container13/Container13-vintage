@@ -15,19 +15,19 @@
   "workCheckpoint": {
     "status": "UNVERIFIED",
     "targetRelease": "0.1.7",
-    "goal": "Validate mobile flight-search prototype and connect authorized data provider",
+    "goal": "Complete selected globe icon #3 PWA integration via verified binary upload and test",
     "plan": [
-      "Static/UI checks and device smoke test (PENDING)",
-      "Implement centralized release manifest, updater and footer before deployment (PENDING)",
-      "Verify live flight API terms/access and build provider adapter (PENDING)",
-      "Deploy isolated candidate and verify live bytes before promotion (PENDING)"
+      "Use existing four PNG files (180,192,512,1024) and verified solutions/github-binary-upload workflow to commit exact binaries",
+      "Read back blob SHA, tree path and file size for each PNG; no substitute icon",
+      "Verify manifest, service worker and icon links on deployed HTTPS, run Node tests and test installed iPhone PWA",
+      "Keep candidate unpromoted until deploy/runtime/device evidence exists"
     ],
     "lastSafeRelease": null,
     "resumeInstruction": "Read flyg/START_HERE.md, PROJECT_CURRENT_STATE.json and shared project rules. No live API or deployed release has been verified."
   },
   "currentWork": {
-    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending. UI now exposes connection preference and hotel cutoff; readback PASS. Added pure journey-engine.js and 9 synthetic Node test cases; GitHub readback PASS, tests NOT EXECUTED. Hotel arrival cutoff selector now supports half-hour steps; GitHub readback PASS. Added one central release.json manifest and auto-update.js controller to index; GitHub readback PASS. Added manifest, SVG icon, service worker and registration for PWA; GitHub readback PASS. Wired chosen globe-and-airplane PNG paths into manifest, iPhone touch icon, service worker and release manifest. PNG binary assets prepared locally but not yet committed to GitHub.",
-    "next": "Upload 4 real PNG binaries via GitHub blob/tree/commit/ref workflow, verify tree SHA/size, run tests and PWA install smoke. Do not deploy before PNGs exist in repository.",
+    "completed": "Isolated branch created; shared template rules copied; initial flight search requirements documented. Global flight-search defaults and football exception documented. Prototype HTML/CSS/JS committed with profile switching and ISO-week dates; exact GitHub file readback PASS. Expanded Alpine airport selection to 23 candidates incl. ZRH/GVA; exact readback PASS. Confirmed connecting flights allowed if arrival at hotel no later than 22:00 local; readback pending. UI now exposes connection preference and hotel cutoff; readback PASS. Added pure journey-engine.js and 9 synthetic Node test cases; GitHub readback PASS, tests NOT EXECUTED. Hotel arrival cutoff selector now supports half-hour steps; GitHub readback PASS. Added one central release.json manifest and auto-update.js controller to index; GitHub readback PASS. Added manifest, SVG icon, service worker and registration for PWA; GitHub readback PASS. Wired chosen globe-and-airplane PNG paths into manifest, iPhone touch icon, service worker and release manifest. PNG binary assets prepared locally but not yet committed to GitHub. Updated index heading to worldwide flight travel (GitHub readback PASS). Service worker optional PNG cache no longer blocks install (GitHub readback PASS).",
+    "next": "In Work, open canonical state/handoff from GitHub; upload four original selected PNG assets to isolated branch, verify blob/tree/size, then PWA tests. No user re-upload requested unless Work cannot access the existing assets.",
     "blocked": false
   },
   "pausedWork": {},
@@ -92,7 +92,7 @@
     "engine": "COMMITTED_READBACK_ONLY",
     "tests": "NOT_EXECUTED",
     "updateController": "COMMITTED_UNTESTED",
-    "pwa": "CONFIG_COMMITTED_PNG_BINARIES_NOT_UPLOADED"
+    "pwa": "SOURCE_WIRED; PNG_BINARY_NOT_IN_GITHUB; NO_DEPLOY_OR_DEVICE_TEST"
   },
   "airportCatalog": {
     "version": "2026-11-14",
