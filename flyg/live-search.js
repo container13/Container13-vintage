@@ -76,8 +76,45 @@ async function searchAll(query,previous=null){
   }
   data.coverage.unsearched=pending.slice(index);
   if(!previous)history.push(data);render(data);window.FlygSelectionUI.reveal(results);status.textContent=data.coverage.failed.length||data.coverage.unsearched.length?'Sökningen är inte färdig. Se felorsak och återstående flygplatser nedan.':'Alla valda flygplatser har sökts. Billigast först.';
+  if(calendar&&!previous&&resortCodes()&&data.coverage.completed.length)await calendarTimes(data,comparisonBatch(calendarRows(data)),true);
  }finally{setBusy(false);}
 }
+// Calendar feed has dates/prices only. Retrieve a bounded matched itinerary before showing times.
+function calendarRows(data){return data.prices.filter(row=>row.quotedPriceSEK<=Number(maxPrice.value)).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);}
+function comparisonBatch(rows){const dates=new Set();return rows.filter(row=>{const key=row.outbound+'/'+row.return;if(dates.has(key))return false;dates.add(key);return true;}).slice(0,3);}
+function calendarContext(data,row){return {stage:'outbound',destination:row.destination,outbound:row.outbound,return:row.return,direct:data.context.direct};}
+function outboundFits(flight,data){
+ if(!Number.isFinite(flight.quotedPriceSEK)||flight.quotedPriceSEK>Number(maxPrice.value)||excludedFlight(flight))return false;
+ if(window.FlygJourney.checkSchedule(flight,scheduleRequirements(data)).status!=='NOT_REJECTED')return false;
+ const ground=resortRequirements(data);
+ return !ground.resort||window.FlygJourney.resortArrival(flight,ground).status==='ON_TIME';
+}
+function matchedTimesFit(data,row){
+ const c=row.comparison;if(c?.status!=='READY')return false;
+ return outboundFits(c.outbound,{stage:'outbound',context:calendarContext(data,row)})&&!excludedFlight(c.returnFlight)&&c.returnFlight.quotedPriceSEK<=Number(maxPrice.value)&&window.FlygJourney.checkSchedule(c.returnFlight,{...scheduleRequirements(data),stage:'returns'}).status==='NOT_REJECTED';
+}
+async function calendarTimes(data,rows,alreadyBusy=false){
+ if(busy&&!alreadyBusy)return;if(!navigator.onLine){status.textContent='Flygtider behöver internet.';return;}
+ if(!alreadyBusy)setBusy(true);
+ try{
+  for(let i=0;i<Math.min(rows.length,3);i++){
+   const row=rows[i];if(row.comparison?.status==='READY')continue;
+   row.comparison={status:'LOADING'};render(data);status.textContent=`Hämtar ut- och hemresetider för ${row.outbound} (${i+1}/${Math.min(rows.length,3)})…`;
+   try{
+    const query=calendarContext(data,row),out=await requestData({...query,excludeAirlines:excludedAirlines()});
+    const flight=out.flights.filter(f=>f.selection&&outboundFits(f,{stage:'outbound',context:query})).sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK)[0];
+    if(!flight){row.comparison={status:'NO_MATCH',message:'Inga hämtade utresor passar nuvarande pris-, flygbolags- och ankomstkrav.'};render(data);continue;}
+    const back=await requestData({stage:'returns',selection:flight.selection});
+    const returns=back.flights.filter(f=>f.selection&&!excludedFlight(f)&&f.quotedPriceSEK<=Number(maxPrice.value)&&f.segments?.[0]?.origin===flight.segments.at(-1).destination&&f.segments.at(-1)?.destination==='ARN'&&f.segments[0].departureLocal?.startsWith(row.return)&&window.FlygJourney.checkSchedule(f,{...scheduleRequirements(data),stage:'returns'}).status==='NOT_REJECTED').sort((a,b)=>a.quotedPriceSEK-b.quotedPriceSEK);
+    if(!returns.length)row.comparison={status:'NO_MATCH',message:'Ingen hämtad hemresa passar den valda utresan och dina filter.'};
+    else row.comparison={status:'READY',outbound:flight,returnFlight:returns[0],fetchedAt:back.fetchedAt};
+   }catch(error){row.comparison={status:'ERROR',message:errors[error.message]||'Tiderna kunde inte hämtas. Kalenderpriset finns kvar.'};render(data);break;}
+   render(data);
+  }
+  status.textContent='Datumlistan är kvar. Tider och pris gäller den matchade resa som visas; övriga datum kan hämtas separat.';
+ }finally{if(!alreadyBusy)setBusy(false);}
+}
+function flightTimeLabel(label,flight){const first=flight.segments[0],last=flight.segments.at(-1);return `${label}: ${first.departureLocal} ${first.origin} → ${last.arrivalLocal} ${last.destination} · ${flight.segments.length===1?'direktflyg':(flight.segments.length-1)+' byte'} (lokala tider)`;}
 function baggageLabel(raw){
  const match=String(raw).match(/^(?:1st checked bag|1 carry-on bag):\s*(\d+)(?:\s*[-–]\s*(\d+))?$/i);
  if(match){const name=/checked/i.test(raw)?'Incheckad väska':'Kabinväska';return `${name}: ${match[2]?money(Number(match[1]))+'–'+money(Number(match[2]))+' (prisintervall)':money(Number(match[1]))} · vikt ej angiven`;}
@@ -122,7 +159,26 @@ function render(data){
  if(data.stage==='calendar'){
   results.append(el('p',`${data.context.nights} nätter. Kalenderpriser för två, tur och retur; flygtider och bagage kontrolleras efter datumval.`,'muted'));
   const affordable=withinBudget(data.prices);if(!affordable.length)results.append(el('p','Inga kalenderpriser inom maxpriset för de sökta flygplatserna.'));
-  for(const row of affordable){const card=el('article',null,'flight-card');card.append(el('h3',`${row.outbound} → ${row.return}`),el('p',`${row.destination} · från ${money(row.quotedPriceSEK)} för två`),button('Visa avgångar',event=>search({stage:'outbound',destination:row.destination,outbound:row.outbound,return:row.return,direct:data.context.direct},event.currentTarget)));results.append(card);}
+  if(affordable.some(row=>!row.comparison))results.append(button('Jämför tider för tre datum',()=>calendarTimes(data,comparisonBatch(affordable.filter(row=>!row.comparison)))));
+  for(const row of affordable){
+   const card=el('article',null,'flight-card');card.append(el('h3',`${row.outbound} → ${row.return}`),el('p',`${row.destination} · kalender från ${money(row.quotedPriceSEK)} för två`));
+   const c=row.comparison;
+   if(c?.status==='LOADING')card.append(el('p','Hämtar matchade ut- och hemresetider…','muted'));
+   else if(c?.status==='READY'){
+    card.append(el('p',flightTimeLabel('Utresa',c.outbound)),el('p',flightTimeLabel('Hemresa',c.returnFlight)),el('p',`${money(c.returnFlight.quotedPriceSEK)} för två, tur och retur · prisuppgift för just dessa flyg`));
+    planLabel(card,window.FlygJourney.resortArrival(c.outbound,resortRequirements(data)));
+    if(c.fetchedAt)card.append(el('p','Tider hämtade '+new Date(c.fetchedAt).toLocaleString('sv-SE')+'.','muted'));
+    const all=el('details');all.append(el('summary','Alla flyg och bytestider'));segments(all,c.outbound);segments(all,c.returnFlight);card.append(all);
+    card.append(el('p','Kalenderns frånpris kan avse andra flyg. Bagage och transferpris är inte bekräftade.','muted'));
+    if(matchedTimesFit(data,row))card.append(button('Välj denna resa',event=>{chosenOutbound=c.outbound;search({stage:'details',selection:c.returnFlight.selection},event.currentTarget);}));
+    else card.append(el('p','Dessa tider passar inte längre dina nuvarande filter. Visa avgångar för att välja ett annat flyg.'));
+   }else{
+    card.append(el('p',c?.message||'Flygtider saknas i kalenderpriset. De hämtas som en separat matchad resa.','muted'));
+    card.append(button('Hämta ut- och hemresetider',()=>calendarTimes(data,[row])));
+   }
+   card.append(button('Visa alla avgångar',event=>search(calendarContext(data,row),event.currentTarget)));results.append(card);
+  }
+
  }else if(data.stage==='details'){
   if(!data.options.length)results.append(el('p','Inga säljarpriser kunde verifieras för det här valet. Öppna sökningen hos Google Flights.'));
   const affordable=withinBudget(data.options);if(data.options.length&&!affordable.length)results.append(el('p','Inga biljettpriser inom maxpriset. Höj beloppet för att visa fler, utan ny sökning.'));
