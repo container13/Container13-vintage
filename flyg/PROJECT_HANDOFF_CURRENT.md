@@ -103,3 +103,10 @@ Personal flight search beginning with the Alps, extensible later to Thailand, Za
 - Candidate 0.1.9 is a deliberate version/cache bump to test existing installed-app upgrade; no flight provider or new flight results.
 - Added five VM regression tests: clean reload, dirty form deferral, offline no fetch, reload loop prevention, waiting-worker activation before reload. All PASS plus existing journey/SW checks. Real iPhone update still PENDING.
 - Next: publish only Flyg subtree, verify deployed bytes, then user opens existing icon online; expect 0.1.9 or Update banner. No reinstall.
+
+## Latest checkpoint — update failure / repair 0.1.10
+- User Update button reloaded but kept 0.1.8. Treat 0.1.9 iPhone upgrade as FAIL; prior VM checks did not simulate HTTP caching.
+- Reproduction: cache.addAll with default request caching can populate a new named SW cache using old version.js bytes. Actual hosting headers max-age=600. Regression fails on old worker and passes on fix. Device-specific cause still needs confirmation by successful recovery.
+- Fix: all 14 shell requests use cache:no-store plus release query; SHA-256 validates every body before any cache writes. A partial/stale deployment is rejected, preserving active worker. No second updater, no root SW changes.
+- All JS syntax, journey, five updater cases, stale-HTTP-cache and corrupt-rollout/offline SW tests PASS. Candidate 0.1.10; actual installed-iPhone update still UNVERIFIED.
+- Rollback: previous source 452e6a458038294e3c3c427850daccef4ffcd8f0, public 94bb5cad5ceccb9d4f4cb243dbf62a0a932b5d81. Only flyg subtree deployment.
