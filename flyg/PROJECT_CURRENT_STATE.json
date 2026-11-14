@@ -9,12 +9,12 @@
   "release": {
     "previousVerified": null,
     "currentVerified": null,
-    "candidate": "0.1.18",
-    "integrity": "HTTPS_ALL_15_RELEASE_ASSETS_BYTE_MATCH_PASS; SW_15_SHELL_DIGESTS_PASS"
+    "candidate": "0.1.19",
+    "integrity": "HTTPS_ALL_16_RELEASE_ASSETS_BYTE_MATCH_PASS; SW_16_SHELL_DIGESTS_PASS"
   },
   "workCheckpoint": {
-    "status": "IN_PROGRESS",
-    "targetRelease": "0.1.18",
+    "status": "DEPLOYED_BROWSER_VERIFIED_DEVICE_PENDING",
+    "targetRelease": "0.1.19",
     "goal": "Fix selected-flight action feedback and viewport transition; show errors inline at clicked card",
     "plan": [
       "Ski default19.9kg per person;20kg qualifies",
@@ -23,12 +23,12 @@
       "Source fee intervals translated and shown; eligibility and exact bag-inclusive total still UNKNOWN"
     ],
     "lastSafeRelease": null,
-    "resumeInstruction": "0.1.18 shipped: user minimum is19.9kg, not23kg. Ski also needs separate boot cabin bag PLUS personal item. Both defaults checked and summary/live requirements browser PASS. Ryanair fee ranges shown clearly on details; no hidden fees/no false total. Backend remains17. Next installed iPhone18 test and true allowance/fee-scope verification; do not re-request accounts/keys.",
+    "resumeInstruction": "Selection visibility fixed19; actual browser BGY outbound->returns PASS. Installed iPhone19 pending. Preserve baggage19.9kg+boots+personal requirements; backend17 unchanged.",
     "rollbackCommit": "d2f8497540a04bc674a318084ab253b27df793d1"
   },
   "currentWork": {
-    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected. Recurring zero-cost candidate SerpApi identified: official Free 250 monthly requests and flight-comparison use case documented. Google Flights scraping intermediary, not official Google API; no live probe yet. Limited trial-only services excluded. User screenshots confirm SerpApi Free account and successful Playground ARN-ZRH search for 2027-03-14/18 with two adults selected; exact total and checked bag weight not verified. Prepared probe-0.1.0 and five guard tests PASS; missing key sends zero requests. Live GitHub Actions run 43559215595 PASS: Free plan verified, 248 free searches before call, exactly one fresh ARN-ZRH search, 11 priced results. Key remained in Actions secret. Total-for-two/23kg/transfer still unverified. Details run 43559500002 PASS: cached base plus return and booking requests, quota 247->245. Pinned one-adult comparison run 43559664340 PASS, quota245->244, KLM1840 vs two-adult3680 on identical flights. Booking policies contain only 1 free carry-on. 23kg NOT VERIFIED. Backend candidate0.1.11 prepared with persistent global quota180/month20/hour, Free-plan check, 30-minute cache and opaque selection records, staged outbound/returns/details, conservative baggage UNKNOWN;12 Node tests PASS, exact GitHub readback PASS. No runtime endpoint or UI connection deployed. Live runtime and staged UI0.1.14 DEPLOYED. User screenshot confirms Workers Free current plan. Browser outbound ARN-ZRH14–18Mar2027 yields11 options; selected KLM return14:20–19:05 and booking seller KLM3680SEK/two roundtrip,1free carry-on only. All3stages PASS; cached replay on frontend0.1.14 PASS. Browser upgraded0.1.11->0.1.14. All15 published release assets exact SHA256 match local.13 backend tests plus existing journey/updater/SW tests PASS. No purchase, plan upgrade or other project changes. 0.1.15: all-airports selection now matches requirements and searches groups of <=3 codes.23 alp airports successfully queried,94 offers; browser DOM confirmed complete ascending price order. CheapestBGY1808SEK two-adult base quote, returnBGY18:50->ARN21:35, Ryanair booking details1808 with carry-on/checked-bag fee ranges (weight not verified). Back navigation restores94-item aggregate without new calls. Source15 backend tests and existing regression suites PASS; all15 HTTPS release assets byte-match PASS. 0.1.16 frontend max price5000SEK for two, editable100SEK steps, live local filtering across all stages; requirement summary includes max. Browser default5000 and ArrowUp5100 verified;59 of94 within5000,0 within1800,2 within1900 (1808/1886), same fetchedAt preserved. Restored5000 and all visible prices<=5000 ascending. Source readback and15 deployed asset hashes PASS; existing updater/SW/journey regression PASS. Backend unchanged0.1.15. 0.1.17 fixes outgoing link reported by user: old q-only URL could open Google start page with no selection. Details now use provider search_metadata.google_flights_url validated HTTPS www.google.com /travel/flights[/booking] with tfs; reject secrets/other hosts. No generic fallback. Actual browser click opened selected itinerary FR4680 ARN06:15-BGY09:00 on14Mar2027 andFR3655 BGY18:50-ARN21:35 on18Mar2027,2passengers; Ryanair booking option1808SEK shown.16 backend tests and existing suites PASS; exact readbacks and15 published asset hashes PASS. 0.1.18 frontend: min19.9kg default, two independent cabin-item requirements, summary and live stages show all3. Browser verified summary19.9kg+boot cabin bag+personal item. Real BGY outbound/return/details PASS; Ryanair source fees shown Swedish: cabin332–958SEK,checked572–1598SEK,explicit price intervals and weight unknown. Existing selected-flight URL retained. All15 deployed assets byte-match; syntax and SW/updater/journey suites PASS. No backend/plan/key changes.",
-    "next": "Reproduced on0.1.18: choosing outbound changes to returns but headingTop=-83/statusTop=-124 outside936px viewport; patch canonical search action feedback/navigation.",
+    "completed": "v0.1.8 PNG assets uploaded and Git tree SHA/size read back. All JS syntax PASS; 9 synthetic journey tests PASS; service worker mock harness PASS. Pages deployment bd4228563d216c1cf4b6f250309bb03a714fc7e7 successful. HTTPS browser form submit PASS. Missing pwa.js/mobile policy added to offline shell. Safe explicit service-worker update activation wired. User screenshots confirm installed iPhone v0.1.8 and airplane-mode form. Five update-controller VM tests PASS. Update 0.1.9 failed on iPhone. Reproduced stale HTTP-cached version.js entering new SW cache. v0.1.10 install uses no-store plus build query and SHA-256 checks for all 14 shell resources before cache writes. Regression rejects corrupted rollout; all existing tests PASS. User confirms installed app now shows 0.1.10 after updating; recovery from 0.1.8 completed without reinstall. Provider discovery returned no relevant flight plugin. Reviewed Skyscanner, Duffel, Amadeus historical docs and Travelpayouts; no live API connected. Recurring zero-cost candidate SerpApi identified: official Free 250 monthly requests and flight-comparison use case documented. Google Flights scraping intermediary, not official Google API; no live probe yet. Limited trial-only services excluded. User screenshots confirm SerpApi Free account and successful Playground ARN-ZRH search for 2027-03-14/18 with two adults selected; exact total and checked bag weight not verified. Prepared probe-0.1.0 and five guard tests PASS; missing key sends zero requests. Live GitHub Actions run 43559215595 PASS: Free plan verified, 248 free searches before call, exactly one fresh ARN-ZRH search, 11 priced results. Key remained in Actions secret. Total-for-two/23kg/transfer still unverified. Details run 43559500002 PASS: cached base plus return and booking requests, quota 247->245. Pinned one-adult comparison run 43559664340 PASS, quota245->244, KLM1840 vs two-adult3680 on identical flights. Booking policies contain only 1 free carry-on. 23kg NOT VERIFIED. Backend candidate0.1.11 prepared with persistent global quota180/month20/hour, Free-plan check, 30-minute cache and opaque selection records, staged outbound/returns/details, conservative baggage UNKNOWN;12 Node tests PASS, exact GitHub readback PASS. No runtime endpoint or UI connection deployed. Live runtime and staged UI0.1.14 DEPLOYED. User screenshot confirms Workers Free current plan. Browser outbound ARN-ZRH14–18Mar2027 yields11 options; selected KLM return14:20–19:05 and booking seller KLM3680SEK/two roundtrip,1free carry-on only. All3stages PASS; cached replay on frontend0.1.14 PASS. Browser upgraded0.1.11->0.1.14. All15 published release assets exact SHA256 match local.13 backend tests plus existing journey/updater/SW tests PASS. No purchase, plan upgrade or other project changes. 0.1.15: all-airports selection now matches requirements and searches groups of <=3 codes.23 alp airports successfully queried,94 offers; browser DOM confirmed complete ascending price order. CheapestBGY1808SEK two-adult base quote, returnBGY18:50->ARN21:35, Ryanair booking details1808 with carry-on/checked-bag fee ranges (weight not verified). Back navigation restores94-item aggregate without new calls. Source15 backend tests and existing regression suites PASS; all15 HTTPS release assets byte-match PASS. 0.1.16 frontend max price5000SEK for two, editable100SEK steps, live local filtering across all stages; requirement summary includes max. Browser default5000 and ArrowUp5100 verified;59 of94 within5000,0 within1800,2 within1900 (1808/1886), same fetchedAt preserved. Restored5000 and all visible prices<=5000 ascending. Source readback and15 deployed asset hashes PASS; existing updater/SW/journey regression PASS. Backend unchanged0.1.15. 0.1.17 fixes outgoing link reported by user: old q-only URL could open Google start page with no selection. Details now use provider search_metadata.google_flights_url validated HTTPS www.google.com /travel/flights[/booking] with tfs; reject secrets/other hosts. No generic fallback. Actual browser click opened selected itinerary FR4680 ARN06:15-BGY09:00 on14Mar2027 andFR3655 BGY18:50-ARN21:35 on18Mar2027,2passengers; Ryanair booking option1808SEK shown.16 backend tests and existing suites PASS; exact readbacks and15 published asset hashes PASS. 0.1.18 frontend: min19.9kg default, two independent cabin-item requirements, summary and live stages show all3. Browser verified summary19.9kg+boot cabin bag+personal item. Real BGY outbound/return/details PASS; Ryanair source fees shown Swedish: cabin332–958SEK,checked572–1598SEK,explicit price intervals and weight unknown. Existing selected-flight URL retained. All15 deployed assets byte-match; syntax and SW/updater/journey suites PASS. No backend/plan/key changes.\n\n## Latest 0.1.19 — selection feedback, 2026-11-14\nReproduced on0.1.18: outbound selection succeeded but new heading was above viewport (top -83px,936px viewport). Canonical live-search.js now gives inline loading/error feedback at clicked button and reveals/focuses next-stage heading. selection-feedback.js is presentation-only, imported before live-search.js; no second search owner or updater. Invalid max price is explicitly reported before selection. Source e9f12bb5465e00de7f076fd7dfe0fc46c14e8866; public e8e0a11f7faf0da29bc9a4f13db41c4fac7742aa; Pages43569118594 SUCCESS. All16 HTTPS release assets SHA256 match local. Four new selection-feedback tests plus updater/SW/journey suites PASS. Browser0.1.19 actual cached BGY Välj utresa -> Välj hemresa PASS; heading focused at15.94px inside936px viewport. Loading/error presentation verified by unit tests. Backend17/free quota unchanged. Installed iPhone19 UNVERIFIED; do not promoteCURRENT. Next user tests existing installed app online, version19; no reinstall. Exact carrier baggage eligibility/all-in total remains UNKNOWN.\n",
+    "next": "Installed iPhone19 selection acceptance; exact baggage scope/eligibility still unverified.",
     "blocked": false
   },
   "pausedWork": {},
@@ -38,8 +38,8 @@
       "url": "https://container13.se/flyg/",
       "sourceBranch": "ccc-demo-public-test",
       "scope": "Only flyg/ subtree; other project bytes unchanged",
-      "sourceCommit": "013c3a52885555cf2f6a1a900689333f9c3d5edd",
-      "deploymentCommit": "253b510fc76fd589ef6648751d06a1313d8e845c"
+      "sourceCommit": "e9f12bb5465e00de7f076fd7dfe0fc46c14e8866",
+      "deploymentCommit": "e8e0a11f7faf0da29bc9a4f13db41c4fac7742aa"
     },
     "secrets": "NONE_COMMITTED",
     "secretCollection": {
@@ -124,8 +124,8 @@
     "sourceCommitted": true,
     "githubReadback": true,
     "syntax": "PASS",
-    "ui": "BROWSER_19.9KG_TWO_CABIN_ITEMS_SUMMARY_AND_REAL_FEE_RANGES_PASS",
-    "deployment": "PAGES_SUCCESS_253b510fc76fd589ef6648751d06a1313d8e845c",
+    "ui": "BROWSER_OUTBOUND_TO_RETURNS_HEADING_VISIBLE_AND_FOCUSED_PASS",
+    "deployment": "PAGES_SUCCESS_43569118594",
     "device": "USER_CONFIRMED_IPHONE: 0.1.8 installed/offline form PASS; existing installation updated to 0.1.10 without reinstall PASS, 2026-11-14",
     "flightAPI": {
       "status": "LIVE_PROOF_PASS",
@@ -149,7 +149,7 @@
     "tests": "JOURNEY_9_PASS; SW_MOCK_HARNESS_PASS",
     "updateController": "Browser existing0.1.11 shell auto-updated to0.1.14; installed iPhone0.1.14 not tested",
     "pwa": "PREVIOUS_IPHONE_INSTALL_OFFLINE_AND_0.1.10_UPGRADE_PASS; BROWSER_0.1.11_TO_0.1.14_UPGRADE_PASS; IPHONE_0.1.14_PENDING",
-    "deployedAssets": "0.1.18 all15 HTTPS release assets exact SHA256 match",
+    "deployedAssets": "0.1.19 all16 HTTPS release assets SHA256 match",
     "providerResearch": "2026-11-14 official eligibility, pricing and agreement checked; report flyg/FLIGHT_DATA_ACCESS.md",
     "probe": "probe-0.1.0: 5 mock guard tests PASS; missing key zero calls PASS",
     "fareDetails": {
@@ -251,6 +251,14 @@
       "allowanceAndPriceScope": "UNVERIFIED",
       "device": "IPHONE_PENDING",
       "pagesRun": 43568078744
+    },
+    "selectionFeedback": {
+      "version": "0.1.19",
+      "tests": "4_NEW_TESTS_PASS; UPDATER_SW_JOURNEY_PASS",
+      "browser": "BGY_OUTBOUND_TO_RETURNS_PASS",
+      "headingTop": 15.9375,
+      "viewportHeight": 936,
+      "device": "IPHONE_PENDING"
     }
   },
   "airportCatalog": {
