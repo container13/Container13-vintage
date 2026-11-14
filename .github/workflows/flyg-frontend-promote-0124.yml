@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
+      # Release 0.1.26: verify the candidate before touching production.
       - name: Verify browser Worker PASS and release integrity
         run: |
           python3 - <<'PY'
