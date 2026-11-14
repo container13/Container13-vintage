@@ -29,7 +29,7 @@ jobs:
           sw=pathlib.Path('flyg/sw.js').read_text()
           hashes=json.loads(re.search(r'const INTEGRITY=(\{[^;]+\});',sw).group(1))
           for key,digest in hashes.items():
-            path=pathlib.Path('flyg')/key
+            path=pathlib.Path('flyg')/('index.html' if key=='./' else key)
             assert path.is_file(),str(path)
             assert hashlib.sha256(path.read_bytes()).hexdigest()==digest,str(path)
           print('PASS 16 asset SHA256 checks, Worker Chromium PASS')
@@ -54,7 +54,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- flyg/
           if git diff --cached --quiet; then echo "Already up to date"; exit 0; fi
-          git diff --cached --name-only | grep -v '^flyg/' && { echo "Non-Flyg changes detected"; exit 1; } || true
+          if git diff --cached --name-only | grep -qv '^flyg/'; then echo 'Non-Flyg changes detected'; exit 1; fi
           git commit -m "Flyg: promote verified server-compatible frontend 0.1.24"
           git push origin HEAD:ccc-demo-public-test
       - name: Verify public version without provider search
