@@ -1,0 +1,153 @@
+{
+  "details": {
+    "version": "details-0.1.0",
+    "status": "BOOKING_DETAILS_RECEIVED",
+    "request": {
+      "engine": "google_flights",
+      "departure_id": "ARN",
+      "arrival_id": "ZRH",
+      "outbound_date": "2027-03-14",
+      "return_date": "2027-03-18",
+      "adults": "2",
+      "currency": "SEK",
+      "type": "1",
+      "hl": "sv",
+      "gl": "se",
+      "no_cache": "true"
+    },
+    "free_searches_before": 247,
+    "outbound": {
+      "price_field": 3674,
+      "type": "Round trip",
+      "segments": [
+        {
+          "number": "KL 1214",
+          "from": "ARN",
+          "to": "AMS",
+          "departure_local": "2027-03-14 06:25",
+          "arrival_local": "2027-03-14 08:35"
+        },
+        {
+          "number": "KL 1919",
+          "from": "AMS",
+          "to": "ZRH",
+          "departure_local": "2027-03-14 09:40",
+          "arrival_local": "2027-03-14 11:00"
+        }
+      ]
+    },
+    "scope_evidence": [],
+    "checked_baggage_23kg_each": "UNVERIFIED",
+    "price_scope": "UNVERIFIED",
+    "return": {
+      "price_field": 3680,
+      "type": "Round trip",
+      "segments": [
+        {
+          "number": "KL 1922",
+          "from": "ZRH",
+          "to": "AMS",
+          "departure_local": "2027-03-18 14:20",
+          "arrival_local": "2027-03-18 16:00"
+        },
+        {
+          "number": "KL 1225",
+          "from": "AMS",
+          "to": "ARN",
+          "departure_local": "2027-03-18 17:05",
+          "arrival_local": "2027-03-18 19:05"
+        }
+      ]
+    },
+    "return_scope_evidence": [],
+    "booking_scope_evidence": [],
+    "baggage_policies": {
+      "together": [
+        "1 free carry-on"
+      ]
+    },
+    "booking_options": [
+      {
+        "part": "together",
+        "seller": "KLM",
+        "airline": true,
+        "price_field": 3680,
+        "fare": null,
+        "baggage_policies": [
+          "1 free carry-on"
+        ],
+        "extensions": []
+      }
+    ],
+    "search_requests": 3,
+    "free_searches_after": 245
+  },
+  "scope": {
+    "version": "scope-0.1.0",
+    "status": "PINNED_COMPARISON_RECEIVED",
+    "search_requests": 1,
+    "previous_two_adult_KLM_price_field": 3680,
+    "one_adult_options": [
+      {
+        "seller": "KLM",
+        "price_field": 1840,
+        "baggage_policies": [
+          "1 free carry-on"
+        ]
+      }
+    ],
+    "selected_flights": [
+      {
+        "price_field": null,
+        "type": "Round trip",
+        "segments": [
+          {
+            "number": "KL 1214",
+            "from": "ARN",
+            "to": "AMS",
+            "departure_local": "2027-03-14 06:25",
+            "arrival_local": "2027-03-14 08:35"
+          },
+          {
+            "number": "KL 1919",
+            "from": "AMS",
+            "to": "ZRH",
+            "departure_local": "2027-03-14 09:40",
+            "arrival_local": "2027-03-14 11:00"
+          }
+        ]
+      },
+      {
+        "price_field": null,
+        "type": "Round trip",
+        "segments": [
+          {
+            "number": "KL 1922",
+            "from": "ZRH",
+            "to": "AMS",
+            "departure_local": "2027-03-18 14:20",
+            "arrival_local": "2027-03-18 16:00"
+          },
+          {
+            "number": "KL 1225",
+            "from": "AMS",
+            "to": "ARN",
+            "departure_local": "2027-03-18 17:05",
+            "arrival_local": "2027-03-18 19:05"
+          }
+        ]
+      }
+    ],
+    "baggage_policies": {
+      "together": [
+        "1 free carry-on"
+      ]
+    },
+    "free_searches_before": 245,
+    "free_searches_after": 244,
+    "checked_baggage_23kg_each": "UNVERIFIED"
+  },
+  "detailsRun": 43559500002,
+  "scopeRun": 43559664340,
+  "note": "Details request summary originally echoed canonical no_cache true, but actual details requests used no_cache false. No keys or booking tokens retained."
+}

@@ -54,7 +54,7 @@ def details(key,fetch=request_json,evidence=safe_html_evidence):
     choices=offers(base)
     if not choices:raise ProbeError('No priced flight available for details proof.')
     outbound=min(choices,key=lambda x:x['price'])
-    result={'version':VERSION,'status':'OUTBOUND_ONLY','request':QUERY,'free_searches_before':before,
+    result={'version':VERSION,'status':'OUTBOUND_ONLY','request':{**QUERY,'no_cache':'false'},'free_searches_before':before,
             'outbound':minimal_offer(outbound),'scope_evidence':evidence(base,key),
             'checked_baggage_23kg_each':'UNVERIFIED','price_scope':'UNVERIFIED'}
     token=outbound.get('departure_token')
@@ -94,8 +94,10 @@ if __name__=='__main__':
         if mode=='price-scope':
             from serpapi_scope import scope_probe
             result=scope_probe(key)
-        else:
+        elif mode=='fare-details':
             result=details(key)
+        else:
+            raise ProbeError('No explicit bounded proof mode requested; no search sent.')
         safe=json.dumps(result,ensure_ascii=False,indent=2).replace(key,'[REDACTED]') if key else json.dumps(result)
         print(safe)
         if os.environ.get('GITHUB_STEP_SUMMARY'):

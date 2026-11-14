@@ -3,8 +3,7 @@ on:
   push:
     branches: [flyg-alperna-init]
     paths:
-      - 'flyg/probes/**'
-      - '.github/workflows/flyg-provider-probe.yml'
+      - 'flyg/probes/request.json'
 permissions:
   contents: read
 concurrency:
