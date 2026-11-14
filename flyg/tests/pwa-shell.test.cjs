@@ -10,9 +10,9 @@ async function scenario({corrupt=false}={}){
  const context={URL,Request,Response,Promise,crypto:webcrypto,caches:{open:async()=>cache,keys:async()=>['flyg-shell-0.1.8','other-project'],delete:async k=>{assert.equal(k,'flyg-shell-0.1.8')}},fetch:network,self:{location:{origin:'https://example.test'},registration:{scope},clients:{claim:async()=>{claimed=true}},skipWaiting:()=>{skipped=true},addEventListener:(name,fn)=>handlers[name]=fn}};
  vm.runInNewContext(fs.readFileSync('flyg/sw.js','utf8'),context);let pending;handlers.install({waitUntil:p=>pending=p});
  if(corrupt){await assert.rejects(pending,/integrity|version|asset/i);return}
- await pending;assert.equal(await (await cache.match('./version.js')).text(),fs.readFileSync('flyg/version.js','utf8'),'new shell must not contain HTTP-cached old version');assert.equal(items.size,15);
+ await pending;assert.equal(await (await cache.match('./version.js')).text(),fs.readFileSync('flyg/version.js','utf8'),'new shell must not contain HTTP-cached old version');assert.equal(items.size,16);
  handlers.activate({waitUntil:p=>pending=p});await pending;assert(claimed);offline=true;
- for(const path of ['index.html','live-search.js','pwa.js','assets/flyg-icon-180.png','../project-template/mobile-view-policy.js']){let result;handlers.fetch({request:{url:new URL(path,scope).href,method:'GET',mode:path==='index.html'?'navigate':'cors'},respondWith:p=>result=p});assert(await result,path)}
+ for(const path of ['index.html','selection-feedback.js','live-search.js','pwa.js','assets/flyg-icon-180.png','../project-template/mobile-view-policy.js']){let result;handlers.fetch({request:{url:new URL(path,scope).href,method:'GET',mode:path==='index.html'?'navigate':'cors'},respondWith:p=>result=p});assert(await result,path)}
  for(const path of ['release.json','api/search']){let intercepted=false;handlers.fetch({request:{url:new URL(path,scope).href,method:'GET',mode:'cors'},respondWith:()=>intercepted=true});assert(!intercepted,path)}
  handlers.message({data:{type:'ACTIVATE_UPDATE'}});assert(skipped);
 }
