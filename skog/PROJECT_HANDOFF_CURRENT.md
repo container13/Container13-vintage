@@ -28,3 +28,6 @@ Mapped John's four parenthesized harvest groups to named skiften using the compa
 
 ## v0.1.7
 Added independently editable, local-only assumptions for each of four John harvest groups: area, volume, access, terrain, stand, undergrowth, reforestation, timing, vendor net and notes. Blank until verified; no invented group figures. Export text file. /skog/ unchanged.
+
+## v0.1.8
+JonJons financial scenario comparison added: ordinary purchase, gift against consideration, purchase with timber advance; editable bank loan, cash, tax assessment, deeds, interest, proceeds, regeneration; scenario export and local persistence. Indicative stamp duty and mortgage deed tax only; no income tax calculation. 85% gift stamp-duty warning based on editable assessment; income tax gift classification and seller historical tax values require professional review. No changes to /skog/.
