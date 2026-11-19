@@ -25,3 +25,6 @@ JonJons: John email parentheses define four separate groups: (12,13,15,16,18), (
 
 ## v0.1.6
 Mapped John's four parenthesized harvest groups to named skiften using the compartment descriptions in Prospekt v13.pdf: groups 1 (12,13,15,16,18) and 2 (20,21) = Römyran; groups 3 (35,40) and 4 (42,46,50) = Hemskiftet. This is sourced from the prospect, not inferred from John email. /skog/ unchanged.
+
+## v0.1.7
+Added independently editable, local-only assumptions for each of four John harvest groups: area, volume, access, terrain, stand, undergrowth, reforestation, timing, vendor net and notes. Blank until verified; no invented group figures. Export text file. /skog/ unchanged.
