@@ -19,3 +19,6 @@ User clarified /skog/ should be prefilled with everything except John/Holmen inf
 
 ## v0.1.4
 Verified against Prospekt v13.pdf: Västtjär 1:3 has three existing mortgage deeds totaling SEK 300,000; seller clears any associated loans by completion. Added mortgage deed and estimated new deed cost (SEK 1.1m additional, SEK 22k stamp duty at 2%, excluding fees) to /skog/. Important: existing mortgage deeds are NOT debt. Continue audit of prospect for other missing material items.
+
+## v0.1.5
+JonJons: John email parentheses define four separate groups: (12,13,15,16,18), (20,21), (35,40), (42,46,50). Rendered as compact expandable groups with totals only. No unsupported per-group volumes, revenues, dates or areas. /skog/ unchanged: John/Holmen figures remain excluded.
