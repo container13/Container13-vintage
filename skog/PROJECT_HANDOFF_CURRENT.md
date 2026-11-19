@@ -1,6 +1,6 @@
 # PROJECT_HANDOFF_CURRENT – Skog / JonJons
 
-Version 0.1.3, 2026-11-19. Branch: ccc-demo-public-test. /skog/ includes all general property, forestry plan, financing and tax calculation facts EXCEPT information obtained from John/Holmen and the historical purchase amounts of the seller's shares (grandfather half 50,000 SEK, mother quarter 100,000 SEK). Those excluded details are JonJons-only. /jonjons/ contains the complete property project. No login; pages are public.
+Version 0.1.4, 2026-11-19. Branch: ccc-demo-public-test. /skog/ includes all general property, forestry plan, financing and tax calculation facts EXCEPT information obtained from John/Holmen and the historical purchase amounts of the seller's shares (grandfather half 50,000 SEK, mother quarter 100,000 SEK). Those excluded details are JonJons-only. /jonjons/ contains the complete property project. No login; pages are public.
 
 ## Verified project facts from user discussions
 Price 2,000,000 SEK; bank loan 1,400,000 SEK; prospective down payment 600,000 SEK; tax assessment 1,710,000 SEK (forest 1,388,000, farmland 183,000, economic buildings 40,000, smallhouse plot 99,000). Forest 22.4 ha, plan standing volume 4,208 m3sk. Holmen John: 12 compartments 12,13,15,16,18,20,21,35,40,42,46,50, 11.4 ha, approx 2,480 m3fub, estimated net 1,580,000 SEK after harvest cost before regeneration 171,000 SEK and tax; 4 harvest events. Tax allowance ~811,696 SEK is preliminary for standard purchase and subject to restrictions. Rundvirke comparable numbers NOT YET VERIFIED: do not invent. Tax and sale/gift treatment requires professional verification.
@@ -14,5 +14,8 @@ Retrieve and compare original Holmen and Rundvirke source documents before publi
 ## v0.1.2
 Prefilled JonJons with verified conversation-known property values, tax assessment breakdown, forest plan metrics, financial scenario and Holmen compartments. Rundvirke amounts remain unfilled pending source verification. /skog/ remains strictly generic and without any property/vendor data. No login, public site: do not commit original sensitive documents.
 
-## v0.1.3
+## v0.1.4
 User clarified /skog/ should be prefilled with everything except John/Holmen information and the seller's historical share purchases. Updated /skog/ accordingly, left Holmen-dependent net/replanting inputs empty. /jonjons/ unchanged.
+
+## v0.1.4
+Verified against Prospekt v13.pdf: Västtjär 1:3 has three existing mortgage deeds totaling SEK 300,000; seller clears any associated loans by completion. Added mortgage deed and estimated new deed cost (SEK 1.1m additional, SEK 22k stamp duty at 2%, excluding fees) to /skog/. Important: existing mortgage deeds are NOT debt. Continue audit of prospect for other missing material items.
