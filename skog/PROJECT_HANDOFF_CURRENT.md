@@ -31,3 +31,6 @@ Added independently editable, local-only assumptions for each of four John harve
 
 ## v0.1.8
 JonJons financial scenario comparison added: ordinary purchase, gift against consideration, purchase with timber advance; editable bank loan, cash, tax assessment, deeds, interest, proceeds, regeneration; scenario export and local persistence. Indicative stamp duty and mortgage deed tax only; no income tax calculation. 85% gift stamp-duty warning based on editable assessment; income tax gift classification and seller historical tax values require professional review. No changes to /skog/.
+
+## v0.1.9
+JonJons adds seller tax research section: verified only as family-provided history, 1983 inheritance quarter, 1990s grandfather half 50k, mother's quarter 100k timing unknown. Explicitly unverified tax classifications, 1952 assessment, forest deductions. Riksarkivet document requests and link. No changes to /skog/.
