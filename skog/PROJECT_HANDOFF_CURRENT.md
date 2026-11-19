@@ -22,3 +22,6 @@ Verified against Prospekt v13.pdf: Västtjär 1:3 has three existing mortgage de
 
 ## v0.1.5
 JonJons: John email parentheses define four separate groups: (12,13,15,16,18), (20,21), (35,40), (42,46,50). Rendered as compact expandable groups with totals only. No unsupported per-group volumes, revenues, dates or areas. /skog/ unchanged: John/Holmen figures remain excluded.
+
+## v0.1.6
+Mapped John's four parenthesized harvest groups to named skiften using the compartment descriptions in Prospekt v13.pdf: groups 1 (12,13,15,16,18) and 2 (20,21) = Römyran; groups 3 (35,40) and 4 (42,46,50) = Hemskiftet. This is sourced from the prospect, not inferred from John email. /skog/ unchanged.
